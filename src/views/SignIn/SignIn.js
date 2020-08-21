@@ -1,18 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { Link as RouterLink, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { adminActions } from "../../redux/action";
+import { connect } from "react-redux";
 import validate from 'validate.js';
+import log_banner from '../../assets/log_banner.png';
 import { makeStyles } from '@material-ui/styles';
+// import theme from '../../../../theme';
 import {
   Grid,
   Button,
   IconButton,
   TextField,
+  Card,
   Link,
   Typography
 } from '@material-ui/core';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-
 import { Facebook as FacebookIcon, Google as GoogleIcon } from 'icons';
 
 const schema = {
@@ -31,9 +34,10 @@ const schema = {
   }
 };
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
-    backgroundColor: theme.palette.background.default,
+    // backgroundColor: theme.palette.background.default,
+    backgroundImage: `url(${log_banner})`,
     height: '100%'
   },
   grid: {
@@ -72,8 +76,12 @@ const useStyles = makeStyles(theme => ({
   },
   contentContainer: {},
   content: {
-    height: '100%',
+    height: '80%',
     display: 'flex',
+    width: '80%',
+    margin:'auto',
+    borderTopLeftRadius: 20,
+    borderBottomRightRadius: 20,
     flexDirection: 'column'
   },
   contentHeader: {
@@ -84,9 +92,9 @@ const useStyles = makeStyles(theme => ({
     paddingLeft: theme.spacing(2),
     paddingRight: theme.spacing(2)
   },
-  logoImage: {
-    marginLeft: theme.spacing(4)
-  },
+  // logoImage: {
+  //   marginLeft: theme.spacing(4)
+  // },
   contentBody: {
     flexGrow: 1,
     display: 'flex',
@@ -96,9 +104,10 @@ const useStyles = makeStyles(theme => ({
     }
   },
   form: {
-    paddingLeft: 100,
-    paddingRight: 100,
-    paddingBottom: 125,
+    paddingLeft: 70,
+    paddingRight: 70,
+    // marginTop:0,
+    paddingBottom: 120,
     flexBasis: 700,
     [theme.breakpoints.down('sm')]: {
       paddingLeft: theme.spacing(2),
@@ -106,7 +115,9 @@ const useStyles = makeStyles(theme => ({
     }
   },
   title: {
-    marginTop: theme.spacing(3)
+    marginTop: theme.spacing(3),
+    textAlign:"center",
+    color: "Green"
   },
   socialButtons: {
     marginTop: theme.spacing(3)
@@ -118,10 +129,14 @@ const useStyles = makeStyles(theme => ({
     marginTop: theme.spacing(2)
   },
   textField: {
-    marginTop: theme.spacing(2)
+    marginTop: theme.spacing(4)
   },
   signInButton: {
-    margin: theme.spacing(2, 0)
+    margin: theme.spacing(4, 0),
+    backgroundColor: "Green",
+    borderTopLeftRadius: 10,
+    borderBottomRightRadius: 10,
+    color:'white'
   }
 }));
 
@@ -147,9 +162,6 @@ const SignIn = props => {
     }));
   }, [formState.values]);
 
-  const handleBack = () => {
-    history.goBack();
-  };
 
   const handleChange = event => {
     event.persist();
@@ -172,7 +184,11 @@ const SignIn = props => {
 
   const handleSignIn = event => {
     event.preventDefault();
-    history.push('/');
+    var email = formState.values.email;
+    var password = formState.values.password;
+    if(email && password ){
+    props.adminlogin(email, password)
+    }
   };
 
   const hasError = field =>
@@ -183,50 +199,17 @@ const SignIn = props => {
       <Grid
         className={classes.grid}
         container
+        justify="center" 
+        direction="row"
       >
-        <Grid
-          className={classes.quoteContainer}
-          item
-          lg={5}
-        >
-          <div className={classes.quote}>
-            <div className={classes.quoteInner}>
-              <Typography
-                className={classes.quoteText}
-                variant="h1"
-              >
-                Hella narwhal Cosby sweater McSweeney's, salvia kitsch before
-                they sold out High Life.
-              </Typography>
-              <div className={classes.person}>
-                <Typography
-                  className={classes.name}
-                  variant="body1"
-                >
-                  Takamaru Ayako
-                </Typography>
-                <Typography
-                  className={classes.bio}
-                  variant="body2"
-                >
-                  Manager at inVision
-                </Typography>
-              </div>
-            </div>
-          </div>
-        </Grid>
         <Grid
           className={classes.content}
           item
-          lg={7}
+          lg={6}
           xs={12}
+          md={12}
         >
-          <div className={classes.content}>
-            <div className={classes.contentHeader}>
-              <IconButton onClick={handleBack}>
-                <ArrowBackIcon />
-              </IconButton>
-            </div>
+          <Card className={classes.content}>
             <div className={classes.contentBody}>
               <form
                 className={classes.form}
@@ -236,49 +219,9 @@ const SignIn = props => {
                   className={classes.title}
                   variant="h2"
                 >
-                  Sign in
+                  Admin Login
                 </Typography>
-                <Typography
-                  color="textSecondary"
-                  gutterBottom
-                >
-                  Sign in with social media
-                </Typography>
-                <Grid
-                  className={classes.socialButtons}
-                  container
-                  spacing={2}
-                >
-                  <Grid item>
-                    <Button
-                      color="primary"
-                      onClick={handleSignIn}
-                      size="large"
-                      variant="contained"
-                    >
-                      <FacebookIcon className={classes.socialIcon} />
-                      Login with Facebook
-                    </Button>
-                  </Grid>
-                  <Grid item>
-                    <Button
-                      onClick={handleSignIn}
-                      size="large"
-                      variant="contained"
-                    >
-                      <GoogleIcon className={classes.socialIcon} />
-                      Login with Google
-                    </Button>
-                  </Grid>
-                </Grid>
-                <Typography
-                  align="center"
-                  className={classes.sugestion}
-                  color="textSecondary"
-                  variant="body1"
-                >
-                  or login with email address
-                </Typography>
+               
                 <TextField
                   className={classes.textField}
                   error={hasError('email')}
@@ -309,31 +252,26 @@ const SignIn = props => {
                 />
                 <Button
                   className={classes.signInButton}
-                  color="primary"
-                  disabled={!formState.isValid}
+                  // disabled={!formState.isValid}
                   fullWidth
                   size="large"
                   type="submit"
                   variant="contained"
                 >
-                  Sign in now
+                  {props.loggingIn ?"Loading...": "Sign in now"}
                 </Button>
-                <Typography
-                  color="textSecondary"
-                  variant="body1"
-                >
-                  Don't have an account?{' '}
+                <Grid item lg={12} md={12} sm={12} xs={12} className=" mb-4" style={{textAlign:"center"}}>                
                   <Link
                     component={RouterLink}
-                    to="/sign-up"
+                    to="/forget_password"
                     variant="h6"
                   >
-                    Sign up
+                   Forgot password?
                   </Link>
-                </Typography>
+              </Grid>
               </form>
             </div>
-          </div>
+          </Card>
         </Grid>
       </Grid>
     </div>
@@ -344,4 +282,14 @@ SignIn.propTypes = {
   history: PropTypes.object
 };
 
-export default withRouter(SignIn);
+function mapState(state) {
+  const { loggingIn } = state.authentication;
+  return { loggingIn };
+}
+
+const actionCreators = {
+  adminlogin: adminActions.adminlogin,
+};
+
+const connectedSignIn = connect(mapState, actionCreators)(SignIn);
+export { connectedSignIn as SignIn };

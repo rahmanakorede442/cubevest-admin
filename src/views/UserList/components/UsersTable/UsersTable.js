@@ -11,6 +11,7 @@ import {
   Avatar,
   Checkbox,
   Table,
+  Button,
   TableBody,
   TableCell,
   TableHead,
@@ -18,6 +19,7 @@ import {
   Typography,
   TablePagination
 } from '@material-ui/core';
+import {Link} from 'react-router-dom';
 
 import { getInitials } from 'helpers';
 
@@ -119,7 +121,8 @@ const UsersTable = props => {
                   <TableCell>Location</TableCell>
                   <TableCell>Phone</TableCell>
                   <TableCell>Registration date</TableCell>
-                </TableRow>
+                  <TableCell>Action</TableCell>
+              </TableRow>
               </TableHead>
               <TableBody>
                 {users.slice(0, rowsPerPage).map(user => (
@@ -156,6 +159,11 @@ const UsersTable = props => {
                     <TableCell>{user.phone}</TableCell>
                     <TableCell>
                       {moment(user.createdAt).format('DD/MM/YYYY')}
+                    </TableCell>
+                    <TableCell>
+                       <Link>
+                       <Button color="primary" variant="contained"> Details</Button>
+                       </Link>
                     </TableCell>
                   </TableRow>
                 ))}

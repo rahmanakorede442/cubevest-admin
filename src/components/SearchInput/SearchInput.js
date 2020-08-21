@@ -26,24 +26,24 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const SearchInput = props => {
-  const { className, onChange, style, ...rest } = props;
+  const { className, onChange, onSubmit, style, ...rest } = props;
 
   const classes = useStyles();
 
   return (
-    <Paper
-      {...rest}
-      className={clsx(classes.root, className)}
-      style={style}
-    >
-      <SearchIcon className={classes.icon} />
-      <Input
+      <Paper
         {...rest}
-        className={classes.input}
-        disableUnderline
-        onChange={onChange}
-      />
-    </Paper>
+        className={clsx(classes.root, className)}
+        style={style}
+      >
+        <SearchIcon className={classes.icon} />
+        <Input
+          {...rest}
+          className={classes.input}
+          disableUnderline
+          onChange={onChange}
+        />
+      </Paper>
   );
 };
 

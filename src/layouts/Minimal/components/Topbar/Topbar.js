@@ -20,14 +20,14 @@ const Topbar = props => {
     <AppBar
       {...rest}
       className={clsx(classes.root, className)}
-      color="primary"
+      color="transparent"
       position="fixed"
     >
-      <Toolbar>
+      <Toolbar style={{margin:"40px auto"}}>
         <RouterLink to="/">
           <img
             alt="Logo"
-            src="/images/logos/logo--white.svg"
+            src="/images/logos/logo.png"
           />
         </RouterLink>
       </Toolbar>

@@ -1,13 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
-
+import log_banner from '../../assets/log_banner.png';
 import { Topbar } from './components';
 
 const useStyles = makeStyles(() => ({
   root: {
     paddingTop: 64,
-    height: '100%'
+    height: '100%',
+    backgroundImage: `url(${log_banner})`
   },
   content: {
     height: '100%'

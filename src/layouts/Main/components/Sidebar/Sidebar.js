@@ -2,16 +2,25 @@ import React from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
-import { Divider, Drawer } from '@material-ui/core';
+import { Divider, Drawer, Button } from '@material-ui/core';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import PeopleIcon from '@material-ui/icons/People';
 import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
 import TextFieldsIcon from '@material-ui/icons/TextFields';
 import ImageIcon from '@material-ui/icons/Image';
+import { adminActions } from "../../../../redux/action";
+import { withStyles } from "@material-ui/styles";
+import { Link as RouterLink, withRouter } from 'react-router-dom';
+import { connect } from "react-redux";
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
+import MoneyIcon from '@material-ui/icons/Money';
 import SettingsIcon from '@material-ui/icons/Settings';
+import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
-
+import AssignmentIcon from '@material-ui/icons/Assignment';
+import HomeIcon from '@material-ui/icons/Home';
+import BusinessCenterIcon from '@material-ui/icons/BusinessCenter';
+import { IconButton, Icon } from "@material-ui/core";
 import { Profile, SidebarNav, UpgradePlan } from './components';
 
 const useStyles = makeStyles(theme => ({
@@ -23,7 +32,7 @@ const useStyles = makeStyles(theme => ({
     }
   },
   root: {
-    backgroundColor: theme.palette.white,
+    backgroundColor: '#4fa648',
     display: 'flex',
     flexDirection: 'column',
     height: '100%',
@@ -46,37 +55,79 @@ const Sidebar = props => {
     {
       title: 'Dashboard',
       href: '/dashboard',
-      icon: <DashboardIcon />
+      icon: <HomeIcon />
+    },
+    {
+      title: 'Admin',
+      href: '/admin',
+      icon: <PeopleIcon />
     },
     {
       title: 'Users',
       href: '/users',
       icon: <PeopleIcon />
     },
+    // {
+    //   title: 'Regular',
+    //   href: '/regular-savings',
+    //   icon: <PeopleIcon />
+    // },
+    // {
+    //   title: 'Target',
+    //   href: '/target-savings',
+    //   icon: <PeopleIcon />
+    // },
+    // {
+    //   title: 'Save To Loan',
+    //   href: '/save-to-loan-savings',
+    //   icon: <PeopleIcon />
+    // },
     {
-      title: 'Products',
-      href: '/products',
-      icon: <ShoppingBasketIcon />
+      title: 'Savings',
+      href: '/savings_tab',
+      icon: <MoneyIcon />
     },
+    // {
+    //   title: 'Market Place',
+    //   href: '/market_tab',
+    //   icon: <ShoppingBasketIcon />
+    // },
+    // {
+    //   title: 'Investment',
+    //   href: '/halal_investment',
+    //   icon: <LockOpenIcon />
+    // },
     {
-      title: 'Authentication',
-      href: '/sign-in',
-      icon: <LockOpenIcon />
+      title: 'Investment',
+      href: '/investment_tab',
+      icon: <BusinessCenterIcon />
     },
+    // {
+    //   title: 'Settings',
+    //   href: '/typography',
+    //   icon: <TextFieldsIcon />
+    // },
+    // {
+    //   title: 'Icons',
+    //   href: '/icons',
+    //   icon: <ImageIcon />
+    // },
     {
-      title: 'Typography',
-      href: '/typography',
-      icon: <TextFieldsIcon />
-    },
-    {
-      title: 'Icons',
-      href: '/icons',
-      icon: <ImageIcon />
-    },
-    {
-      title: 'Account',
+      title: 'Loan',
       href: '/account',
       icon: <AccountBoxIcon />
+    },
+
+    {
+      title: 'Transactions',
+      href: '/transactions',
+      icon: <AccountBoxIcon />
+    },
+    
+    {
+      title: 'Report',
+      href: '/report',
+      icon: <AssignmentIcon />
     },
     {
       title: 'Settings',
@@ -84,6 +135,10 @@ const Sidebar = props => {
       icon: <SettingsIcon />
     }
   ];
+
+  const logout = () => {
+    props.logout()
+  }
 
   return (
     <Drawer
@@ -96,6 +151,7 @@ const Sidebar = props => {
       <div
         {...rest}
         className={clsx(classes.root, className)}
+        
       >
         <Profile />
         <Divider className={classes.divider} />
@@ -103,8 +159,28 @@ const Sidebar = props => {
           className={classes.nav}
           pages={pages}
         />
-        <UpgradePlan />
-      </div>
+          <div className="px-4">
+          <IconButton
+              aria-label="Delete"
+              className=""
+              size="small"
+              // onClick={this.handleSignOut}
+            ></IconButton>
+        <Button
+          type="submit"
+          startIcon={<PowerSettingsNewIcon />}
+            variant="contained"
+            variant="outlined" 
+            size="small" 
+            style={{marginTop:60, color:'#fff',borderColor:'#fff'}}
+            onClick={logout}
+          >
+        Logout
+        </Button>
+        </div>
+        {/* <UpgradePlan /> */}
+      </div>     
+    
     </Drawer>
   );
 };
@@ -116,4 +192,18 @@ Sidebar.propTypes = {
   variant: PropTypes.string.isRequired
 };
 
-export default Sidebar;
+// export default Sidebar;
+// export default UserList;
+function mapState(state) {
+  const { savings } = state.savings;
+  return { savings };
+}
+// export default withStyles({}, { withTheme: true })(Dashboard1);
+const actionCreators = {
+  saveWallet: adminActions.saveWallet,
+  logout: adminActions.logout,
+};
+
+export default withStyles({}, { withTheme: true })(
+  withRouter(connect(mapState,  actionCreators)(Sidebar))
+);

@@ -1,0 +1,108 @@
+import React, { useState, Component } from 'react';
+import { makeStyles } from '@material-ui/styles';
+import { withRouter, Link } from "react-router-dom";
+import { adminActions } from "../../../redux/action";
+import { connect } from "react-redux";
+import { withStyles } from "@material-ui/styles";
+import { getConfig, checkToken, numberFormat } from '../../../redux/config/config'
+import { authHeader, history } from '../../../redux/logic';
+import { Grid, Button } from '@material-ui/core';
+import { SearchInput } from 'components';
+
+import { UsersToolbar, UsersTable } from '../components/Savings';
+
+class Investment extends Component {
+  constructor(props){
+    super(props)
+    this.state ={
+      users: [],
+      all: [],
+      search: "",
+      loading:true,
+      open:false
+    }
+    this.fetchUsers = this.fetchUsers.bind(this);
+    this.fetchUsers();
+  }
+
+  fetchUsers = () =>{
+    const requestOptions = {
+        method: 'GET',
+        headers: { ...authHeader(), 'Content-Type': 'application/json' },
+    };
+    fetch(getConfig('showMarketInvestments'), requestOptions)
+    .then(async response => {
+    const data = await response.json();
+    if (!response.ok) {
+        const error = (data && data.message) || response.statusText;
+        return Promise.reject(error);
+    }
+    console.log(data)
+    this.setState({users: data, all:data.data, loading:false });
+})
+.catch(error => {
+    if (error === "Unauthorized") {
+          this.props.logout()
+       }
+    this.setState({loading:false, err : "internet error" });
+    console.error('There was an error!', error);
+  });
+}
+render(){
+  const {theme} = this.props
+  const {users, loading, search, open} = this.state
+    return (
+      <div style={{padding: theme.spacing(3)}}>
+      <div style={{height: '42px',alignItems: 'center',marginTop: theme.spacing(1)}}>
+      <SearchInput
+        value={search}
+        onChange={this.searchChange}
+        style={{marginRight: theme.spacing(1), width:300, float:'left'}}
+        placeholder="Search user"
+      />
+      <UsersToolbar style={{float:'right'}} />
+      </div>
+      <Grid container className='formLabels'>
+        <Grid item style={{paddingRight:4, paddingTop:12}}>
+            <Link to ="/halal_categories">
+              <Button color="primary" variant="contained" 
+              // onClick={()=> handleOpen(user.id)}
+              > Caterogies</Button>
+            </Link>
+        </Grid>
+        <Grid item style={{paddingRight:4, paddingTop:12}}>
+           <Link to ="/halal_investment">
+              <Button color="primary" variant="contained" 
+              // onClick={()=> handleOpen(user.id)}
+              > Investment</Button>
+            </Link>
+        </Grid>
+        <Grid item style={{paddingRight:4, paddingTop:12}}>
+           <Link to ="/halal_news">
+              <Button color="primary" variant="contained" 
+              // onClick={()=> handleOpen(user.id)}
+              > News</Button>
+            </Link>
+        </Grid>
+      </Grid>
+      <div style={{marginTop: theme.spacing(2)}}>
+        <UsersTable users={users} loading={loading} />
+      </div>
+    </div>
+  );
+  };
+}
+  
+function mapState(state) {
+  const { savings } = state.savings;
+  return { savings };
+}
+// export default withStyles({}, { withTheme: true })(Dashboard1);
+const actionCreators = {
+  saveWallet: adminActions.saveWallet,
+  logout: adminActions.logout,
+};
+
+export default withStyles({}, { withTheme: true })(
+  withRouter(connect(mapState,  actionCreators)(Investment))
+);

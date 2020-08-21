@@ -12,6 +12,7 @@ import {
   FormControlLabel,
   Checkbox,
   Typography,
+  TextField,
   Button
 } from '@material-ui/core';
 
@@ -44,7 +45,7 @@ const Notifications = props => {
             container
             spacing={6}
             wrap="wrap"
-          >
+          >          
             <Grid
               className={classes.item}
               item
@@ -90,6 +91,7 @@ const Notifications = props => {
                 label="Phone calls"
               />
             </Grid>
+           
             <Grid
               className={classes.item}
               item

@@ -4,10 +4,10 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import { Card, CardContent, Grid, Typography, Avatar } from '@material-ui/core';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
-import MoneyIcon from '@material-ui/icons/Money';
-
+import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
 const useStyles = makeStyles(theme => ({
   root: {
+    backgroundColor: theme.palette.default,
     height: '100%'
   },
   content: {
@@ -15,16 +15,18 @@ const useStyles = makeStyles(theme => ({
     display: 'flex'
   },
   title: {
-    fontWeight: 700
+    fontWeight: 700,
+    fontSize:15,
+    // color: '#fff'
   },
   avatar: {
-    backgroundColor: theme.palette.error.main,
-    height: 56,
-    width: 56
+    backgroundColor:"#4fa647",
+    height: 58,
+    width: 58
   },
   icon: {
-    height: 32,
-    width: 32
+    height: 34,
+    width: 34
   },
   difference: {
     marginTop: theme.spacing(2),
@@ -41,7 +43,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Budget = props => {
-  const { className, ...rest } = props;
+  const { className, loading, count_users, ...rest } = props;
 
   const classes = useStyles();
 
@@ -49,12 +51,19 @@ const Budget = props => {
     <Card
       {...rest}
       className={clsx(classes.root, className)}
+      // style={{backgroundColor:"#4fa647"}} 
+      elevation={6}
     >
       <CardContent>
         <Grid
           container
-          justify="space-between"
+          // justify="space-between"
         >
+          <Grid item>
+            <Avatar className={classes.avatar}>
+              <SupervisorAccountIcon className={classes.icon} />
+            </Avatar>
+          </Grid>
           <Grid item>
             <Typography
               className={classes.title}
@@ -62,17 +71,19 @@ const Budget = props => {
               gutterBottom
               variant="body2"
             >
-              BUDGET
+              Total Active Users 
             </Typography>
-            <Typography variant="h3">$24,000</Typography>
+            <Typography variant="h2" 
+            // style={{color:'#fff'}}
+            >{count_users}</Typography>
           </Grid>
-          <Grid item>
+          {/* <Grid item>
             <Avatar className={classes.avatar}>
-              <MoneyIcon className={classes.icon} />
+              <SupervisorAccountIcon className={classes.icon} />
             </Avatar>
-          </Grid>
+          </Grid> */}
         </Grid>
-        <div className={classes.difference}>
+        {/* <div className={classes.difference}>
           <ArrowDownwardIcon className={classes.differenceIcon} />
           <Typography
             className={classes.differenceValue}
@@ -87,6 +98,7 @@ const Budget = props => {
             Since last month
           </Typography>
         </div>
+      */}
       </CardContent>
     </Card>
   );

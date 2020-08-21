@@ -12,19 +12,23 @@ const useStyles = makeStyles(theme => ({
   item: {
     display: 'flex',
     paddingTop: 0,
-    paddingBottom: 0
+    paddingBottom: 0,
+    color:'#fff'
   },
   button: {
-    color: colors.blueGrey[800],
-    padding: '10px 8px',
+    // color: colors.blueGrey[800],
+    color:'#fff',
+    padding: '12px 10px',
     justifyContent: 'flex-start',
     textTransform: 'none',
     letterSpacing: 0,
     width: '100%',
+    fontSize:16,
     fontWeight: theme.typography.fontWeightMedium
   },
   icon: {
-    color: theme.palette.icon,
+    // color: theme.palette.icon,
+    color:'#fff',
     width: 24,
     height: 24,
     display: 'flex',
@@ -32,10 +36,12 @@ const useStyles = makeStyles(theme => ({
     marginRight: theme.spacing(1)
   },
   active: {
-    color: theme.palette.primary.main,
+    color: "#000",
+    background: "#ffdf4d",
     fontWeight: theme.typography.fontWeightMedium,
     '& $icon': {
-      color: theme.palette.primary.main
+      color: "#000"
+      
     }
   }
 }));
@@ -70,6 +76,7 @@ const SidebarNav = props => {
             className={classes.button}
             component={CustomRouterLink}
             to={page.href}
+            // style={{color:'#fff'}}
           >
             <div className={classes.icon}>{page.icon}</div>
             {page.title}
