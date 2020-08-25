@@ -21,13 +21,14 @@ const useStyles = makeStyles(theme => ({
     // color:'#fff'
   },
   avatar: {
-    backgroundColor:"#8af280",
+    backgroundColor: theme.palette.default,
+    backgroundColor:"#22591d",
     height: 58,
     width: 58
   },
   icon: {
-    height: 42,
-    width: 42
+    height: 34,
+    width: 34
   },
   difference: {
     marginTop: theme.spacing(2),
@@ -43,7 +44,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const WalletBalance = props => {
+const Savings = props => {
   const { className,wallet_balance, ...rest } = props;
 
   const classes = useStyles();
@@ -52,13 +53,13 @@ const WalletBalance = props => {
     <Card
       {...rest}
       className={clsx(classes.root, className)}
-      // style={{backgroundColor:"#8af280"}} 
-      elevation={6}
+      // style={{backgroundColor:"#22591d"}}
+       elevation={6}
     >
       <CardContent>
         <Grid
           container
-          justify="space-between"
+          // justify="space-between"
         >
           <Grid item>
             <Avatar className={classes.avatar}>
@@ -81,29 +82,14 @@ const WalletBalance = props => {
           </Grid>
           
         </Grid>
-        {/* <div className={classes.difference}>
-          <ArrowDownwardIcon className={classes.differenceIcon} />
-          <Typography
-            className={classes.differenceValue}
-            variant="body2"
-          >
-            12%
-          </Typography>
-          <Typography
-            className={classes.caption}
-            variant="caption"
-          >
-            Since last month
-          </Typography>
-        </div>
-      */}
+        
       </CardContent>
     </Card>
   );
 };
 
-WalletBalance.propTypes = {
+Savings.propTypes = {
   className: PropTypes.string
 };
 
-export default WalletBalance;
+export default Savings;

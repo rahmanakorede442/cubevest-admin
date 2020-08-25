@@ -1,3 +1,3 @@
 export { default as TransactionTable } from './TransactionTable';
-export { default as UsersTable } from './UsersTable';
+export { default as UsersTable } from './AdminTable';
 

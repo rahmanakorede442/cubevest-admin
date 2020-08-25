@@ -79,7 +79,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const UsersTable = props => {
-  const { className, loading, users, ...rest} = props;
+  const { className, loading, users,  investments, ...rest} = props;
   const {savings} = props;
 
   const classes = useStyles();
@@ -142,10 +142,10 @@ const UsersTable = props => {
   const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
  });
- const [name,setName] = useState("");
+ const [name, setName] = useState("");
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [details, setDetails] = useState();
+  const [details, setDetails] = useState([]);
   const handleOpen = (id) => {
     setIsLoading(true)
     setOpen(true);
@@ -154,17 +154,16 @@ const UsersTable = props => {
       method: 'GET',
       headers: { ...authHeader(), 'Content-Type': 'application/json' },
     };
-    fetch(getConfig('showSingleCategory') + id + `?token=`+user.token, requestOptions)
+    fetch(getConfig('getSingleAdmin') + id + `?token=`+user.token, requestOptions)
     .then(async response => {
     const data = await response.json();
     if (!response.ok) {
         const error = (data && data.message) || response.statusText;
         return Promise.reject(error);
-    }
-    console.log(data)
-    setDetails(data[0])
-    setIsLoading(false)
-    setName(data[0].category_name)
+    }    console.log(data)
+    setDetails(data)
+    setName(data)
+    setIsLoading(false)    
     })
     .catch(error => {
     if (error === "Unauthorized") {
@@ -175,11 +174,6 @@ const UsersTable = props => {
   });
 };
 
-// const handleDelete = (id) => {
-//   // alert(id)
-//   props.admindeleteCategory(id);
-//   // this.setState({exit:"Loading..."})
-// }
 const handleDelete = (id) => {
 swal({
   title: "Are you sure?",
@@ -190,7 +184,7 @@ swal({
 })
 .then((willDelete) => {
   if (willDelete) {
-    props.admindeleteCategory(id);
+    props.admindeleteMarketNews(id);
     swal("Loading...",{   
       buttons:false
     });
@@ -200,8 +194,10 @@ swal({
   
 const handleSubmitEdit = (event) => {
   event.preventDefault();
-  if (details.category_name) {
-    props.submit(details);
+  if (details.name && details.email) {
+    console.log(details)
+    props.updateAdmin(details);
+    // props.submit(details);
     }
 }
 
@@ -210,8 +206,17 @@ const handleSubmitEdit = (event) => {
   };
  const handleChangeEdit = (e) => {
   e.persist();
-   setDetails(details=>({ ...details, [e.target.name]:e.target.value}))
+  setDetails(details=>({ ...details, [e.target.name]:e.target.value}))
  }
+
+ const handleChange = event => {
+  // use spread operator
+  setDetails({
+    ...details,
+    [event.target.name]: event.target.value,
+  });
+};
+
 
   return (
     <Card
@@ -227,62 +232,75 @@ const handleSubmitEdit = (event) => {
         fullWidth={true}
         maxWidth = {'xs'}
         keepMounted
+        // value=""
         onClose={handleClose}
         aria-labelledby="alert-dialog-slide-title"
         aria-describedby="alert-dialog-slide-description"
       >
-        <DialogTitle bold id="alert-dialog-slide-title">Category</DialogTitle>  
+        <DialogTitle bold id="alert-dialog-slide-title">Add Admin</DialogTitle>  
         <Divider />     
         <DialogContent>
           {/* <DialogContentText id="alert-dialog-slide-description" > */}
-          <CardContent className={classes.content}>
+          <CardContent className="content">
           {isLoading? <Typography>Loading...</Typography>:
-          <form autoComplete="off" noValidate  
-          onSubmit={handleSubmitEdit} 
-          >
+            <form  noValidate autoComplete="off" onSubmit={handleSubmitEdit}>
+            <Grid>
               <Grid>
-                <Typography>
-                    Category Name
-                </Typography>
+                  <TextField
+                    fullWidth
+                    label="Admin Name"
+                    placeholder="Admin Name"
+                    margin="dense"
+                    name="name"
+                    onChange={handleChange}
+                    value={details.name}
+                    variant="outlined"
+                  />
+                </Grid> 
+                <Grid>
+                  <TextField
+                    fullWidth
+                    label="Email"
+                    placeholder="Email"
+                    margin="dense"
+                    name="email"
+                    onChange={handleChange}
+                    value={details.email}
+                    variant="outlined"
+                  />
+                </Grid> 
               </Grid>
-              <Grid>
-                <TextField
-                fullWidth
-                // label="Category Name"
-                placeholder="Category Name"
-                margin="dense"
-                name="category_name"
-                onChange={handleChangeEdit}
-                required
-                value={details.category_name}
-                variant="outlined"
-              />
-            </Grid>  
             
-              <Grid item md={10} xs={10}>
+            </form>
+        }
+            </CardContent>              
+          {/* </DialogContentText> */}
+          <Divider /> 
+        <DialogActions>
+        <Grid item md={10} xs={10}>
                 {savings &&
                     <div className="loader">   
                         <img img alt=""  src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
                     </div>
                 }
-              <Button color="primary" onClick={handleSubmitEdit} variant="contained" >
-                Update 
-              </Button>
-            {/* </Grid> */}
-            {/* <Grid> */}
-              <Button onClick={handleClose} variant="contained" 
-              style={{marginLeft:10, color:'white', backgroundColor:'red'}}>
-               Cancel
+                <Button
+                type="submit"
+                  variant="contained"
+                  color="primary"
+                  style={{marginLeft:8}}
+                  onClick={handleSubmitEdit}
+                >
+                  Submite
+                </Button>
+                </Grid> 
+              <Button onClick={handleClose} 
+                      variant="contained"
+                      style={{color:'white', marginRight:8, backgroundColor:'red'}}
+              >
+            Cancel
           </Button>
-          </Grid>
-        {/* </DialogActions> */}
-
-          </form>}
-            </CardContent>        
-            <Divider /> 
-          <DialogActions> 
-          </DialogActions>      
-          {/* </DialogContentText> */}        
+        </DialogActions>
+       
         </DialogContent>
       </Dialog>
       
@@ -291,11 +309,11 @@ const handleSubmitEdit = (event) => {
       <CardContent className={classes.content}>
         <PerfectScrollbar>
           <div className={classes.inner}>
-            <Table>
+          <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>Category Name</TableCell>
-                  <TableCell>Entry Date</TableCell>
+                  <TableCell>Admin Name</TableCell>
+                  <TableCell>Email</TableCell>
                   <TableCell>Entered By</TableCell>
                   <TableCell>Action</TableCell>
                 </TableRow>
@@ -319,19 +337,23 @@ const handleSubmitEdit = (event) => {
                     key={user.id}
                     selected={selectedUsers.indexOf(user.id) !== -1}
                   >
-                    <TableCell>{user.category_name}</TableCell>
+                    <TableCell>{user.name}</TableCell>
+                    <TableCell>{user.email}</TableCell>
                     <TableCell>
-                      {moment(user.created_at).format('DD/MM/YYYY')}
+                      {moment(user.entery_date).format('DD/MM/YYYY')}
                     </TableCell>                    
-                    <TableCell>{user.enter_by}</TableCell>
+                    
                     <TableCell>
                       <Grid style={{display:'flex'}}>
                         <Button color="primary" variant="contained" 
                         onClick={()=> handleOpen(user.id)}
                         > Edit</Button>
+                        <Button style={{marginLeft:10, background:'green', color:'#fff'}} variant="contained" 
+                          onClick={()=> handleOpen(user.id)}
+                        > Enable</Button>
                           <Button color="denger" style={{marginLeft:10, background:'red', color:'#fff'}} variant="contained" 
                           onClick={()=> handleDelete(user.id)}
-                          > Delete</Button>
+                          > Disable</Button>
                         </Grid>
                       
                     </TableCell>
@@ -373,8 +395,8 @@ function mapState(state) {
 
 const actionCreators = {
   logout: adminActions.logout,
-  adminUpdateMarketCategory: adminActions.adminUpdateMarketCategory,
-  admindeleteCategory: adminActions.admindeleteCategory,
+  updateAdmin: adminActions.updateAdmin,
+  admindeleteMarketNews: adminActions.admindeleteMarketNews,
 };
 // export default UsersTable;
 

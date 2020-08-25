@@ -130,6 +130,11 @@ const Sidebar = props => {
       icon: <AssignmentIcon />
     },
     {
+      title: 'Activity Log',
+      href: '/#',
+      icon: <AssignmentIcon />
+    },
+    {
       title: 'Settings',
       href: '/settings',
       icon: <SettingsIcon />

@@ -16,6 +16,7 @@ export const adminActions = {
   adminAddMarket,
   adminUpdateMarketCategory,
   adminUpdateMarketNews,
+  updateAdmin,
   modifyTargetCommission,
   adminUpdateHalalNews,
   regularSavingsTransactionsAdmin,
@@ -31,6 +32,7 @@ export const adminActions = {
   adminAddHalalCategory,
   adminAddHalal,
   adminAddHalalNews,
+  addAdmin,
   adminAddMarketNews,
   addTargetCommission
   };
@@ -184,6 +186,37 @@ function adminAddMarketNews(user) {
   }
 }
 
+function addAdmin(user) {
+  return (dispatch) => {
+    dispatch(request(user));
+
+    adminService.addAdmin(user).then(
+      (user) => {
+        dispatch(success());
+        history.push("/admin");
+        dispatch(
+          alertActions.success(user.message)
+        );
+        window.location.reload();
+      },
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.error(error));
+      }
+    );
+  };
+
+  function request(user) {
+    return { type: userConstants.SAVINGS_REQUEST, user };
+  }
+  function success(user) {
+    return { type: userConstants.SAVINGS_SUCCESS, user };
+  }
+  function failure(error) {
+    return { type: userConstants.SAVINGS_FAILURE, error };
+  }
+}
+
 function adminAddHalalNews(user) {
   return (dispatch) => {
     dispatch(request(user));
@@ -287,6 +320,38 @@ function adminUpdateMarketNews(user) {
       (user) => {
         dispatch(success());
         history.push("/market_news");
+        dispatch(
+          alertActions.success(user.message)
+        );
+        window.location.reload();
+      },
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.error(error));
+      }
+    );
+  };
+
+  function request(user) {
+    return { type: userConstants.SAVINGS_REQUEST, user };
+  }
+  function success(user) {
+    return { type: userConstants.SAVINGS_SUCCESS, user };
+  }
+  function failure(error) {
+    return { type: userConstants.SAVINGS_FAILURE, error };
+  }
+}
+
+function updateAdmin(user) {
+  console.log(user)
+  return (dispatch) => {
+    dispatch(request(user));
+
+    adminService.updateAdmin(user).then(
+      (user) => {
+        dispatch(success());
+        history.push("/admin");
         dispatch(
           alertActions.success(user.message)
         );

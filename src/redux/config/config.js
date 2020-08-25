@@ -12,7 +12,7 @@ const serverVars = {
   enableUsers: "api/enableUsers/",
   getAllUsers: "api/getAllUsers?token=",
   getAllDashboard: "api/getAllDashboard?token=",
-
+  getAdminShow:  "api/admin/adminShow?token=",
   // all regular savings
   getAllTargetSavings:"api/allTargetsAdmin?token=",
   adminShowAllCommission:"api/adminShowAllCommission?token=",
@@ -61,7 +61,10 @@ const serverVars = {
   getMarketCategoryName:  "api/showMarketCategoryAdmin?token=",
   // getMarketCategoryName: "api/showMarketCategories?token=",
   addMarketNews: "api/save_news/store?token=",
+  addAdmin: "api/admin/addAdmin?token=",
+  getSingleAdmin: "api/admin/fetchSingleAdmin/",
   updateMarketNews: "api/save_news/update/", //id needed
+  updateAdmin: "api/admin/updateAdmin/", //id needed
   getMarketNews: "api/show_market_news?token=",
   getMarketNewsType: "api/showMarketType?token=",
   modifyTargetCommission:'api/modifyTargetCommission/',
@@ -130,6 +133,8 @@ export function getConfig(apiName) {
       return serverVars.baseUrl + serverVars.targetTransactionsAdmin;
     case "getAllUsers":
       return serverVars.baseUrl + serverVars.getAllUsers;
+    case "getAdminShow":
+      return serverVars.baseUrl + serverVars.getAdminShow;
     case "getAllDashboard":
       return serverVars.baseUrl + serverVars.getAllDashboard;
     // Halal api
@@ -201,16 +206,24 @@ export function getConfig(apiName) {
       return serverVars.baseUrl + serverVars.getMarketCategoryName +user.token;
     case "addMarketNews":
       return serverVars.baseUrl + serverVars.addMarketNews +user.token;
+    case "addAdmin":
+      return serverVars.baseUrl + serverVars.addAdmin +user.token;
     case "addTargetCommission":
       return serverVars.baseUrl + serverVars.addTargetCommission +user.token;
     case "updateMarketNews":
       return serverVars.baseUrl + serverVars.updateMarketNews;
+    case "updateAdmin":
+      return serverVars.baseUrl + serverVars.updateAdmin;
     case "modifyTargetCommission":
       return serverVars.baseUrl + serverVars.modifyTargetCommission;
     case "getMarketNews":
       return serverVars.baseUrl + serverVars.getMarketNews +user.token;
     case "getMarketNewsType":
       return serverVars.baseUrl + serverVars.getMarketNewsType +user.token;
+    case "getSingleAdmin":
+      return serverVars.baseUrl + serverVars.getSingleAdmin;
+    // case "getSingleAdmin":
+    //   return serverVars.baseUrl + serverVars.getSingleAdmin +user.token;
     case "singleTargetCommission":
       return serverVars.baseUrl + serverVars.singleTargetCommission;
     case "getLoansForApproval":

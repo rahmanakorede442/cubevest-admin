@@ -14,6 +14,7 @@ export const adminService = {
   adminAddMarket,
   adminUpdateMarketCategory,
   adminUpdateMarketNews,
+  updateAdmin,
   modifyTargetCommission,
   adminUpdateHalalNews,
   regularSavingsTransactionsAdmin,
@@ -28,6 +29,7 @@ export const adminService = {
   adminAddMarketCategory,
   adminAddHalalNews,
   adminAddMarketNews,
+  addAdmin,
   adminAddHalalCategory,
   addTargetCommission,
   update,
@@ -94,6 +96,18 @@ function adminUpdateMarketNews(data) {
     body: JSON.stringify(data),
   };
   return fetch(getConfig("updateMarketNews")+data.id+"?token="+user.token, requestOptions).then(
+    handleResponse
+  );
+}
+
+function updateAdmin(data) {
+  let user = JSON.parse(localStorage.getItem('admin'));
+  const requestOptions = {
+    method: "POST",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  };
+  return fetch(getConfig("updateAdmin")+data.id+"?token="+user.token, requestOptions).then(
     handleResponse
   );
 }
@@ -261,6 +275,17 @@ function adminAddMarketNews(data) {
     body: JSON.stringify(data),
   };
   return fetch(getConfig("addMarketNews"), requestOptions).then(
+    handleResponse
+  );
+}
+
+function addAdmin(data) {
+  const requestOptions = {
+    method: "POST",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  };
+  return fetch(getConfig("addAdmin"), requestOptions).then(
     handleResponse
   );
 }

@@ -96,7 +96,8 @@ render(){
           xl={3}
           xs={12}
         >
-          <Regular savings_balance={numberFormat(savings_balance)}/>
+          <TotalInvestment halal_balance={halal_balance}/>
+          
         </Grid>
         <Grid
           item
@@ -105,7 +106,17 @@ render(){
           xl={3}
           xs={12}
         >
-          <Savings save_loans={numberFormat(save_loans)}/>
+          <TotalUsers market_balance={market_balance}/>
+          
+        </Grid>
+        <Grid
+          item
+          lg={3}
+          sm={4}
+          xl={3}
+          xs={12}
+        >
+        <Regular savings_balance={numberFormat(savings_balance)}/>          
         </Grid>
         <Grid
           item
@@ -118,21 +129,12 @@ render(){
         </Grid>
         <Grid
           item
-          lg={3}
-          sm={4}
-          xl={3}
-          xs={12}
-        >
-          <WalletBalance wallet_balance={numberFormat(wallet_balance)}/>
-        </Grid>
-        <Grid
-          item
           lg={4}
           sm={4}
           xl={3}
           xs={12}
         >
-          <TotalUsers market_balance={numberFormat(market_balance)}/>
+          <Savings save_loans={numberFormat(save_loans)}/>
         </Grid>
         <Grid
           item
@@ -141,7 +143,7 @@ render(){
           xl={3}
           xs={12}
         >
-          <TotalInvestment halal_balance={numberFormat(halal_balance)}/>
+          <WalletBalance wallet_balance={numberFormat(wallet_balance)}/>
         </Grid>
         {/* //  <Grid
         //   item
