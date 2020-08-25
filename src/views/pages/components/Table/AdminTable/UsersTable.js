@@ -163,7 +163,8 @@ const UsersTable = props => {
     }    console.log(data)
     setDetails(data)
     setName(data)
-    setIsLoading(false)    
+    setIsLoading(false) 
+    setName(data[0].name && data[1].email)   
     })
     .catch(error => {
     if (error === "Unauthorized") {
@@ -184,7 +185,7 @@ swal({
 })
 .then((willDelete) => {
   if (willDelete) {
-    props.admindeleteMarketNews(id);
+    // props.admindeleteMarketNews(id);
     swal("Loading...",{   
       buttons:false
     });
@@ -197,7 +198,6 @@ const handleSubmitEdit = (event) => {
   if (details.name && details.email) {
     console.log(details)
     props.updateAdmin(details);
-    // props.submit(details);
     }
 }
 
@@ -314,6 +314,7 @@ const handleSubmitEdit = (event) => {
                 <TableRow>
                   <TableCell>Admin Name</TableCell>
                   <TableCell>Email</TableCell>
+                  <TableCell>Status</TableCell>
                   <TableCell>Entered By</TableCell>
                   <TableCell>Action</TableCell>
                 </TableRow>
@@ -339,6 +340,10 @@ const handleSubmitEdit = (event) => {
                   >
                     <TableCell>{user.name}</TableCell>
                     <TableCell>{user.email}</TableCell>
+                    <TableCell>{user.status==0?<span style={{color:'red',fontWeight:'bold'}}>Unactive</span>:
+                                user.status==1?<span style={{color:'green',fontWeight:'bold'}}>Active</span>:
+                                <span style={{color:'red',fontWeight:'bold'}}>Unactive</span>}                      
+                    </TableCell>
                     <TableCell>
                       {moment(user.entery_date).format('DD/MM/YYYY')}
                     </TableCell>                    
