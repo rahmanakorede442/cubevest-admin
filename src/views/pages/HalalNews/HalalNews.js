@@ -4,8 +4,8 @@ import { withRouter } from "react-router-dom";
 import { adminActions } from "../../../redux/action";
 import { connect } from "react-redux";
 import { withStyles } from "@material-ui/styles";
-import { getConfig, checkToken, numberFormat } from '../../../redux/config/config'
-import { authHeader, history } from '../../../redux/logic';
+import { getConfig } from '../../../redux/config/config'
+import { authHeader } from '../../../redux/logic';
 import { SearchInput } from 'components';
 
 import { userConstants } from 'redux/_constants';
@@ -123,7 +123,6 @@ handleClose= () =>{
               [name]: value
           }
       });
-  
 }
 
 handleSubmit(event) {
@@ -167,17 +166,13 @@ render(){
           style={{marginRight: theme.spacing(1), width:300, float:'left'}}
           placeholder="Search user"
         />
-         
-       <div style={{float:'right'}}>
-          {/* Modal */}
-          
-       < Dialog
+      <div style={{float:'right'}}>
+      {/* Modal */}
+      < Dialog
         open={open}
-        // TransitionComponent={Transition}
         fullWidth={true}
         maxWidth = {'xs'}
         keepMounted
-        // value=""
         onClose={this.handleClose}
         aria-labelledby="alert-dialog-slide-title"
         aria-describedby="alert-dialog-slide-description"
@@ -185,7 +180,6 @@ render(){
         <DialogTitle bold id="alert-dialog-slide-title">Add New Category</DialogTitle>  
         <Divider />     
         <DialogContent>
-          {/* <DialogContentText id="alert-dialog-slide-description" > */}
           <CardContent className="content">
             <form  noValidate autoComplete="off" onSubmit={this.handleSubmit}>
               <Grid >
@@ -196,7 +190,6 @@ render(){
                         select
                         variant="outlined"
                         value={data.halai_investment} 
-                        // onChange={(e) => this.setState({halai_investment: e.target.value})}
                         onChange={this.handleChange}
                         SelectProps={{
                           native: true,
@@ -205,8 +198,8 @@ render(){
                         name="halai_investment"                       
                       >
                         {this.state.investments.map((option) => (
-                          <option key={option.halai_investment} 
-                          value={option.halai_investment}>
+                          <option key={option.id} 
+                          value={option.investment_type}>
                             {option.investment_type}
                           </option>
                         ))}
@@ -258,11 +251,9 @@ render(){
         </DialogActions>
         </DialogContent>
       </Dialog>
-      
       {/* Modal */}
-      <div className="row">
+      {/* <div className="row">
         <span className="spacer" />
-        {/* <Button className="exportButton">Export</Button> */}
         <Button
           color="primary"
           variant="contained"
@@ -270,16 +261,13 @@ render(){
         >
           Add Categories
         </Button>
-      </div>
+      </div> */}
        </div>
        
        </div>
         <div style={{marginTop: theme.spacing(2)}}>
           <HalalUsersTable users={users} loading={loading} investments={investments} />
         </div>
-        {/* <div style={{marginTop: theme.spacing(2)}}>
-          <CategoryTable users={users} />
-        </div> */}
       </div>
     );
   };

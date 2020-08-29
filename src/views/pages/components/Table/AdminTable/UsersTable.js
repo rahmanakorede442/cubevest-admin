@@ -175,23 +175,29 @@ const UsersTable = props => {
   });
 };
 
-const handleDelete = (id) => {
-swal({
-  title: "Are you sure?",
-  text: "Once deleted, you will not be able to recover this file!",
-  icon: "warning",
-  buttons: true,
-  dangerMode: true,
-})
-.then((willDelete) => {
-  if (willDelete) {
-    // props.admindeleteMarketNews(id);
+
+const handleEnable = (id, status) => {
+  let msg = status == 1 ? "disable":"enable";
+  swal({
+    title: "Are you sure you want to "+ msg,
+    // text: "Once deleted, you will not be able to recover this file!",
+    icon: "warning",
+    buttons: true,
+    dangerMode: true,
+  })
+  .then((willDelete) => {
+    if (willDelete) {
+      if(status == 1){
+        props.disableAdmin(id);
+      }else{
+        props.enableAdmin(id); 
+      }
     swal("Loading...",{   
-      buttons:false
-    });
+        buttons:false
+      });
+    }
+  });
   }
-});
-}
   
 const handleSubmitEdit = (event) => {
   event.preventDefault();
@@ -290,7 +296,7 @@ const handleSubmitEdit = (event) => {
                   style={{marginLeft:8}}
                   onClick={handleSubmitEdit}
                 >
-                  Submite
+                  Submit
                 </Button>
                 </Grid> 
               <Button onClick={handleClose} 
@@ -353,12 +359,9 @@ const handleSubmitEdit = (event) => {
                         <Button color="primary" variant="contained" 
                         onClick={()=> handleOpen(user.id)}
                         > Edit</Button>
-                        <Button style={{marginLeft:10, background:'green', color:'#fff'}} variant="contained" 
-                          onClick={()=> handleOpen(user.id)}
-                        > Enable</Button>
-                          <Button color="denger" style={{marginLeft:10, background:'red', color:'#fff'}} variant="contained" 
-                          onClick={()=> handleDelete(user.id)}
-                          > Disable</Button>
+                        <Button style={{marginLeft:10, background: user.status == 1? 'red':'green', color:'#fff'}} variant="contained" 
+                          onClick={()=> handleEnable(user.id, user.status)}
+                        > {user.status == 1? "Disable" : "Enable"}</Button>
                         </Grid>
                       
                     </TableCell>
@@ -401,10 +404,9 @@ function mapState(state) {
 const actionCreators = {
   logout: adminActions.logout,
   updateAdmin: adminActions.updateAdmin,
-  admindeleteMarketNews: adminActions.admindeleteMarketNews,
+  disableAdmin: adminActions.disableAdmin,
+  enableAdmin: adminActions.enableAdmin,
 };
-// export default UsersTable;
-
 export default withStyles({}, { withTheme: true })(
   withRouter(connect(mapState,actionCreators)(UsersTable))
 );

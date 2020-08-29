@@ -83,40 +83,6 @@ const UsersTable = props => {
   const [rowsPerPages, setRowsPerPages] = useState(10);
   const [pages, setPages] = useState(0);
 
-  const handleSelectAll = event => {
-    const { users } = props;
-
-    let selectedUsers;
-
-    if (event.target.checked) {
-      selectedUsers = users.map(user => user.id);
-    } else {
-      selectedUsers = [];
-    }
-
-    setSelectedUsers(selectedUsers);
-  };
-
-  const handleSelectOne = (event, id) => {
-    const selectedIndex = selectedUsers.indexOf(id);
-    let newSelectedUsers = [];
-
-    if (selectedIndex === -1) {
-      newSelectedUsers = newSelectedUsers.concat(selectedUsers, id);
-    } else if (selectedIndex === 0) {
-      newSelectedUsers = newSelectedUsers.concat(selectedUsers.slice(1));
-    } else if (selectedIndex === selectedUsers.length - 1) {
-      newSelectedUsers = newSelectedUsers.concat(selectedUsers.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelectedUsers = newSelectedUsers.concat(
-        selectedUsers.slice(0, selectedIndex),
-        selectedUsers.slice(selectedIndex + 1)
-      );
-    }
-
-    setSelectedUsers(newSelectedUsers);
-  };
-
   const handlePageChange = (event, page) => {
     setPage(page);
   };
@@ -124,16 +90,7 @@ const UsersTable = props => {
   const handleRowsPerPageChange = event => {
     setRowsPerPage(event.target.value);
   };
-  const handleModalPageChange = (event, pages) => {
-    setPages(pages);
-  };
 
-  const handleModalRowsPerPageChange = event => {
-    setRowsPerPages(event.target.value);
-  };
-  const Transition = React.forwardRef(function Transition(props, ref) {
-    return <Slide direction="up" ref={ref} {...props} />;
- });
   const [open, setOpen] = React.useState(false);
  
   const handleOpen = (id) => {
@@ -154,17 +111,6 @@ const UsersTable = props => {
             <Table>
               <TableHead>
                 <TableRow>
-                  {/* <TableCell padding="checkbox">
-                    <Checkbox
-                      checked={selectedUsers.length === users.length}
-                      color="primary"
-                      indeterminate={
-                        selectedUsers.length > 0 &&
-                        selectedUsers.length < users.length
-                      }
-                      onChange={handleSelectAll}
-                    />
-                  </TableCell> */}
                   <TableCell>Name</TableCell>
                   <TableCell>Amount</TableCell>
                   <TableCell>Frequency</TableCell>
@@ -173,8 +119,6 @@ const UsersTable = props => {
                   <TableCell>Action</TableCell>
                 </TableRow>
               </TableHead>
-              <TableCell></TableCell>
-              <TableCell></TableCell>
               {loading?
                 <div style={{marginTop:15, textAlign:"center", alignItems:"center", flexDirection:"column", justifyItems:"center"}}>
                     <img
@@ -190,17 +134,7 @@ const UsersTable = props => {
                 <TableRow
                   className={classes.tableRow}
                   hover
-                  key={user.id}
-                  selected={selectedUsers.indexOf(user.id) !== -1}
-                >
-                  {/* <TableCell padding="checkbox">
-                    <Checkbox
-                      checked={selectedUsers.indexOf(user.id) !== -1}
-                      color="primary"
-                      onChange={event => handleSelectOne(event, user.id)}
-                      value="true"
-                    />
-                  </TableCell> */}
+                  key={user.id}>
                   <TableCell>
                     <div className={classes.nameContainer}>
                       <Avatar
@@ -216,20 +150,16 @@ const UsersTable = props => {
                   <TableCell>{user.frequency}</TableCell>
                   <TableCell>{user.payment_method}</TableCell>
                   <TableCell>
-                    {moment(user.created_at).format('DD/MM/YYYY')}
+                    {moment(user.start_date).format('DD/MM/YYYY')}
                   </TableCell>
                   <TableCell>
-                    <Link to ={`/savetoloan_details/${user.id}`}>
-                      <Button color="primary" variant="contained" 
-                        // onClick={()=> handleOpen(user.id)}
-                      > Details</Button>
+                    <Link to ={props.link =="regular"?`/regulardetails/${user.user_id}`:props.link =="target"?`/target_details/${user.id}`:`/savetoloan_details/${user.user_id}`}>
+                      <Button color="primary" variant="contained" > Details</Button>
                     </Link>
                   </TableCell>
                 </TableRow>
               )):
               <TableRow>
-              <TableCell></TableCell>
-              <TableCell></TableCell>
               <TableCell style={{textAlign:"center"}}>
                   No Record Found
                 </TableCell>                

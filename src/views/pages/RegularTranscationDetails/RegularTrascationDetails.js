@@ -7,9 +7,7 @@ import { withStyles } from "@material-ui/styles";
 import { getConfig, checkToken, numberFormat } from '../../../redux/config/config'
 import { authHeader, history } from '../../../redux/logic';
 import { SearchInput } from 'components';
-import { Grid, Card, Button, Typography, TextField,
-        CardContent, DialogTitle, DialogContent,
-         DialogActions, Divider, Dialog, CardActions } from '@material-ui/core';
+import { Grid, Card, Button, } from '@material-ui/core';
 import {Link } from "react-router-dom";
 
 import { UsersToolbar, UsersTable } from '../components/TranscationTable';
@@ -47,7 +45,7 @@ class RegularTranscationDetails extends Component {
 
   fetchUsers = () =>{
     const {data} = this.state
-    console.log(data)
+    this.setState({loading:false });
     let user = JSON.parse(localStorage.getItem('admin'));
     const requestOptions = {
         method: 'POST',
@@ -93,7 +91,6 @@ searchChange(event) {
                 [name]: value
             }
         });
-    console.log(data)
 }
 
 handleSubmit(event) {
@@ -109,7 +106,6 @@ render(){
   
     return (
       <div style={{padding: theme.spacing(3)}}>
-        {/* <div style={{height: '42px',display: 'flex',alignItems: 'center',marginTop: theme.spacing(0),marginBottom: theme.spacing(4)}}> */}
         <Grid container lg={12} md={12} sm={12} xs={12}>
         <Grid item lg={12} md={12} sm={12} xs={12}>
         <Grid style={{float:'left'}}>
@@ -126,14 +122,11 @@ render(){
         </Link>
         </Grid>
           </Grid>
-         
-          {/* </div> */}
-          {/* <div style={{marginTop: theme.spacing(2)}}> */}
+        
           <Grid item lg={12} md={12} sm={12} xs={12}>
           <UsersTable users={users} loading={loading}/>
           </Grid>
         </Grid>
-        {/* </div> */}
       </div>
     
     );

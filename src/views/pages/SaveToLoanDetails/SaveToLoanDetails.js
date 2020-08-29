@@ -7,12 +7,10 @@ import { withStyles } from "@material-ui/styles";
 import { getConfig, checkToken, numberFormat } from '../../../redux/config/config'
 import { authHeader, history } from '../../../redux/logic';
 import { SearchInput } from 'components';
-import { Grid, Card, Button, Typography, TextField,
-        CardContent, DialogTitle, DialogContent,
-         DialogActions, Divider, Dialog, CardActions } from '@material-ui/core';
+import { Grid, Button,} from '@material-ui/core';
 import {Link } from "react-router-dom";
 
-import { UsersToolbar, SaveLoanTable } from '../components/TranscationTable';
+import { UsersToolbar, UsersTable } from '../components/TranscationTable';
 import { userConstants } from 'redux/_constants';
 import { users } from 'redux/_reducers/users.reducer';
 
@@ -80,7 +78,6 @@ searchChange(event) {
   this.setState({ search: value, users: value == "" ? all : all.filter((q)=>
   q.from_date.toLowerCase().indexOf(value.toLowerCase())  !== -1 
   || q.to_date.toLowerCase().indexOf(value.toLowerCase())  !== -1 
-  // || q.frequency.toLowerCase().indexOf(value.toLowerCase())  !== -1 
   )});}
 
   handleChange(event) {
@@ -109,7 +106,6 @@ render(){
   
     return (
       <div style={{padding: theme.spacing(3)}}>
-      {/* <div style={{height: '42px',display: 'flex',alignItems: 'center',marginTop: theme.spacing(0),marginBottom: theme.spacing(4)}}> */}
       <Grid container lg={12} md={12} sm={12} xs={12}>
       <Grid item lg={12} md={12} sm={12} xs={12}>
       <Grid style={{float:'left'}}>
@@ -130,7 +126,7 @@ render(){
         {/* </div> */}
         {/* <div style={{marginTop: theme.spacing(2)}}> */}
         <Grid item lg={12} md={12} sm={12} xs={12}>
-        <SaveLoanTable users={users} loading={loading}/>
+        <UsersTable users={users} loading={loading}/>
         </Grid>
       </Grid>
       {/* </div> */}

@@ -4,6 +4,7 @@ import moment from 'moment';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
+import {  numberFormat } from '../../../../redux/config/config';
 import {
   Card,
   CardActions,
@@ -17,12 +18,14 @@ import {
   TableHead,
   TableRow,
   Tooltip,
-  TableSortLabel
+  TableSortLabel,
+  TablePagination
 } from '@material-ui/core';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 
 import mockData from './data';
 import { StatusBullet } from 'components';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -51,11 +54,19 @@ const statusColors = {
 };
 
 const LatestOrders = props => {
-  const { className, ...rest } = props;
+  const { className, users, loading, ...rest } = props;
 
   const classes = useStyles();
-
+  const [page, setPage] = useState(0);
   const [orders] = useState(mockData);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const handlePageChange = (event, page) => {
+    setPage(page);
+  };
+
+  const handleRowsPerPageChange = event => {
+    setRowsPerPage(event.target.value);
+  };
 
   return (
     <Card
@@ -63,23 +74,14 @@ const LatestOrders = props => {
       className={clsx(classes.root, className)}
     >
       <CardHeader
-        action={
-          <Button
-            color="primary"
-            size="small"
-            variant="outlined"
-          >
-            New entry
-          </Button>
-        }
-        title="Latest Orders"
+        title="Latest Transactions"
       />
       <Divider />
       <CardContent className={classes.content}>
         <PerfectScrollbar>
           <div className={classes.inner}>
             <Table>
-              <TableHead>
+              {/* <TableHead>
                 <TableRow>
                   <TableCell>Order Ref</TableCell>
                   <TableCell>Customer</TableCell>
@@ -98,44 +100,78 @@ const LatestOrders = props => {
                   </TableCell>
                   <TableCell>Status</TableCell>
                 </TableRow>
+              </TableHead> */}
+              <TableHead>
+                <TableRow>
+                  <TableCell colSpan={4}>Name</TableCell>
+                  <TableCell colSpan={4}>Amount</TableCell>
+                  <TableCell colSpan={4}>Transaction Type</TableCell>
+                  <TableCell colSpan={4}>Paystack ID</TableCell>
+                  <TableCell colSpan={4}>Payment Method</TableCell>
+                  <TableCell colSpan={4}>Date</TableCell>
+                </TableRow>
               </TableHead>
+              {loading?
+                <div style={{marginTop:15, textAlign:"center", alignItems:"center", flexDirection:"column", justifyItems:"center"}}>
+                    <img
+                        alt=""
+                        className="loader"
+                        src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
+                      />
+                </div>: 
               <TableBody>
-                {orders.map(order => (
-                  <TableRow
+               {users.length != 0 ?
+                users.slice(page * rowsPerPage, page* rowsPerPage + rowsPerPage).map(user => (
+                 <TableRow
+                    className={classes.tableRow}
                     hover
-                    key={order.id}
-                  >
-                    <TableCell>{order.ref}</TableCell>
-                    <TableCell>{order.customer.name}</TableCell>
-                    <TableCell>
-                      {moment(order.createdAt).format('DD/MM/YYYY')}
-                    </TableCell>
-                    <TableCell>
-                      <div className={classes.statusContainer}>
-                        <StatusBullet
-                          className={classes.status}
-                          color={statusColors[order.status]}
-                          size="sm"
-                        />
-                        {order.status}
-                      </div>
+                    key={user.id}
+                  >                    
+                    <TableCell colSpan={4}>{user.first_name + " " + user.last_name}</TableCell>
+                    <TableCell colSpan={4}>{numberFormat(user.amount)}</TableCell>
+                    <TableCell colSpan={4}>{user.transaction_type}</TableCell>
+                    <TableCell colSpan={4}>{user.paystack_id}</TableCell>
+                    <TableCell colSpan={4}>{user.payment_method}</TableCell>
+                    <TableCell colSpan={4}>
+                      {moment(user.entry_date).format('DD/MM/YYYY')}
                     </TableCell>
                   </TableRow>
-                ))}
+                )):
+                <TableRow>
+                <TableCell></TableCell>
+                <TableCell></TableCell>
+                <TableCell style={{textAlign:"center"}}>
+                    No Record Found
+                </TableCell>                
+                </TableRow>
+                }
               </TableBody>
+              }
             </Table>
           </div>
         </PerfectScrollbar>
       </CardContent>
+      <CardActions className={classes.actions}>
+        <TablePagination
+          component="div"
+          count={users.length}
+          onChangePage={handlePageChange}
+          onChangeRowsPerPage={handleRowsPerPageChange}
+          page={page}
+          rowsPerPage={rowsPerPage}
+          rowsPerPageOptions={[5, 10, 25]}
+        />
+      </CardActions>
       <Divider />
       <CardActions className={classes.actions}>
-        <Button
-          color="primary"
-          size="small"
-          variant="text"
-        >
-          View all <ArrowRightIcon />
-        </Button>
+        <Link to="/transactions">
+          <Button
+            color="primary"
+            size="small"
+            variant="text">
+            View all <ArrowRightIcon />
+          </Button>
+        </Link>
       </CardActions>
     </Card>
   );

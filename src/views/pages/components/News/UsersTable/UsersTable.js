@@ -198,7 +198,6 @@ const handleSubmitEdit = (event) => {
   if (details.market_investment, details.news) {
     console.log(details)
     props.adminUpdateMarketNews(details);
-    // props.submit(details);
     }
 }
 
@@ -256,8 +255,8 @@ const handleSubmitEdit = (event) => {
                         helperText="Please select Investment Name"
                       >
                         {investments.map((option) => (
-                          <option key={option.market_investment} 
-                          value={option.market_investment}
+                          <option key={option.id} 
+                          value={option.investment_type}
                           >
                             {option.investment_type}
                           </option>

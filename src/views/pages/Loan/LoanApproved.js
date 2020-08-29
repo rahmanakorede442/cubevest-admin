@@ -1,26 +1,15 @@
 import React, { Component } from "react";
-import { adminActions } from "../../redux/action";
+import { adminActions } from "../../../redux/action";
 import { makeStyles } from '@material-ui/styles';
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { withStyles } from "@material-ui/styles";
-import { getConfig, checkToken, numberFormat } from '../../redux/config/config'
-import { authHeader, history } from '../../redux/logic';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
+import { getConfig } from '../../../redux/config/config'
+import { authHeader, history } from '../../../redux/logic';
 import swal from 'sweetalert';
 import {UsersTable } from './components';
 import {
-  DialogActions,
-  DialogContent,
-  Typography,
-  CardContent,
-  Dialog,
-  DialogTitle,
-  Divider,
   Grid,
-  Button,
-  TextField
 } from '@material-ui/core';
 import { SearchInput } from "components";
 
@@ -31,7 +20,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-class Account extends Component {
+class LoanApproved extends Component {
   constructor(props){
     super(props)
     var currentDate = new Date();
@@ -55,17 +44,15 @@ class Account extends Component {
     this.fetchUsers();
     this.searchChange = this.searchChange.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    // this.handleSubmit = this.handleSubmit.bind(this);
-    // this.handleSubmit = this.handleSubmit.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-  }  
+  }
 
 fetchUsers = () =>{
   const requestOptions = {
       method: 'GET',
       headers: { ...authHeader(), 'Content-Type': 'application/json' },
   };
-  fetch(getConfig('getLoansForApproval'), requestOptions)
+  fetch(getConfig('getAllApprovedLoan'), requestOptions)
   .then(async response => {
   const data = await response.json();
   if (!response.ok) {
@@ -73,10 +60,11 @@ fetchUsers = () =>{
       return Promise.reject(error);
   }
   console.log(data)
-  if (data.success){
+  if (data.success == false){
+    this.setState({users:[], loading:false });
+  }else{
     this.setState({users:data, loading:false });
   }
-  this.setState({users:[], loading:false });
 
 })
 .catch(error => {
@@ -94,7 +82,8 @@ searchChange(event) {
   
   this.setState({ search: value, users: value == "" ? all : all.filter((q)=>
   q.package_name.toLowerCase().indexOf(value.toLowerCase())  !== -1
-   )});}
+   )});
+  }
 
  handleChange(event) {
   const { name, value } = event.target;
@@ -126,7 +115,7 @@ const { data } = this.state;
 
 render(){
   const {theme, savings} = this.props
-  const {search,data,users,open} = this.state
+  const {search,data,users,open, loading} = this.state
     return (
       <div style={{padding: theme.spacing(4)}}>
       <Grid
@@ -153,7 +142,7 @@ render(){
           md={12}
           xs={12}
         >
-          <UsersTable users={users}/>
+          <UsersTable users={users} loading={loading}/>
         </Grid>
       </Grid>
     </div>
@@ -167,10 +156,9 @@ function mapState(state) {
     return { savings };
   }
   const actionCreators = {
-    saveWallet: adminActions.saveWallet,
     logout: adminActions.logout,
   };
   
   export default withStyles({}, { withTheme: true })(
-    withRouter(connect(mapState,  actionCreators)(Account))
+    withRouter(connect(mapState,  actionCreators)(LoanApproved))
   );

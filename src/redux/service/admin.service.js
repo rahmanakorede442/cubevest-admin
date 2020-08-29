@@ -1,4 +1,5 @@
 import { getConfig } from "../config/config";
+import axios from "axios"
 import { authHeader, history } from "../logic";
 export const adminService = {
   adminlogin,
@@ -12,6 +13,9 @@ export const adminService = {
   recoverPassword,
   adminChangePassword,
   adminAddMarket,
+  adminAddHalal,
+  adminUpdateHalal,
+  adminUpdateMarket,
   adminUpdateMarketCategory,
   adminUpdateMarketNews,
   updateAdmin,
@@ -30,6 +34,8 @@ export const adminService = {
   adminAddHalalNews,
   adminAddMarketNews,
   addAdmin,
+  disableAdmin,
+  enableAdmin,
   adminAddHalalCategory,
   addTargetCommission,
   update,
@@ -64,17 +70,115 @@ function adminregister(user) {
 
   return fetch(getConfig("adminsignup"), requestOptions).then(handleResponse);
 }
+
+// Add Halal
+function adminAddHalal(data) {
+  let fd = new FormData();
+  fd.append('investment_pic', data.investment_pic);
+  fd.append('expected_returns', data.expected_returns);
+  fd.append('current_values', data.current_values);
+  fd.append('maturity_date', data.maturity_date);
+  fd.append('start_date', data.start_date);
+  fd.append('application_date', data.application_date);
+  fd.append('payout_type', data.payout_type);
+  fd.append('unit_type', data.unit_type);
+  fd.append('insurance_partner', data.insurance_partner);
+  fd.append('investment_type', data.investment_type);
+  fd.append('category', data.category);
+   const headers =  { ...authHeader(), "Content-Type": "application/json" }
+  return axios.post(getConfig("adminAddHalal"), fd, {headers}).then((res) => {
+    console.log(res.data)
+    if (!res.ok) {
+      const error = (data && data.message) || res.statusText;
+      if (error === "Unauthorized") {
+        history.push("/sign-in");
+      }
+      return Promise.reject(error);
+    }
+    return res.data
+  })
+}
+
+// Update Halal
+function adminUpdateHalal(data) {
+  let fd = new FormData();
+  fd.append('investment_pic', data.investment_pic);
+  fd.append('expected_returns', data.expected_returns);
+  fd.append('current_values', data.current_values);
+  fd.append('maturity_date', data.maturity_date);
+  fd.append('start_date', data.start_date);
+  fd.append('application_date', data.application_date);
+  fd.append('payout_type', data.payout_type);
+  fd.append('unit_type', data.unit_type);
+  fd.append('insurance_partner', data.insurance_partner);
+  fd.append('investment_type', data.investment_type);
+  fd.append('category', data.category);
+   const headers =  { ...authHeader(), "Content-Type": "application/json" }
+  return axios.post(getConfig("adminUpdateHalal"), fd, {headers}).then((res) => {
+    console.log(res.data)
+    if (!res.ok) {
+      const error = (data && data.message) || res.statusText;
+      if (error === "Unauthorized") {
+        history.push("/sign-in");
+      }
+      return Promise.reject(error);
+    }
+    return res.data
+  })
+}
+
 // Add market
 function adminAddMarket(data) {
-  const requestOptions = {
-    method: "POST",
-    headers: { ...authHeader(), "Content-Type": "application/json" },
-    body: JSON.stringify(data),
-  };
-  return fetch(getConfig("addMarketView"), requestOptions).then(
-    handleResponse
-  );
+  let fd = new FormData();
+  fd.append('investment_pic', data.investment_pic);
+  fd.append('expected_returns', data.expected_returns);
+  fd.append('current_values', data.current_values);
+  fd.append('maturity_date', data.maturity_date);
+  fd.append('start_date', data.start_date);
+  fd.append('application_date', data.application_date);
+  fd.append('payout_type', data.payout_type);
+  fd.append('unit_type', data.unit_type);
+  fd.append('insurance_partner', data.insurance_partner);
+  fd.append('investment_type', data.investment_type);
+  fd.append('investment_category', data.category);
+   const headers =  { ...authHeader(), "Content-Type": "application/json" }
+  return axios.post(getConfig("adminAddMarket"), fd, {headers}).then((res) => {
+    console.log(res.data)
+    return res.data
+  })
+  .catch((error) => {
+    console.error(error.response)
+  });
 }
+
+// Update Market
+function adminUpdateMarket(data) {
+  let fd = new FormData();
+  fd.append('investment_pic', data.investment_pic);
+  fd.append('expected_returns', data.expected_returns);
+  fd.append('current_values', data.current_values);
+  fd.append('maturity_date', data.maturity_date);
+  fd.append('start_date', data.start_date);
+  fd.append('application_date', data.application_date);
+  fd.append('payout_type', data.payout_type);
+  fd.append('unit_type', data.unit_type);
+  fd.append('insurance_partner', data.insurance_partner);
+  fd.append('investment_type', data.investment_type);
+  fd.append('category', data.category);
+   const headers =  { ...authHeader(), "Content-Type": "application/json" }
+  return axios.post(getConfig("adminUpdateMarket"), fd, {headers}).then((res) => {
+    console.log(res.data)
+    if (!res.ok) {
+      const error = (data && data.message) || res.statusText;
+      if (error === "Unauthorized") {
+        history.push("/sign-in");
+      }
+      return Promise.reject(error);
+    }
+    return res.data
+  })
+}
+
 // Update market
 function adminUpdateMarketCategory(data) {
   let user = JSON.parse(localStorage.getItem('admin'));
@@ -108,6 +212,30 @@ function updateAdmin(data) {
     body: JSON.stringify(data),
   };
   return fetch(getConfig("updateAdmin")+data.id+"?token="+user.token, requestOptions).then(
+    handleResponse
+  );
+}
+
+function disableAdmin(id) {
+  let user = JSON.parse(localStorage.getItem('admin'));
+  const requestOptions = {
+    method: "POST",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+    // body: JSON.stringify(id),
+  };
+  return fetch(getConfig("disableAdmin")+id+"?token="+user.token, requestOptions).then(
+    handleResponse
+  );
+}
+
+function enableAdmin(id) {
+  let user = JSON.parse(localStorage.getItem('admin'));
+  const requestOptions = {
+    method: "POST",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+    // body: JSON.stringify(data),
+  };
+  return fetch(getConfig("enableAdmin")+id+"?token="+user.token, requestOptions).then(
     handleResponse
   );
 }
@@ -441,19 +569,9 @@ function handleResponse(response) {
       // ...
     }
     if (!response.ok) {
-      /**  if (response.status === 401) {
-               //JWT token has expired here
-                relogin(localStorage.getItem('email'));
-              //  window.location.reload(true);
-              logout();
-              history.push('/login');
-
-            }
-           */
-
       const error = (data && data.message) || response.statusText;
       if (error === "Unauthorized") {
-        history.push("/login");
+        history.push("/sign-in");
       }
       return Promise.reject(error);
     }

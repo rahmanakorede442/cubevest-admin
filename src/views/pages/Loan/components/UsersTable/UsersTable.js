@@ -3,14 +3,14 @@ import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { withRouter } from "react-router-dom";
-import { adminActions } from "../../../../redux/action";
+import { adminActions } from "../../../../../redux/action";
 import { connect } from "react-redux";
 import { withStyles } from "@material-ui/styles";
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import { makeStyles } from '@material-ui/styles';
 import swal from 'sweetalert'
-import { getConfig, numberFormat, checkToken } from '../../../../redux/config/config';
-import { authHeader, history } from '../../../../redux/logic';
+import { getConfig, numberFormat, checkToken } from '../../../../../redux/config/config';
+import { authHeader, history } from '../../../../../redux/logic';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import {
@@ -150,13 +150,14 @@ const [isLoading, setIsLoading] = useState(true);
 const [details, setDetails] = useState([]);
 const handleOpen = (id) => {
   setIsLoading(true)
+  console.log(id)
   setOpen(true);
   let user = JSON.parse(localStorage.getItem('admin'));
   const requestOptions = {
     method: 'GET',
     headers: { ...authHeader(), 'Content-Type': 'application/json' },
   };
-  fetch(getConfig('singleTargetCommission') + id + `?token=`+user.token, requestOptions)
+  fetch(getConfig('getAllGuarantor') + id + `?token=`+user.token, requestOptions)
   .then(async response => {
   const data = await response.json();
   if (!response.ok) {
@@ -164,52 +165,25 @@ const handleOpen = (id) => {
       return Promise.reject(error);
   }
   console.log(data)
-  setDetails(data[0])
+  if(data.success == false){
+    setDetails([])
+  }else{
+    setDetails(data)
+  }
   setIsLoading(false)
-  setName(data[0].package_name && data[1].commission)
   })
   .catch(error => {
   if (error === "Unauthorized") {
       history.push('/login');
       }
       setIsLoading(false)
-  console.error('There was an error!', error);
-});
+      console.error('There was an error!', error);
+  });
 };
-
-const handleDelete = (id) => {
-swal({
-  title: "Are you sure?",
-  text: "Once deleted, you will not be able to recover this file!",
-  icon: "warning",
-  buttons: true,
-  dangerMode: true,
-})
-.then((willDelete) => {
-  if (willDelete) {
-    props.deleteTargetCommission(id);
-    swal("Loading...",{   
-      buttons:false
-    });
-  }
-});
-}
-  
-const handleSubmitEdit = (event) => {
-  event.preventDefault();
-  if (details.package_name, details.commission) {    
-    props.modifyTargetCommission(details);
-    console.log(details)
-   }
-}
 
   const handleClose = () => {
     setOpen(false);
   };
- const handleChangeEdit = (e) => {
-  e.persist();
-   setDetails(details=>({ ...details, [e.target.name]:e.target.value}))
- }
 
  return (
   <Card
@@ -217,10 +191,8 @@ const handleSubmitEdit = (event) => {
     className={clsx(classes.root, className)}
   >
       {/* Modal */}
-          
       < Dialog
         open={open}
-        // TransitionComponent={Transition}
         fullWidth={true}
         maxWidth = {'xs'}
         keepMounted
@@ -228,73 +200,36 @@ const handleSubmitEdit = (event) => {
         aria-labelledby="alert-dialog-slide-title"
         aria-describedby="alert-dialog-slide-description"
       >
-        <DialogTitle bold id="alert-dialog-slide-title">News</DialogTitle>  
+        <DialogTitle bold id="alert-dialog-slide-title">Guarantors</DialogTitle>  
         <Divider />     
         <DialogContent>
-          {/* <DialogContentText id="alert-dialog-slide-description" > */}
-          <CardContent className={classes.content}>
           {isLoading? <Typography>Loading...</Typography>:
-           <form  noValidate autoComplete="off" onSubmit={handleSubmitEdit}>
-          
-                 <Grid style={{ marginTop: '1rem' }}>
-                   <Typography>Select Package Name</Typography>
-                   </Grid>
-                   <Grid>
-                 <TextField
-                     fullWidth
-                     variant="outlined"
-                     name="package_name"   
-                     value={details.package_name} 
-                     readOnly
-                     margin="dense"
-                     variant="outlined"
-                   >
-                 </TextField>
-                 </Grid>
-                 <Grid style={{ marginTop: '1rem' }}>
-                   <Typography>Commission</Typography>
-                   </Grid>
-              <Grid>
-                 <OutlinedInput
-                   fullWidth
-                   placeholder="Commission"
-                   name="commission"
-                   type="number"
-                   endAdornment={<InputAdornment position="end" style={{fontWeight:'bold',fontSize:28,}}>%</InputAdornment>}
-                   margin="dense"
-                   value={details.commission} 
-                   onChange={handleChangeEdit}
-                   variant="outlined"
-                 />
-               </Grid>                  
-          
-           <Grid item md={10} xs={10} style={{ marginTop: '1rem' }}>
-                {savings &&
-                    <div className="loader">   
-                        <img img alt=""  src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
-                    </div>
-                }
-              <Button color="primary" onClick={handleSubmitEdit} variant="contained" >
-                Update 
-              </Button>
-            {/* </Grid> */}
-            {/* <Grid> */}
-              <Button onClick={handleClose} variant="contained" 
-              style={{marginLeft:10, color:'white', backgroundColor:'red'}}>
-               Cancel
-          </Button>
-          </Grid>
-        {/* </DialogActions> */}
-         </form>
-         }
-            </CardContent>        
-            <Divider /> 
-          <DialogActions> 
-          </DialogActions>      
-          {/* </DialogContentText> */}        
+            <Grid container >
+              {details.map(det =>(
+              <>
+              <Grid item  md={6} xs={6}>
+                  <Typography variant="h6">First Name </Typography>
+                  <Typography variant="h6">Last Name </Typography>
+                  <Typography variant="h6">Guaranteed Amount </Typography>
+              </Grid>
+              <Grid item  md={6} xs={6}>
+                  <Typography variant="p">{det.first_name} </Typography>
+                  <Typography variant="p">{det.last_name} </Typography>
+                  <Typography variant="p">{det.guaranteed_amount} </Typography>
+              </Grid>
+              <Divider variant="inset" />
+              </>
+              ))}
+              <Grid item md={10} xs={10} style={{ marginTop: '1rem' }}>
+                <Button onClick={handleClose} variant="contained" 
+                  style={{marginLeft:10, color:'white', backgroundColor:'red'}}>
+                  Cancel
+                </Button>
+              </Grid>
+            </Grid>
+          }   
         </DialogContent>
       </Dialog>
-      
       {/* Modal */}
 
     <CardContent className={classes.content}>
@@ -303,7 +238,7 @@ const handleSubmitEdit = (event) => {
           <Table>
             <TableHead>
               <TableRow>
-                {/* <TableCell padding="checkbox">
+                <TableCell padding="checkbox">
                   <Checkbox
                     checked={selectedUsers.length === users.length}
                     color="primary"
@@ -313,27 +248,25 @@ const handleSubmitEdit = (event) => {
                     }
                     onChange={handleSelectAll}
                   />
-                </TableCell> */}
-                <TableCell>Enter By</TableCell>
-                <TableCell>Commission</TableCell>
-                <TableCell>Package Name</TableCell>
-                <TableCell>Date</TableCell>
+                </TableCell>
+                <TableCell>Name</TableCell>
+                <TableCell>Group Name</TableCell>
+                <TableCell>Loan Amount</TableCell>
+                <TableCell>Repayment Amount</TableCell>
+                <TableCell>Frequency</TableCell>
+                <TableCell>Start Date</TableCell>
                 <TableCell>Action</TableCell>
               </TableRow>
             </TableHead>
-            <TableCell></TableCell>
-            <TableCell></TableCell>
-            {loading?
-              <div style={{marginTop:15, textAlign:"center", alignItems:"center", flexDirection:"column", justifyItems:"center"}}>
-                  <img
-                      img
-                      alt=""
-                      className="loader"
-                      src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
-                    />
-              </div>: 
+            
             <TableBody>
-            {users.length != 0 ?
+            {loading?
+              <img
+                alt=""
+                className="loader"
+                src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
+                />: 
+            users.length != 0 ?
             users.slice(page * rowsPerPage, page* rowsPerPage + rowsPerPage).map(user => (
               <TableRow
                 className={classes.tableRow}
@@ -341,44 +274,36 @@ const handleSubmitEdit = (event) => {
                 key={user.id}
                 selected={selectedUsers.indexOf(user.id) !== -1}
               >
-                {/* <TableCell padding="checkbox">
+                <TableCell padding="checkbox">
                   <Checkbox
                     checked={selectedUsers.indexOf(user.id) !== -1}
                     color="primary"
                     onChange={event => handleSelectOne(event, user.id)}
                     value="true"
                   />
-                </TableCell> */}
-                 <TableCell>{user.entered_by}</TableCell>
-                 <TableCell>{user.commission}</TableCell>
-                {/* <TableCell>{numberFormat(user.amount)}</TableCell> */}
-                <TableCell>{user.package_name}</TableCell>
-                <TableCell>
-                  {moment(user.created_at).format('DD/MM/YYYY')}
                 </TableCell>
+                 <TableCell>{user.first_name + " " + user.last_name}</TableCell>
+                 <TableCell>{user.group_name}</TableCell>
+                <TableCell>{numberFormat(user.loan_amount)}</TableCell>
+                <TableCell>{numberFormat(user.repayment_amount)}</TableCell>
+                <TableCell>{user.frequency}</TableCell>
+                <TableCell>{moment(user.start_date).format('DD/MM/YYYY')}</TableCell>
                 <TableCell>
                   <Grid style={{display:'flex'}}>
                       <Button color="primary" variant="contained" 
-                      onClick={()=> handleOpen(user.id)}
-                      > Edit</Button>
-                        <Button color="denger" style={{marginLeft:10, background:'red', color:'#fff'}} variant="contained" 
-                        onClick={()=> handleDelete(user.id)}
-                        > Delete</Button>
+                      onClick={()=> handleOpen(user.loan_group)}
+                      > View Guarantor</Button>
                       </Grid>
                   </TableCell>
               </TableRow>
             )):
             <TableRow>
-            <TableCell></TableCell>
-            <TableCell></TableCell>
-            <TableCell style={{textAlign:"center"}}>
+            <TableCell colSpan={8} >
                 No Record Found
-              </TableCell>                
+              </TableCell> 
             </TableRow>
             }
           </TableBody>
-          
-            }
          </Table>
         </div>
       </PerfectScrollbar>

@@ -219,7 +219,7 @@ const TargetTable = props => {
                     {moment(user.created_at).format('DD/MM/YYYY')}
                   </TableCell>
                   <TableCell>
-                    <Link to ={`/savetoloan_details/${user.id}`}>
+                    <Link to ={`/target_details/${user.id}`}>
                       <Button color="primary" variant="contained" 
                         // onClick={()=> handleOpen(user.id)}
                       > Details</Button>

@@ -1,15 +1,11 @@
 import React, { useState, Component } from 'react';
 import { makeStyles } from '@material-ui/styles';
-// import { RegularSavings } from '../';
-// import { TargetSavings } from '../TargetSavings';
-// import { SaveToLoanSavings } from '../SaveToLoanSavings';
 import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-// import { UsersToolbar, UsersTable } from './Savings';
 import RegularSavings from '../../RegularSavings';
 import TargetSavings from '../../TargetSavings';
 import SaveToLoanSavings from '../../SaveToLoanSavings';
@@ -69,10 +65,6 @@ export default function SimpleTabs(props) {
      }
     return (
       <div className={classes.root} style={{alignItems:"center"}}>
-        {/* <Topbar onClick={togglemenu} back={true}/>   */}
-        {/* <div class="wrapper"> */}
-        {/* <Sidebar isOpened={opened}/> */}
-        {/* <div class="main_content"> */}
         <AppBar position="static" style={{background:"#ffffff"}}>
           <Tabs value={value} onChange={handleChange} center aria-label="simple tabs example" 
             color="black" indicatorColor="primary" textColor="primary">

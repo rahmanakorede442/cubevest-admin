@@ -10,7 +10,9 @@ import {
   UserList as UserListView,
   Typography as TypographyView,
   Icons as IconsView,
-  Account as AccountView,
+  Loan as LoanView,
+  AwaitingLoanTab as AwaitingLoanTabView,
+  ApprovedLoanTab as ApprovedLoanTabView,
   Settings as SettingsView,
   SignUp as SignUpView,
   SignIn as SignInView,
@@ -150,10 +152,10 @@ const Routes = () => {
         path="/icons"
       />
       <RouteWithLayout
-        component={AccountView}
+        component={AwaitingLoanTabView}
         exact
         layout={MainLayout}
-        path="/account"
+        path="/loan"
       />
       <RouteWithLayout
         component={ReportView}

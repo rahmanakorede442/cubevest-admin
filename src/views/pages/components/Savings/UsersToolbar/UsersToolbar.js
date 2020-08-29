@@ -166,15 +166,9 @@ const UsersToolbar = props => {
           variant="contained"
           onClick={()=> handleOpen()}
         >
-          Add user
+          Add Investors
         </Button>
       </div>
-      {/* <div className={classes.row}>
-        <SearchInput
-          className={classes.searchInput}
-          placeholder="Search user"
-        />
-      </div> */}
     </div>
   );
 };

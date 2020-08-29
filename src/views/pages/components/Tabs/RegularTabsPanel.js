@@ -6,7 +6,6 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import { UsersToolbar, UsersTable } from '../Savings';
 import RegularSavings from '../../RegularSavings';
 import TargetSavings from '../../TargetSavings';
 import SaveToLoanSavings from '../../SaveToLoanSavings';
@@ -54,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SimpleTabs(props) {
     const classes = useStyles();
-    const [value, setValue] = React.useState(1);
+    const [value, setValue] = React.useState(0);
     const [opened, setOpened] = React.useState(false);
   
     const handleChange = (event, newValue) => {

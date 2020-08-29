@@ -73,7 +73,11 @@ fetchUsers = () =>{
       return Promise.reject(error);
   }
   console.log(data)
-  this.setState({users: data, loading:false });
+  if(data.success == false){
+    this.setState({users: [], loading:false });
+  }else{
+    this.setState({users: data, loading:false });
+  }
 })
 .catch(error => {
   if (error === "Unauthorized") {
@@ -158,7 +162,7 @@ render(){
         />
          
        <div style={{float:'right'}}>
-          {/* Modal */}          
+      {/* Modal */}          
        < Dialog
         open={open}
         fullWidth={true}
@@ -239,7 +243,6 @@ render(){
         </DialogActions>
         </DialogContent>
       </Dialog>
-      
       {/* Modal */}
       <div className="row">
         <span className="spacer" />

@@ -9,7 +9,7 @@ import { authHeader, history } from '../../../redux/logic';
 import { Grid, Button } from '@material-ui/core';
 import { SearchInput } from 'components';
 
-import { UsersToolbar, UsersTable } from '../components/Savings';
+import { UsersToolbar, UsersTable } from '../components/Investment';
 
 class Investment extends Component {
   constructor(props){
@@ -30,15 +30,19 @@ class Investment extends Component {
         method: 'GET',
         headers: { ...authHeader(), 'Content-Type': 'application/json' },
     };
-    fetch(getConfig('showMarketInvestments'), requestOptions)
+    fetch(getConfig('getAllHalalInvestor'), requestOptions)
     .then(async response => {
     const data = await response.json();
     if (!response.ok) {
         const error = (data && data.message) || response.statusText;
         return Promise.reject(error);
     }
-    console.log(data)
-    this.setState({users: data, all:data.data, loading:false });
+    if(data.success == false){
+      this.setState({users:[], all:[], loading:false });
+    }else{
+      this.setState({users: data.data, all:data.data, loading:false });
+    }
+    
 })
 .catch(error => {
     if (error === "Unauthorized") {
@@ -97,7 +101,6 @@ function mapState(state) {
   const { savings } = state.savings;
   return { savings };
 }
-// export default withStyles({}, { withTheme: true })(Dashboard1);
 const actionCreators = {
   saveWallet: adminActions.saveWallet,
   logout: adminActions.logout,

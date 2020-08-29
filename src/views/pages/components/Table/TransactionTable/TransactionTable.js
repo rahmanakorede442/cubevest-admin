@@ -5,7 +5,6 @@ import moment from 'moment';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import { getConfig, numberFormat, checkToken } from '../../../../../redux/config/config';
 import { makeStyles } from '@material-ui/styles';
-// import TextField from '@material-ui/core/TextField';
 
 import {
   Card,
@@ -154,28 +153,15 @@ const TransactionTable = props => {
             <Table>
               <TableHead>
                 <TableRow>
-                  {/* <TableCell padding="checkbox">
-                    <Checkbox
-                      checked={selectedUsers.length === users.length}
-                      color="primary"
-                      indeterminate={
-                        selectedUsers.length > 0 &&
-                        selectedUsers.length < users.length
-                      }
-                      onChange={handleSelectAll}
-                    />
-                  </TableCell> */}
+                  <TableCell>Name</TableCell>
                   <TableCell>Amount</TableCell>
-                  <TableCell>Save To Loan Type</TableCell>
                   <TableCell>Paystack ID</TableCell>
                   <TableCell>Payment Method</TableCell>
                   <TableCell>Transcation Type</TableCell>
+                  <TableCell>Transcation Category</TableCell>
                   <TableCell>Date</TableCell>
-                  {/* <TableCell>Action</TableCell> */}
                 </TableRow>
               </TableHead>
-              <TableCell></TableCell>
-              <TableCell></TableCell>
               {loading?
                 <div style={{marginTop:15, textAlign:"center", alignItems:"center", flexDirection:"column", justifyItems:"center"}}>
                     <img
@@ -194,21 +180,24 @@ const TransactionTable = props => {
                     key={user.id}
                     selected={selectedUsers.indexOf(user.id) !== -1}
                   >                    
+                    <TableCell>{user.first_name + " " + user.last_name}</TableCell>
                     <TableCell>{numberFormat(user.amount)}</TableCell>
-                    <TableCell>{user.saveloan_type}</TableCell>
                     <TableCell>{user.paystack_id}</TableCell>
                     <TableCell>{user.payment_method}</TableCell>
                     <TableCell>{user.transaction_type}</TableCell>
-                    <TableCell>
-                      {moment(user.created_at).format('DD/MM/YYYY')}
+                    <TableCell className="px-0 capitalize" colSpan={4} align="left">
+                    {user.transaction_category == 1 ? "Regular Savings": 
+                      (user.transaction_category == 2) ? "Target Savings":
+                      (user.transaction_category == 3) ? "Save To Loan":
+                      (user.transaction_category == 4) ? "Loan":
+                      (user.transaction_category == 5) ? "Market Investment":
+                      (user.transaction_category == 6) ? "Halal Financing":
+                      (user.transaction_category == 7) ? 
+                      (user.transaction_type == "credit")?"Wallet Funding":" Wallet Withdrawal": ""}
                     </TableCell>
-                    {/* <TableCell>
-                      <Link>
-                        <Button color="primary" variant="contained" 
-                        // onClick={()=> handleOpen(user.id)}
-                        > Details</Button>
-                      </Link>
-                    </TableCell> */}
+                    <TableCell>
+                      {moment(user.entry_date).format('DD/MM/YYYY')}
+                    </TableCell>
                   </TableRow>
                 )):
                 <TableRow>

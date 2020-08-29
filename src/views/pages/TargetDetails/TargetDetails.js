@@ -12,7 +12,7 @@ import { Grid, Card, Button, Typography, TextField,
          DialogActions, Divider, Dialog, CardActions } from '@material-ui/core';
 import {Link } from "react-router-dom";
 
-import { UsersToolbar, TargetTable } from '../components/TranscationTable';
+import { UsersToolbar, UsersTable } from '../components/TranscationTable';
 import { userConstants } from 'redux/_constants';
 import { users } from 'redux/_reducers/users.reducer';
 
@@ -80,7 +80,6 @@ searchChange(event) {
   this.setState({ search: value, users: value == "" ? all : all.filter((q)=>
   q.from_date.toLowerCase().indexOf(value.toLowerCase())  !== -1 
   || q.to_date.toLowerCase().indexOf(value.toLowerCase())  !== -1 
-  // || q.frequency.toLowerCase().indexOf(value.toLowerCase())  !== -1 
   )});}
 
   handleChange(event) {
@@ -109,7 +108,6 @@ render(){
   
     return (
       <div style={{padding: theme.spacing(3)}}>
-        {/* <div style={{height: '42px',display: 'flex',alignItems: 'center',marginTop: theme.spacing(0),marginBottom: theme.spacing(4)}}> */}
         <Grid container lg={12} md={12} sm={12} xs={12}>
         <Grid item lg={12} md={12} sm={12} xs={12}>
         <Grid style={{float:'left'}}>
@@ -126,14 +124,10 @@ render(){
         </Link>
         </Grid>
           </Grid>
-         
-          {/* </div> */}
-          {/* <div style={{marginTop: theme.spacing(2)}}> */}
-          <Grid item lg={12} md={12} sm={12} xs={12}>
-          <TargetTable users={users} loading={loading}/>
+         <Grid item lg={12} md={12} sm={12} xs={12}>
+          <UsersTable users={users} loading={loading}/>
           </Grid>
         </Grid>
-        {/* </div> */}
       </div>
     
     );
@@ -144,7 +138,6 @@ function mapState(state) {
   const { savings } = state.savings;
   return { savings };
 }
-// export default withStyles({}, { withTheme: true })(Dashboard1);
 const actionCreators = {
   saveWallet: adminActions.saveWallet,
   logout: adminActions.logout,

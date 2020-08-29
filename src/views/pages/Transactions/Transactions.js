@@ -7,9 +7,7 @@ import { withStyles } from "@material-ui/styles";
 import { getConfig, checkToken, numberFormat } from '../../../redux/config/config'
 import { authHeader, history } from '../../../redux/logic';
 import { SearchInput } from 'components';
-import { Grid, Card, Button, Typography, TextField,
-        CardContent, DialogTitle, DialogContent,
-         DialogActions, Divider, Dialog, CardActions } from '@material-ui/core';
+import { Grid, MenuItem, TextField} from '@material-ui/core';
 import {Link } from "react-router-dom";
 
 import { UsersToolbar, SaveLoanTable } from '../components/TranscationTable';
@@ -31,6 +29,7 @@ class Transactions extends Component {
         id:id,
         from_date : "",
         to_date:"",
+        new_search:"",
       },
       users: [],
       all: [],
@@ -42,20 +41,19 @@ class Transactions extends Component {
     this.fetchUsers();
     this.searchChange = this.searchChange.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);;
+    this.handleSubmit = this.handleSubmit.bind(this);
 
   }
 
-  fetchUsers = () =>{
+fetchUsers = () =>{
     const {data} = this.state
-    console.log(data)
     let user = JSON.parse(localStorage.getItem('admin'));
     const requestOptions = {
         method: 'POST',
         headers: { ...authHeader(), 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
     };
-    fetch(getConfig('saveLoanTransactionsAdmin')+ data.id + `?token=`+user.token, requestOptions)
+    fetch(getConfig('transactions'), requestOptions)
     .then(async response => {
     const data = await response.json();
     if (!response.ok) {
@@ -87,14 +85,13 @@ searchChange(event) {
   handleChange(event) {
     const { name, value } = event.target;
     const { data } = this.state;
-    
-        this.setState({
-            data: {
-                ...data,
-                [name]: value
-            }
-        });
-    console.log(data)
+    if(name == "from_date"||name == "to_date"){
+      this.setState({ data: { ...data, [name]: value } });
+    }else{
+      this.setState({ data: { ...data, [name]: value }, loading:true},()=>{
+        this.fetchUsers()
+      });
+    }
 }
 
 handleSubmit(event) {
@@ -110,32 +107,37 @@ render(){
   
     return (
       <div style={{padding: theme.spacing(3)}}>
-      {/* <div style={{height: '42px',display: 'flex',alignItems: 'center',marginTop: theme.spacing(0),marginBottom: theme.spacing(4)}}> */}
-      <Grid container lg={12} md={12} sm={12} xs={12}>
-      <Grid item lg={12} md={12} sm={12} xs={12}>
-      <Grid style={{float:'left'}}>
-          <UsersToolbar handleSubmit={this.handleSubmit} handleChange={this.handleChange}/>
+        <Grid container spacing={4} >
+          <Grid item lg={8} md={8} sm={12} xs={12}>
+              <UsersToolbar handleSubmit={this.handleSubmit} handleChange={this.handleChange}/>
+          </Grid>
+          <Grid item lg={4} md={4} sm={12} xs={12}>
+            <TextField
+              style={{width:"100%"}}
+              select
+              label="search"
+              name="new_search"
+              margin="dense"
+              value={data.new_search}
+              onChange={this.handleChange}>
+                <MenuItem value={""}>Select an option</MenuItem>
+                <MenuItem value={"Bank Account"}>Bank Account</MenuItem>
+                <MenuItem value={"Wallet"}> Wallet</MenuItem>
+                <MenuItem value={"Regular Savings"}>Regular Savings</MenuItem>
+                <MenuItem value={"Target Savings"}> Target Savings</MenuItem>
+                <MenuItem value={"Save To Loan"}> Save To Loan</MenuItem>
+                <MenuItem value={"Loan"}> Loan</MenuItem>
+                <MenuItem value={"Market Investment"}> Market Investment</MenuItem>
+                <MenuItem value={"Halal Financing"}> Halal Financing</MenuItem>
+                <MenuItem value={"Credit"}>Credit</MenuItem>
+                <MenuItem value={"Debit"}> Debit</MenuItem>
+            </TextField>
+            </Grid>
+          <Grid item lg={12} md={12} sm={12} xs={12}>
+            <TransactionTable users={users} loading={loading}/>
+          </Grid>
         </Grid>
-        <Grid style={{float:'right'}}>
-        <Link to="/savetoloan_tab">
-          <Button
-            color="primary"
-            variant="contained"
-          >
-           Back
-        </Button>
-      </Link>
-      </Grid>
-        </Grid>
-       
-        {/* </div> */}
-        {/* <div style={{marginTop: theme.spacing(2)}}> */}
-        <Grid item lg={12} md={12} sm={12} xs={12}>
-        <TransactionTable users={users} loading={loading}/>
-        </Grid>
-      </Grid>
-      {/* </div> */}
-    </div>
+      </div>
   
     );
   };
@@ -149,7 +151,7 @@ function mapState(state) {
 const actionCreators = {
   saveWallet: adminActions.saveWallet,
   logout: adminActions.logout,
-  saveLoanTransactionsAdmin: adminActions.saveLoanTransactionsAdmin,
+  transactions: adminActions.transactions,
   
 };
 

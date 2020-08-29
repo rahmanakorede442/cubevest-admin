@@ -7,28 +7,34 @@ import { withStyles } from "@material-ui/styles";
 import { getConfig} from '../../../redux/config/config'
 import { authHeader} from '../../../redux/logic';
 import { SearchInput } from 'components';
-
-import { UsersToolbar, SaveToLoan } from '../components/Savings';
+import { Button, Grid, TextField, MenuItem } from '@material-ui/core';
+import { UsersToolbar, UsersTable } from '../components/Savings';
 
 
 class SaveToLoanSavings extends Component {
   constructor(props){
     super(props)
     this.state ={
+      data:{
+        new_search:"",
+      },
       users: [],
       all: [],
       search: "",
       loading: true,
-      open:false    }
+      open:false
+    }
+    this.handleChange = this.handleChange.bind(this);
     this.fetchUsers = this.fetchUsers.bind(this);
     this.fetchUsers();
-    this.searchChange = this.searchChange.bind(this);
   }
 
-  fetchUsers = () =>{
+fetchUsers = () =>{
+    const {data} = this.state
     const requestOptions = {
-        method: 'GET',
+        method: 'POST',
         headers: { ...authHeader(), 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
     };
     fetch(getConfig('getAllSaveToLoanSavings'), requestOptions)
     .then(async response => {
@@ -37,42 +43,54 @@ class SaveToLoanSavings extends Component {
         const error = (data && data.message) || response.statusText;
         return Promise.reject(error);
     }
-    console.log(data)
-    this.setState({users: data.data, all:data.data, loading:false });
-    })
-    .catch(error => {
-    
-        if (error === "Unauthorized") {
-          this.props.logout()
-          }
-        this.setState({loading:false });
-        console.error('There was an error!', error);
+    if(data.success == false){
+      this.setState({users: [], loading:false });
+    }else{
+      this.setState({users: data, loading:false });
+    }
+  })
+  .catch(error => {
+    if (error === "Unauthorized") {
+        this.props.logout()
+        }
+      this.setState({loading:false });
+      console.error('There was an error!', error);
+  });
+}
+
+handleChange(event) {
+  const { name, value } = event.target;
+  const { data } = this.state;
+    this.setState({ data: { ...data, [name]: value }, loading:true},()=>{
+      this.fetchUsers()
     });
 }
-
-searchChange(event) {
-  const { name, value } = event.target;
-  const { search, users, all } = this.state;
-  
-      this.setState({ search: value, users: value == "" ? all : all.filter((q)=>
-      q.last_name.toLowerCase().indexOf(value.toLowerCase())  !== -1 || q.first_name.toLowerCase().indexOf(value.toLowerCase())  !== -1 || q.frequency.toLowerCase().indexOf(value.toLowerCase())  !== -1 )});
-}
-
 render(){
   const {theme} = this.props
-  const {users, loading, search, open} = this.state
+  const {users, loading, search, open, data} = this.state
     return (
-      <div style={{padding: theme.spacing(3)}}>
-      <div style={{height: '42px',display: 'flex',alignItems: 'center',marginTop: theme.spacing(1)}}>
-        <SearchInput
-          value={search}
-          onChange={this.searchChange}
-          style={{marginRight: theme.spacing(1)}}
-          placeholder="Search user"
-        />
-        </div>      
+      <div>
+        <Grid container spacing={4} justify="center" >
+          <Grid item lg={12} md={12} sm={12} xs={12}>
+            <TextField
+              style={{width:"30%"}}
+              select
+              label="search"
+              name="new_search"
+              margin="dense"
+              value={data.new_search}
+              onChange={this.handleChange}>
+                <MenuItem value={""}>Select an option</MenuItem>
+                <MenuItem value={"Daily"}>Daily</MenuItem>
+                <MenuItem value={"Weekly"}> Weekly</MenuItem>
+                <MenuItem value={"Monthly"}>Monthly</MenuItem>
+                <MenuItem value={"Wallet"}> Wallet</MenuItem>
+                <MenuItem value={"Bank Account"}> Bank Account </MenuItem>
+            </TextField>
+          </Grid>
+        </Grid>
         <div style={{marginTop: theme.spacing(2)}}>
-          <SaveToLoan users={users} loading={loading}/>
+          <UsersTable users={users} loading={loading} link={"savetoloan"}/>
         </div>
       </div>
     );
@@ -83,9 +101,7 @@ function mapState(state) {
   const { savings } = state.savings;
   return { savings };
 }
-// export default withStyles({}, { withTheme: true })(Dashboard1);
 const actionCreators = {
-  saveWallet: adminActions.saveWallet,
   logout: adminActions.logout,
 };
 

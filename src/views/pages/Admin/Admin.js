@@ -42,7 +42,6 @@ class Admin extends Component {
     }
     
     this.fetchUsers = this.fetchUsers.bind(this);
-    this.fetchUsers();
     this.searchChange = this.searchChange.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -76,27 +75,9 @@ class Admin extends Component {
 }
 
 
-// componentDidMount() {
-//   const requestOptions = {
-//     method: 'GET',
-//     headers: { ...authHeader(), 'Content-Type': 'application/json' },
-// };
-// fetch(getConfig('getAdminShow'), requestOptions)
-// .then(async response => {
-// const data = await response.json();
-// if (!response.ok) {
-//     const error = (data && data.message) || response.statusText;
-//     return Promise.reject(error);
-// }
-// this.setState({investments: data, loading:false})
-// console.log(data)
-// })
-// .catch(error => {
-//   if (error === "Unauthorized") {
-//     this.props.logout()
-//     }
-// });
-// }
+componentDidMount() {
+  this.fetchUsers();
+}
 
 searchChange(event) {
   const { name, value } = event.target;
@@ -142,7 +123,7 @@ render(){
   const {users, loading, data, datat, handleClose, handleOpen, search, open, investments} = this.state
     return (
       <div style={{padding: theme.spacing(3)}}>
-        <CardActions>
+        {/* <CardActions>
               <Link to="/admin">
                 <Button
                 color="secondary"
@@ -151,14 +132,14 @@ render(){
                 Back
               </Button> 
               </Link>
-          </CardActions>
+          </CardActions> */}
           <div style={{height: '42px',alignItems: 'center',marginTop: theme.spacing(1)}}>
-        <SearchInput
-          value={search}
-          onChange={this.searchChange}
-          style={{marginRight: theme.spacing(1), width:300, float:'left'}}
-          placeholder="Search user"
-        />
+          <SearchInput
+            value={search}
+            onChange={this.searchChange}
+            style={{marginRight: theme.spacing(1), width:300, float:'left'}}
+            placeholder="Search user"
+          />
          
        <div style={{float:'right'}}>
           {/* Modal */}
@@ -242,7 +223,7 @@ render(){
                   style={{marginLeft:8}}
                   onClick={this.handleSubmit}
                 >
-                  Submite
+                  Submit
                 </Button>
                 </Grid> 
               <Button onClick={this.handleClose} 

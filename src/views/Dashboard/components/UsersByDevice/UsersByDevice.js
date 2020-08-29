@@ -11,7 +11,9 @@ import {
   Divider,
   Typography
 } from '@material-ui/core';
-import LaptopMacIcon from '@material-ui/icons/LaptopMac';
+import MoneyIcon from '@material-ui/icons/Money';
+import PaymentsIcon from '@material-ui/icons/Payment';
+import TrackChangesIcon from '@material-ui/icons/TrackChanges';
 import PhoneIphoneIcon from '@material-ui/icons/PhoneIphone';
 import RefreshIcon from '@material-ui/icons/Refresh';
 import TabletMacIcon from '@material-ui/icons/TabletMac';
@@ -39,7 +41,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const UsersByDevice = props => {
-  const { className, ...rest } = props;
+  const { className, savingsData, ...rest } = props;
+  let total = savingsData.regular_savings +savingsData.target_savings + savingsData.save_loan
 
   const classes = useStyles();
   const theme = useTheme();
@@ -58,7 +61,7 @@ const UsersByDevice = props => {
         hoverBorderColor: theme.palette.white
       }
     ],
-    labels: ['Desktop', 'Tablet', 'Mobile']
+    labels: ['Regular', 'Target', 'Save To Loan']
   };
 
   const options = {
@@ -85,21 +88,21 @@ const UsersByDevice = props => {
 
   const devices = [
     {
-      title: 'Desktop',
-      value: '63',
-      icon: <LaptopMacIcon />,
+      title: 'Regular',
+      value: Math.round((savingsData.regular_savings/total)*100),
+      icon: <MoneyIcon />,
       color: theme.palette.primary.main
     },
     {
-      title: 'Tablet',
-      value: '15',
-      icon: <TabletMacIcon />,
+      title: 'Target',
+      value: Math.round((savingsData.target_savings/total)*100),
+      icon: <TrackChangesIcon />,
       color: theme.palette.error.main
     },
     {
-      title: 'Mobile',
-      value: '23',
-      icon: <PhoneIphoneIcon />,
+      title: 'Save To Loan',
+      value: Math.round((savingsData.save_loan/total)*100),
+      icon: <PaymentsIcon />,
       color: theme.palette.warning.main
     }
   ];
@@ -110,12 +113,7 @@ const UsersByDevice = props => {
       className={clsx(classes.root, className)}
     >
       <CardHeader
-        action={
-          <IconButton size="small">
-            <RefreshIcon />
-          </IconButton>
-        }
-        title="Users By Device"
+        title="All Savings Account"
       />
       <Divider />
       <CardContent>

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import { Grid } from '@material-ui/core';
-import { withRouter } from "react-router-dom";
+import { withRouter, Link } from "react-router-dom";
 import { adminActions } from "../../redux/action";
 import { connect } from "react-redux";
 import { withStyles } from "@material-ui/styles";
@@ -23,12 +23,15 @@ import {
   Regular,
 } from './components';
 import WalletBalance from './components/WalletBalance';
+import { TransactionTable } from 'views/pages/components/Table';
 // import TotalInvestment from './components/TotalRegular';
 
 class Dashboard extends Component{
   constructor(props){
     super(props)
     this.state={
+        transactions:[],
+        savingsData:[],
         count_users: 0,
         savings_balance: 0,
         save_loans:0,
@@ -39,13 +42,20 @@ class Dashboard extends Component{
         loading:true,
         all: [],
         search: "",
-        open:false
+        open:false,
+        loading:true
     }
     this.fetchUsers = this.fetchUsers.bind(this);
-    this.fetchUsers();
+    this.fetchTransac = this.fetchTransac.bind(this);
+    
   }
 
-  fetchUsers = () =>{
+componentDidMount(){
+  this.fetchTransac();
+  this.fetchUsers();
+}
+
+fetchUsers = () =>{
     const requestOptions = {
         method: 'GET',
         headers: { ...authHeader(), 'Content-Type': 'application/json' },
@@ -58,22 +68,62 @@ class Dashboard extends Component{
         const error = (data && data.message) || response.statusText;
         return Promise.reject(error);
     }
-    console.log(data)
     this.setState({count_users: data[0], savings_balance:data[1], save_loans:data[2],
-       target_balance:data[3],market_balance:data[4],halal_balance:data[5], wallet_balance:data[6], loading:false });
+       target_balance:data[3],market_balance:data[4],halal_balance:data[5], wallet_balance:data[6]});
 })
 .catch(error => {
- 
     if (error === "Unauthorized") {
         this.props.logout();
        }
     this.setState({loading:false });
-    console.error('There was an error!', error);
+});
+
+fetch(getConfig('savingsData'), requestOptions)
+    .then(async response => {
+    const data = await response.json();
+    if (!response.ok) {
+        this.setState({loading:false });
+        const error = (data && data.message) || response.statusText;
+        return Promise.reject(error);
+    }
+    console.log(data)
+    this.setState({savingsData: data});
+})
+.catch(error => {
+    if (error === "Unauthorized") {
+        this.props.logout();
+       }
+    this.setState({loading:false });
+});
+
+}
+
+fetchTransac = () =>{
+  const requestOptions = {
+      method: 'POST',
+      headers: { ...authHeader(), 'Content-Type': 'application/json' },
+      // body: JSON.stringify(data),
+  };
+  fetch(getConfig('transactions'), requestOptions)
+  .then(async response => {
+  const data = await response.json();
+  if (!response.ok) {
+      const error = (data && data.message) || response.statusText;
+      return Promise.reject(error);
+  }
+  this.setState({transactions: data, loading:false});
+})
+.catch(error => {
+  if (error === "Unauthorized") {
+        this.props.logout()
+     }
+  this.setState({loading:false});
+  console.error('There was an error!', error);
 });
 }
 render(){
   const {theme} = this.props
-  const {count_users,savings_balance,save_loans,target_balance,wallet_balance,market_balance,halal_balance} = this.state
+  const {count_users,savings_balance, loading, transactions, save_loans,target_balance,wallet_balance,market_balance,halal_balance, savingsData} = this.state
   return (
     <div style={{padding: theme.spacing(4)}}>
       <Grid
@@ -87,7 +137,7 @@ render(){
           xl={3}
           xs={12}
         >
-          <Budget count_users={count_users}/>
+          <Link to="/users"><Budget count_users={count_users}/></Link>
         </Grid>
         <Grid
           item
@@ -96,8 +146,7 @@ render(){
           xl={3}
           xs={12}
         >
-          <TotalInvestment halal_balance={halal_balance}/>
-          
+          <Link to="/investment_tab/halal_tab"><TotalInvestment halal_balance={halal_balance}/></Link>
         </Grid>
         <Grid
           item
@@ -106,8 +155,7 @@ render(){
           xl={3}
           xs={12}
         >
-          <TotalUsers market_balance={market_balance}/>
-          
+          <Link to="/investment_tab"><TotalUsers market_balance={market_balance}/></Link>
         </Grid>
         <Grid
           item
@@ -116,7 +164,7 @@ render(){
           xl={3}
           xs={12}
         >
-        <Regular savings_balance={numberFormat(savings_balance)}/>          
+          <Link to="/savings_tab"><Regular savings_balance={numberFormat(savings_balance)}/></Link>          
         </Grid>
         <Grid
           item
@@ -125,7 +173,7 @@ render(){
           xl={3}
           xs={12}
         >
-          <Target target_balance={numberFormat(target_balance)}/>
+          <Link to="/targetsavings_tab"><Target target_balance={numberFormat(target_balance)}/></Link>
         </Grid>
         <Grid
           item
@@ -134,7 +182,7 @@ render(){
           xl={3}
           xs={12}
         >
-          <Savings save_loans={numberFormat(save_loans)}/>
+          <Link to="/savetoloan_tab"><Savings save_loans={numberFormat(save_loans)}/></Link>
         </Grid>
         <Grid
           item
@@ -143,17 +191,8 @@ render(){
           xl={3}
           xs={12}
         >
-          <WalletBalance wallet_balance={numberFormat(wallet_balance)}/>
+          <Link to="/"><WalletBalance wallet_balance={numberFormat(wallet_balance)}/></Link>
         </Grid>
-        {/* //  <Grid
-        //   item
-        //   lg={3}
-        //   sm={6}
-        //   xl={3}
-        //   xs={12}
-        // >
-        //   <TotalRegular />
-        // </Grid>  */}
          
          <Grid
           item
@@ -171,7 +210,7 @@ render(){
           xl={3}
           xs={12}
         >
-          <UsersByDevice />
+          <UsersByDevice savingsData={savingsData}/>
         </Grid>
         <Grid
           item
@@ -189,7 +228,8 @@ render(){
           xl={9}
           xs={12}
         >
-          <LatestOrders />
+          {/* <TransactionTable users={transactions} /> */}
+          <LatestOrders users={transactions} loading={loading}/>
         </Grid>
       </Grid>
     </div>
@@ -197,12 +237,10 @@ render(){
 };
 }
   
-// export default UserList;
 function mapState(state) {
   const { savings } = state.savings;
   return { savings };
 }
-// export default withStyles({}, { withTheme: true })(Dashboard1);
 const actionCreators = {
   saveWallet: adminActions.saveWallet,
   logout: adminActions.logout,

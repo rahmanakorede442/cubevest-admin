@@ -198,7 +198,6 @@ const handleSubmitEdit = (event) => {
   if (details.halai_investment, details.news) {
     console.log(details)
     props.adminUpdateHalalNews(details);
-    // props.submit(details);
     }
 }
 
@@ -256,9 +255,7 @@ const handleSubmitEdit = (event) => {
                         helperText="Please select Investment Name"
                       >
                         {investments.map((option) => (
-                          <option key={option.halai_investment} 
-                          value={option.halai_investment}
-                          >
+                          <option key={option.id} value={option.investment_type} >
                             {option.investment_type}
                           </option>
                         ))}
@@ -280,9 +277,7 @@ const handleSubmitEdit = (event) => {
                       onChange={handleChangeEdit}
                       variant="outlined"
                     />
-                  </Grid>                   
-             
-            
+                  </Grid>
               <Grid item md={10} xs={10}>
                 {savings &&
                     <div className="loader">   
@@ -292,15 +287,11 @@ const handleSubmitEdit = (event) => {
               <Button color="primary" onClick={handleSubmitEdit} variant="contained" >
                 Update 
               </Button>
-            {/* </Grid> */}
-            {/* <Grid> */}
               <Button onClick={handleClose} variant="contained" 
               style={{marginLeft:10, color:'white', backgroundColor:'red'}}>
                Cancel
           </Button>
           </Grid>
-        {/* </DialogActions> */}
-
           </form>}
             </CardContent>        
             <Divider /> 
@@ -361,8 +352,6 @@ const handleSubmitEdit = (event) => {
                   </TableRow>
                 )):
                 <TableRow>
-                <TableCell></TableCell>
-                <TableCell></TableCell>
                 <TableCell style={{textAlign:"center"}}>
                     No Record Found</TableCell>                
                 </TableRow>

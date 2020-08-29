@@ -1,76 +1,89 @@
 
 import { history } from '../logic';
 const serverVars = {
-  baseUrl: "https://api.cubevest.com/",
-  adminlogin:"api/admin/login",
-  authUrl: "api/auth/login",
-  adminsignup: "api/admin/signup",
-  resetPass: "api/admin/adminResetPassword",
-  recoverPassword: "api/admin/adminRecoverPassword",
-  adminChangePassword: "api/admin/adminChangePassword?token=",
-  disableUsers: "api/disableUsers/",
-  enableUsers: "api/enableUsers/",
-  getAllUsers: "api/getAllUsers?token=",
-  getAllDashboard: "api/getAllDashboard?token=",
-  getAdminShow:  "api/admin/adminShow?token=",
+  baseUrl: "https://api.cubevest.com/test/api/",
+  adminlogin:"admin/login",
+  adminsignup: "admin/signup",
+  resetPass: "admin/adminResetPassword",
+  recoverPassword: "admin/adminRecoverPassword",
+  adminChangePassword: "admin/adminChangePassword?token=",
+  disableUsers: "disableUsers/",
+  enableUsers: "enableUsers/",
+  getAllUsers: "getAllUsers?token=",
+  getAllDashboard: "getAllDashboard?token=",
+  getAdminShow:  "admin/adminShow?token=",
   // all regular savings
-  getAllTargetSavings:"api/allTargetsAdmin?token=",
-  adminShowAllCommission:"api/adminShowAllCommission?token=",
+  getAllTargetSavings:"allTargetsAdmin?token=",
+  adminShowAllCommission:"adminShowAllCommission?token=",
 
    // all regular savings
-   getSingleUserDetails:"api/singleUserDetails/",
-   regularSavingsTransactionsAdmin:"api/regularSavingsTransactionsAdmin/",
-   saveLoanTransactionsAdmin:"api/saveLoanTransactionsAdmin/",
-   targetTransactionsAdmin:"api/targetTransactionsAdmin/",
+   getSingleUserDetails:"singleUserDetails/",
+   regularSavingsTransactionsAdmin:"regularSavingsTransactionsAdmin/",
+   saveLoanTransactionsAdmin:"saveLoanTransactionsAdmin/",
+   targetTransactionsAdmin:"targetTransactionsAdmin/",
 
   // all save to loan savings
-  getAllSaveToLoanSavings:"api/saveLoanAdmin?token=",
+  getAllSaveToLoanSavings:"saveLoanAdmin?token=",
   
   // all regular savings
-  getAllRegularSavings:"api/regularSavingsAdmin?token=",
+  getAllRegularSavings:"regularSavingsAdmin?token=",
 
-  addHalalCategory:"api/save_halai_category/store?token=",
-  updateHalalCategory:"api/save_halai_category/update/", // id needed
-  getHalalCategory: "api/showHalaiCategoryAdmin?token=",
-  addHalalInvestment: "api/save_halai/store?token=",
-  updateHalalInvestment: "api/halai/update/", //id needed
-  getHalalInvestment: "api/showHalaiInvestments?token=",
-  getHalalCategoryName: "api/showHalaiCategories?token=",
-  addHalalNews: "api/save_halai_news/store?token=",
-  updateHalalNews: "api/save_halai_news/update/", // id needed
-  getHalalNews: "api/show_halai_news?token=",
-  getHalalNewsType: "api/showHalaiType?token=",
-  regularSavingsSearchAdmin: "api/regularSavingsSearchAdmin/B2?token=",
-  addMarketCategory: "api/save_category/store?token=",
-  showSingleCategory: "api/showSingleCategory/",
-  showSingleMarketNews: "api/showSingleMarketNews/",
-  showSingleHalaiNews: "api/showSingleHalaiNews/",
-  showSingleHalaiCategory: "api/showSingleHalaiCategory/",
-  deleteCategory: "api/deleteCategory/",
-  deleteMarketNews: "api/deleteMarketNews/",
-  deleteTargetCommission: "api/deleteTargetCommission/",
-  deleteHalaiNews: "api/deleteHalaiNews/",
-  deleteHalaiCategory: "api/deleteHalaiCategory/",
-  updateMarketCategory:"api/save_category/update/", // id needed
-  getMarketCategory: "api/showMarketCategoryAdmin?token=",
-  addMarketView: "api/save_investment/store?token=",
-  updateMarketView: "api/market_place/update/", // id needed
-  showMarketInvestments: "api/showMarketInvestments?token=",
-  showHalaiInvestments: "api/showHalaiInvestments?token=",
-  getMarketView: "api/getMarketView/",
-  getMarketCategoryName:  "api/showMarketCategoryAdmin?token=",
-  // getMarketCategoryName: "api/showMarketCategories?token=",
-  addMarketNews: "api/save_news/store?token=",
-  addAdmin: "api/admin/addAdmin?token=",
-  getSingleAdmin: "api/admin/fetchSingleAdmin/",
-  updateMarketNews: "api/save_news/update/", //id needed
-  updateAdmin: "api/admin/updateAdmin/", //id needed
-  getMarketNews: "api/show_market_news?token=",
-  getMarketNewsType: "api/showMarketType?token=",
-  modifyTargetCommission:'api/modifyTargetCommission/',
-  singleTargetCommission: "api/singleTargetCommission/",
-  addTargetCommission: "api/addTargetCommission?token=",
-  getLoansForApproval: "api/adminLoansForApproval?token=",
+  addHalalCategory:"save_halai_category/store?token=",
+  updateHalalCategory:"save_halai_category/update/", // id needed
+  getHalalCategory: "showHalaiCategoryAdmin?token=",
+  adminAddHalal: "save_halai/store",//save halal
+  updateHalalInvestment: "halai/update/", //id needed
+  getHalalInvestment: "showHalaiInvestments?token=",
+  getHalalCategoryName: "showHalaiCategories?token=",
+  addHalalNews: "save_halai_news/store?token=",
+  updateHalalNews: "save_halai_news/update/", // id needed
+  getHalalNews: "show_halai_news?token=",
+  getHalalNewsType: "showHalaiType?token=",
+  regularSavingsSearchAdmin: "regularSavingsSearchAdmin/B2?token=",
+  addMarketCategory: "save_category/store?token=",
+  showSingleCategory: "showSingleCategory/",
+  showSingleMarketNews: "showSingleMarketNews/",
+  showSingleHalaiNews: "showSingleHalaiNews/",
+  showSingleHalaiCategory: "showSingleHalaiCategory/",
+  deleteCategory: "deleteCategory/",
+  deleteMarketNews: "deleteMarketNews/",
+  deleteTargetCommission: "deleteTargetCommission/",
+  deleteHalaiNews: "deleteHalaiNews/",
+  deleteHalaiCategory: "deleteHalaiCategory/",
+  updateMarketCategory:"save_category/update/", // id needed
+  getMarketCategory: "showMarketCategoryAdmin?token=",
+  adminAddMarket: "save_investment/store?token=", // save market
+  updateMarketView: "market_place/update/", // id needed
+  showMarketInvestments: "showMarketInvestments?token=",
+  showHalaiInvestments: "showHalaiInvestments?token=",
+  getMarketView: "getMarketView/",
+  getMarketCategoryName:  "showMarketCategoryAdmin?token=",
+  getMarketCategoryType: "showMarketCategories?token=",
+  getHalalCategoryType: "showHalaiCategories?token=",
+  addMarketNews: "save_news/store?token=",
+  addAdmin: "admin/addAdmin?token=",
+  getSingleAdmin: "admin/fetchSingleAdmin/",
+  updateMarketNews: "save_news/update/", //id needed
+  updateAdmin: "admin/updateAdmin/", //id needed
+  disableAdmin: "admin/adminDisabled/", //id needed
+  enableAdmin: "admin/adminEnabled/", //id needed
+  transactions: "transaction?token=",
+  savingsData: "adminDashboardPieChart?token=",
+  histogramData: "adminDashboardhistogram?token=",
+  getMarketNews: "show_market_news?token=",
+  getMarketNewsType: "showMarketType?token=",
+  modifyTargetCommission:'modifyTargetCommission/',
+  singleTargetCommission: "singleTargetCommission/",
+  addTargetCommission: "addTargetCommission?token=",
+  getLoansForApproval: "adminLoansForApproval?token=",
+  getAllGuarantor:"adminViewAllGuarantorsPerLoan/",
+  getAllMarketInvestor:"allInvestmentsAdmin?token=",
+  getAllHalalInvestor:"allHalaiInvestmentsAdmin?token=",
+  getAllApprovedLoan:"adminAllUsersDatAvCollectedLoans?token=",
+  adminUpdateHalal:"halai/update/",
+  adminUpdateMarket:"market_place/update/",
+  
+
 };
 
 export const numberFormat = (value) =>
@@ -140,8 +153,8 @@ export function getConfig(apiName) {
     // Halal api
     case "addHalalCategory":
       return serverVars.baseUrl + serverVars.addHalalCategory +user.token;
-    case "addHalalInvestment":
-      return serverVars.baseUrl + serverVars.addHalalInvestment +user.token;
+    case "adminAddHalal":
+      return serverVars.baseUrl + serverVars.adminAddHalal;
     case "updateHalalInvestment":
       return serverVars.baseUrl + serverVars.updateHalalInvestment;
     case "getHalalCategory":
@@ -190,8 +203,8 @@ export function getConfig(apiName) {
       return serverVars.baseUrl + serverVars.deleteHalaiNews;      
     case "deleteTargetCommission":
       return serverVars.baseUrl + serverVars.deleteTargetCommission;  
-    case "addMarketView":
-      return serverVars.baseUrl + serverVars.addMarketView +user.token;
+    case "adminAddMarket":
+      return serverVars.baseUrl + serverVars.adminAddMarket +user.token;
     case "updateMarketView":
       return serverVars.baseUrl + serverVars.updateMarketView;
     case "getMarketCategory":
@@ -214,6 +227,16 @@ export function getConfig(apiName) {
       return serverVars.baseUrl + serverVars.updateMarketNews;
     case "updateAdmin":
       return serverVars.baseUrl + serverVars.updateAdmin;
+    case "disableAdmin":
+      return serverVars.baseUrl + serverVars.disableAdmin;
+    case "enableAdmin":
+      return serverVars.baseUrl + serverVars.enableAdmin;
+    case "transactions":
+      return serverVars.baseUrl + serverVars.transactions + user.token;
+    case "savingsData":
+      return serverVars.baseUrl + serverVars.savingsData + user.token;
+    case "histogramData":
+      return serverVars.baseUrl + serverVars.histogramData + user.token;
     case "modifyTargetCommission":
       return serverVars.baseUrl + serverVars.modifyTargetCommission;
     case "getMarketNews":
@@ -228,6 +251,22 @@ export function getConfig(apiName) {
       return serverVars.baseUrl + serverVars.singleTargetCommission;
     case "getLoansForApproval":
       return serverVars.baseUrl + serverVars.getLoansForApproval;
+    case "getAllGuarantor":
+      return serverVars.baseUrl + serverVars.getAllGuarantor;
+    case "getAllMarketInvestor":
+      return serverVars.baseUrl + serverVars.getAllMarketInvestor + user.token;
+    case "getAllHalalInvestor":
+      return serverVars.baseUrl + serverVars.getAllHalalInvestor + user.token;
+    case "getMarketCategoryType":
+      return serverVars.baseUrl + serverVars.getMarketCategoryType + user.token;
+    case "getHalalCategoryType":
+      return serverVars.baseUrl + serverVars.getHalalCategoryType + user.token;
+    case "getAllApprovedLoan":
+      return serverVars.baseUrl + serverVars.getAllApprovedLoan + user.token;
+    case "adminUpdateHalal":
+      return serverVars.baseUrl + serverVars.adminUpdateHalal + user.token;
+    case "adminUpdateMarket":
+      return serverVars.baseUrl + serverVars.adminUpdateMarket + user.token;
     default:
       return null;
   }

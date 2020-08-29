@@ -147,7 +147,7 @@ const UsersTable = props => {
 const [name,setName] = useState("");
 const [open, setOpen] = useState(false);
 const [isLoading, setIsLoading] = useState(true);
-const [details, setDetails] = useState();
+const [details, setDetails] = useState([]);
 const handleOpen = (id) => {
   setIsLoading(true)
   setOpen(true);
@@ -220,7 +220,6 @@ const handleSubmitEdit = (event) => {
           
       < Dialog
         open={open}
-        // TransitionComponent={Transition}
         fullWidth={true}
         maxWidth = {'xs'}
         keepMounted
@@ -231,7 +230,6 @@ const handleSubmitEdit = (event) => {
         <DialogTitle bold id="alert-dialog-slide-title">News</DialogTitle>  
         <Divider />     
         <DialogContent>
-          {/* <DialogContentText id="alert-dialog-slide-description" > */}
           <CardContent className={classes.content}>
           {isLoading? <Typography>Loading...</Typography>:
            <form  noValidate autoComplete="off" onSubmit={handleSubmitEdit}>
@@ -304,17 +302,6 @@ const handleSubmitEdit = (event) => {
           <Table>
             <TableHead>
               <TableRow>
-                {/* <TableCell padding="checkbox">
-                  <Checkbox
-                    checked={selectedUsers.length === users.length}
-                    color="primary"
-                    indeterminate={
-                      selectedUsers.length > 0 &&
-                      selectedUsers.length < users.length
-                    }
-                    onChange={handleSelectAll}
-                  />
-                </TableCell> */}
                 <TableCell>Enter By</TableCell>
                 <TableCell>Commission</TableCell>
                 <TableCell>Package Name</TableCell>
@@ -342,17 +329,8 @@ const handleSubmitEdit = (event) => {
                 key={user.id}
                 selected={selectedUsers.indexOf(user.id) !== -1}
               >
-                {/* <TableCell padding="checkbox">
-                  <Checkbox
-                    checked={selectedUsers.indexOf(user.id) !== -1}
-                    color="primary"
-                    onChange={event => handleSelectOne(event, user.id)}
-                    value="true"
-                  />
-                </TableCell> */}
                  <TableCell>{user.entered_by}</TableCell>
                  <TableCell>{user.commission}</TableCell>
-                {/* <TableCell>{numberFormat(user.amount)}</TableCell> */}
                 <TableCell>{user.package_name}</TableCell>
                 <TableCell>
                   {moment(user.created_at).format('DD/MM/YYYY')}

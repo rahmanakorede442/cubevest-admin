@@ -29,7 +29,8 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.up('lg')]: {
       marginTop: 64,
       height: 'calc(100% - 64px)'
-    }
+    },
+    backgroundColor:"#4fa648"
   },
   root: {
     backgroundColor: '#4fa648',
@@ -67,54 +68,19 @@ const Sidebar = props => {
       href: '/users',
       icon: <PeopleIcon />
     },
-    // {
-    //   title: 'Regular',
-    //   href: '/regular-savings',
-    //   icon: <PeopleIcon />
-    // },
-    // {
-    //   title: 'Target',
-    //   href: '/target-savings',
-    //   icon: <PeopleIcon />
-    // },
-    // {
-    //   title: 'Save To Loan',
-    //   href: '/save-to-loan-savings',
-    //   icon: <PeopleIcon />
-    // },
     {
       title: 'Savings',
       href: '/savings_tab',
       icon: <MoneyIcon />
     },
-    // {
-    //   title: 'Market Place',
-    //   href: '/market_tab',
-    //   icon: <ShoppingBasketIcon />
-    // },
-    // {
-    //   title: 'Investment',
-    //   href: '/halal_investment',
-    //   icon: <LockOpenIcon />
-    // },
     {
       title: 'Investment',
       href: '/investment_tab',
       icon: <BusinessCenterIcon />
     },
-    // {
-    //   title: 'Settings',
-    //   href: '/typography',
-    //   icon: <TextFieldsIcon />
-    // },
-    // {
-    //   title: 'Icons',
-    //   href: '/icons',
-    //   icon: <ImageIcon />
-    // },
     {
       title: 'Loan',
-      href: '/account',
+      href: '/loan',
       icon: <AccountBoxIcon />
     },
 
@@ -123,15 +89,9 @@ const Sidebar = props => {
       href: '/transactions',
       icon: <AccountBoxIcon />
     },
-    
-    {
-      title: 'Report',
-      href: '/report',
-      icon: <AssignmentIcon />
-    },
     {
       title: 'Activity Log',
-      href: '/#',
+      href: '/logs',
       icon: <AssignmentIcon />
     },
     {

@@ -7,7 +7,7 @@ import { withStyles } from "@material-ui/styles";
 import { getConfig, checkToken} from '../../../redux/config/config'
 import { authHeader } from '../../../redux/logic';
 import { SearchInput } from 'components';
-import { Grid, Card, Button, ButtonGroup, Hidden, Icon, Fab, CardActions } from '@material-ui/core';
+import { Grid, Card, Button, ButtonGroup, Hidden, Icon, Fab, CardActions, Typography } from '@material-ui/core';
 import UserAccount from './compnent/UserAccount/UserAccount';
 // import Loading from "matx/components/MatxLoading/MatxLoading";
 import swal from 'sweetalert'
@@ -19,8 +19,8 @@ import UserProfile from './compnent/UserAccount/UserProfile';
 
 class UserDetails extends Component {
   constructor(props){
-    // const id = this.props.match.params.id;
     super(props)
+    const id = this.props.match.params.id;
     this.state ={
       users: [],
       bank: [],
@@ -28,16 +28,14 @@ class UserDetails extends Component {
       loading: true,
       search: "",
       user_status:'',
-      open:false
+      open:false,
+      id
     }
-    // this.fetchUsers = this.fetchUsers.bind(this);
-    // this.fetchUsers();
     this.searchChange = this.searchChange.bind(this);
     this.handleEnable = this.handleEnable.bind(this);
     this.handleDeclaine = this.handleDeclaine.bind(this);
   }   
 
-  // fetchUsers = () =>{
   componentDidMount(){
     let user = JSON.parse(localStorage.getItem('admin'));
     const id = this.props.match.params.id;
@@ -62,7 +60,7 @@ class UserDetails extends Component {
     }else{
       this.setState({bank: data[1][0], loading:false });
     }
-    console.log(data[1][0])
+    console.log(data)
   })
 .catch(error => {
     if (error === "Unauthorized") {
@@ -70,13 +68,9 @@ class UserDetails extends Component {
        }
     this.setState({loading:false, err : "internet error" });
     console.error('There was an error!', error);
-});
+  });
 }
 
-// exitSavings = (id) =>{
-//   this.props.exitTargetSavings(id);
-//   this.setState({exit:"Loading..."})
-// }
 
 handleDeclaine = () => {
   const id = this.props.match.params.id;
@@ -122,11 +116,12 @@ searchChange(event) {
   this.setState({ search: value, users: value == "" ? all : all.filter((q)=>
   q.last_name.toLowerCase().indexOf(value.toLowerCase())  !== -1 
   || q.first_name.toLowerCase().indexOf(value.toLowerCase())  !== -1 
-  || q.frequency.toLowerCase().indexOf(value.toLowerCase())  !== -1 )});}
+  || q.frequency.toLowerCase().indexOf(value.toLowerCase())  !== -1 )});
+}
 
 render(){
   const {theme} = this.props
-  const {users, bank, loading, search, open} = this.state
+  const {users, bank, loading, search, open, id} = this.state
     return (
       <div style={{padding: theme.spacing(3)}}>
     
@@ -153,36 +148,44 @@ render(){
             >
               <UserAccount users={users} loading={loading}/>
               
-          <Grid style={{display:'flex'}}>
-              <CardActions>
-              <Link to="/users">
-                <Button
-                  color="secondary"
-                  variant="contained"
-                >
-                  Back
-                </Button> 
-                </Link>
-              </CardActions>
-              <CardActions>
-                {users.user_status == 1 ?
-                <Button
-                  style={{background:'red', color:'white'}}
-                  // color="secondary"
-                  variant="contained"
-                  // onClick={()=>this.exitSavings(user.id)}
-                  onClick={()=>this.handleDeclaine()}>Disable
-                </Button> :
-                <Button
-                  style={{color:'white',background:'blue'}}
-                  // color="secondary"
-                  variant="contained"
-                onClick={()=>this.handleEnable()}>Enable
-                </Button>
-                }
-              </CardActions>
+              <Grid style={{display:'flex'}}>
+                <CardActions>
+                <Link to="/users">
+                  <Button
+                    color="secondary"
+                    variant="contained"
+                  >
+                    Back
+                  </Button> 
+                  </Link>
+                </CardActions>
+                <CardActions>
+                  {users.user_status == 1 ?
+                  <Button
+                    style={{background:'red', color:'white'}}
+                    variant="contained"
+                    onClick={()=>this.handleDeclaine()}>Disable
+                  </Button> :
+                  <Button
+                    style={{color:'white',background:'blue'}}
+                    variant="contained"
+                  onClick={()=>this.handleEnable()}>Enable
+                  </Button>
+                  }
+                </CardActions>
               </Grid>
-           
+              <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <Typography variant="h6">Savings Account</Typography>
+                  <div className="py-5" />
+                  <Link to={`/regulardetails/${id}`}><Button style={{width:"100%"}} variant="outlined">Regular Savings</Button></Link>
+                  <Link to={`/target_details/${users.id}`}><Button style={{width:"100%"}} variant="outlined">Target Savings</Button></Link>
+                  <Link to={`/savetoloan_details/${id}`}><Button style={{width:"100%"}} variant="outlined">Save To Loan</Button></Link>
+                  <Typography variant="h6">Investments Account</Typography>
+                  <Link to="/"><Button style={{width:"100%"}} variant="outlined">Market Investment</Button></Link>
+                  <Link to="/"><Button style={{width:"100%"}} variant="outlined">Halal Investment</Button></Link>
+                  <Typography variant="h6">Loans</Typography>
+                  <Link to="/"><Button style={{width:"100%"}} variant="outlined">Loans</Button></Link>
+              </Grid>
             </Grid>
             <Grid
               item

@@ -7,8 +7,7 @@ import { withStyles, } from "@material-ui/styles";
 import { getConfig, checkToken, numberFormat } from '../../../redux/config/config'
 import { authHeader, history } from '../../../redux/logic';
 import { SearchInput } from 'components';
-
-import { UsersToolbar, UsersTable } from '../components/Savings';
+import { UsersToolbar, UsersTable } from '../components/Investment';
 import { Grid, Button } from '@material-ui/core';
 
 
@@ -31,7 +30,7 @@ class MarketPlace extends Component {
         method: 'GET',
         headers: { ...authHeader(), 'Content-Type': 'application/json' },
     };
-    fetch(getConfig('getMarketView'), requestOptions)
+    fetch(getConfig('getAllMarketInvestor'), requestOptions)
     .then(async response => {
     const data = await response.json();
     if (!response.ok) {

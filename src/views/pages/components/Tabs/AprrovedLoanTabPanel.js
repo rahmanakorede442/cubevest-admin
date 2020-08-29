@@ -6,10 +6,8 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import { UsersToolbar, UsersTable } from '../Savings';
-import RegularSavings from '../../RegularSavings';
-import TargetSavings from '../../TargetSavings';
-import SaveToLoanSavings from '../../SaveToLoanSavings';
+import Loan from '../../Loan';
+import LoanApproved from '../../Loan/LoanApproved';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -69,19 +67,15 @@ export default function SimpleTabs(props) {
         <AppBar position="static" style={{background:"#ffffff"}}>
           <Tabs value={value} onChange={handleChange} center aria-label="simple tabs example" 
             color="black" indicatorColor="primary" textColor="primary">
-            <Tab label="Regular Savings" {...a11yProps(0)} />
-            <Tab label="Target Savings" {...a11yProps(1)} />
-            <Tab label="Save To Loan" {...a11yProps(2)} />
+            <Tab label="Awaiting Loans" {...a11yProps(0)} />
+            <Tab label="Approved Loans" {...a11yProps(1)} />
           </Tabs>
         </AppBar>
         <TabPanel value={value} index={0}>
-          <RegularSavings/>
+        <Loan />
         </TabPanel>
         <TabPanel value={value} index={1}>
-          <TargetSavings/>           
-        </TabPanel>
-        <TabPanel value={value} index={2}>
-          <SaveToLoanSavings/>         
+        <LoanApproved/>           
         </TabPanel>
       </div>
     );

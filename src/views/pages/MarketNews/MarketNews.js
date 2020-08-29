@@ -42,16 +42,13 @@ class MarketNews extends Component {
     }
     
     this.fetchUsers = this.fetchUsers.bind(this);
-    this.fetchUsers();
     this.searchChange = this.searchChange.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    // this.handleSubmitEdit = this.handleSubmitEdit.bind(this);
-    // this.onChange = this.onChange.bind(this);
 
   }
 
-  fetchUsers = () =>{
+fetchUsers = () =>{
     const requestOptions = {
         method: 'GET',
         headers: { ...authHeader(), 'Content-Type': 'application/json' },
@@ -77,6 +74,7 @@ class MarketNews extends Component {
 
 
 componentDidMount() {
+  this.fetchUsers();
   const requestOptions = {
     method: 'GET',
     headers: { ...authHeader(), 'Content-Type': 'application/json' },
@@ -103,7 +101,8 @@ searchChange(event) {
   const { search, users, all } = this.state;
   
   this.setState({ search: value, users: value == "" ? all : all.filter((q)=>
-  q.posted_date.toLowerCase().indexOf(value.toLowerCase())  !== -1)});}
+  q.posted_date.toLowerCase().indexOf(value.toLowerCase())  !== -1)});
+}
 
 handleOpen= () =>{
     this.setState({open:true})
@@ -117,13 +116,12 @@ handleClose= () =>{
   const { name, value } = event.target;
   const { data } = this.state;
   
-      this.setState({
-          data: {
-              ...data,
-              [name]: value
-          }
-      });
-  
+    this.setState({
+        data: {
+            ...data,
+            [name]: value
+        }
+    }); 
 }
 
 handleSubmit(event) {
@@ -167,25 +165,19 @@ render(){
           style={{marginRight: theme.spacing(1), width:300, float:'left'}}
           placeholder="Search user"
         />
-         
-       <div style={{float:'right'}}>
-          {/* Modal */}
-          
+      <div style={{float:'right'}}>
+      {/* Modal */}
        < Dialog
         open={open}
-        // TransitionComponent={Transition}
         fullWidth={true}
         maxWidth = {'xs'}
         keepMounted
-        // value=""
         onClose={this.handleClose}
         aria-labelledby="alert-dialog-slide-title"
-        aria-describedby="alert-dialog-slide-description"
-      >
+        aria-describedby="alert-dialog-slide-description">
         <DialogTitle bold id="alert-dialog-slide-title">Add Market News</DialogTitle>  
         <Divider />     
         <DialogContent>
-          {/* <DialogContentText id="alert-dialog-slide-description" > */}
           <CardContent className="content">
             <form  noValidate autoComplete="off" onSubmit={this.handleSubmit}>
               <Grid >
@@ -196,7 +188,6 @@ render(){
                         select
                         variant="outlined"
                         value={data.market_investment} 
-                        // onChange={(e) => this.setState({market_investment: e.target.value})}
                         onChange={this.handleChange}
                         SelectProps={{
                           native: true,
@@ -258,11 +249,9 @@ render(){
         </DialogActions>
         </DialogContent>
       </Dialog>
-      
       {/* Modal */}
-      <div className="row">
+      {/* <div className="row">
         <span className="spacer" />
-        {/* <Button className="exportButton">Export</Button> */}
         <Button
           color="primary"
           variant="contained"
@@ -270,16 +259,13 @@ render(){
         >
           Add Market News
         </Button>
-      </div>
+      </div> */}
        </div>
        
        </div>
         <div style={{marginTop: theme.spacing(2)}}>
           <UsersTable users={users} loading={loading} investments={investments} />
         </div>
-        {/* <div style={{marginTop: theme.spacing(2)}}>
-          <CategoryTable users={users} />
-        </div> */}
       </div>
     );
   };

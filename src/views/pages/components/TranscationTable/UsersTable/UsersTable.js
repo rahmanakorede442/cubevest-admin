@@ -154,24 +154,12 @@ const UsersTable = props => {
             <Table>
               <TableHead>
                 <TableRow>
-                  {/* <TableCell padding="checkbox">
-                    <Checkbox
-                      checked={selectedUsers.length === users.length}
-                      color="primary"
-                      indeterminate={
-                        selectedUsers.length > 0 &&
-                        selectedUsers.length < users.length
-                      }
-                      onChange={handleSelectAll}
-                    />
-                  </TableCell> */}
                   <TableCell>Amount</TableCell>
                   <TableCell>Savings Type</TableCell>
                   <TableCell>Paystack ID</TableCell>
                   <TableCell>Payment Method</TableCell>
                   <TableCell>Transcation Type</TableCell>
                   <TableCell>Date</TableCell>
-                  {/* <TableCell>Action</TableCell> */}
                 </TableRow>
               </TableHead>
               <TableCell></TableCell>
@@ -202,13 +190,6 @@ const UsersTable = props => {
                     <TableCell>
                       {moment(user.created_at).format('DD/MM/YYYY')}
                     </TableCell>
-                    {/* <TableCell>
-                      <Link>
-                        <Button color="primary" variant="contained" 
-                        // onClick={()=> handleOpen(user.id)}
-                        > Details</Button>
-                      </Link>
-                    </TableCell> */}
                   </TableRow>
                 )):
                 <TableRow>

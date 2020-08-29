@@ -1,14 +1,5 @@
 import React, { useState, Component } from 'react';
 import { makeStyles } from '@material-ui/styles';
-import { withRouter } from "react-router-dom";
-import { adminActions } from "../../../../redux/action";
-import { connect } from "react-redux";
-import { withStyles } from "@material-ui/styles";
-import { getConfig, checkToken, numberFormat } from '../../../../redux/config/config'
-import { authHeader, history } from '../../../../redux/logic';
-// import { RegularSavings } from '../';
-// import { TargetSavings } from '../TargetSavings';
-// import { SaveToLoanSavings } from '../SaveToLoanSavings';
 import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import Typography from '@material-ui/core/Typography';
@@ -75,10 +66,6 @@ export default function SimpleTabs(props) {
      }
     return (
       <div className={classes.root} style={{alignItems:"center"}}>
-        {/* <Topbar onClick={togglemenu} back={true}/>   */}
-        {/* <div class="wrapper"> */}
-        {/* <Sidebar isOpened={opened}/> */}
-        {/* <div class="main_content"> */}
         <AppBar position="static" style={{background:"#ffffff"}}>
           <Tabs value={value} onChange={handleChange} center aria-label="simple tabs example" 
             color="black" indicatorColor="primary" textColor="primary">
@@ -92,11 +79,6 @@ export default function SimpleTabs(props) {
         <TabPanel value={value} index={1}>
         <Investment/>           
         </TabPanel>
-        <TabPanel value={value} index={2}>
-          <SaveToLoanSavings/>         
-        </TabPanel>
-        {/* </div> */}
-      {/* </div> */}
       </div>
     );
   }

@@ -1,15 +1,15 @@
 import React, { Component } from 'react'
-import SimpleTabs from '../components/Tabs/RegularTabsPanel'
-import { adminActions } from "../../../redux/action";
+import ApprovedLoanTabPanel from '../../../components/Tabs/AprrovedLoanTabPanel'
+// import { adminActions } from "../../../redux/action";
 import { withStyles } from "@material-ui/styles";
 import { withRouter } from "react-router-dom";
 import { connect } from 'react-redux';
 
-class SavingsTab extends Component {
+class ApprovedLoanTab extends Component {
     render() {
         return (
             <div>
-                <SimpleTabs />
+              <ApprovedLoanTabPanel />
             </div>
         )
     }
@@ -22,10 +22,10 @@ function mapState(state) {
   }
   
   const actionCreators = {
-    saveWallet: adminActions.saveWallet,
-    logout: adminActions.logout,
+    // saveWallet: adminActions.saveWallet,
+    // logout: adminActions.logout,
   };
   
   export default withStyles({}, { withTheme: true })(
-    withRouter(connect(mapState,  actionCreators)(SavingsTab))
+    withRouter(connect(mapState,  actionCreators)(ApprovedLoanTab))
   );

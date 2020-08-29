@@ -17,6 +17,8 @@ export const adminActions = {
   adminUpdateMarketCategory,
   adminUpdateMarketNews,
   updateAdmin,
+  disableAdmin,
+  enableAdmin,
   modifyTargetCommission,
   adminUpdateHalalNews,
   regularSavingsTransactionsAdmin,
@@ -31,6 +33,8 @@ export const adminActions = {
   adminAddMarketCategory,
   adminAddHalalCategory,
   adminAddHalal,
+  adminUpdateMarket,
+  adminUpdateHalal,
   adminAddHalalNews,
   addAdmin,
   adminAddMarketNews,
@@ -43,8 +47,14 @@ function adminlogin(username, password) {
 
     adminService.adminlogin(username, password).then(
       (user) => {
-        dispatch(success(user));
-        history.push("/dashboard");
+        
+        if(user.status){
+          dispatch(success(user));
+          history.push("/dashboard");
+        }else{
+          dispatch(success(user));
+          dispatch(alertActions.error(user.message));
+        }
       },
       (error) => {
         dispatch(failure(error.toString()));
@@ -67,14 +77,15 @@ function adminlogin(username, password) {
 function adminAddMarket(user) {
   return (dispatch) => {
     dispatch(request(user));
-
     adminService.adminAddMarket(user).then(
       (user) => {
         dispatch(success());
-        history.push("/admin/market_view");
-        dispatch(
-          alertActions.success("New Market Investment Added")
-        );
+        history.push("/market_investment");
+        if(user.success){
+          dispatch( alertActions.success(user.message) );
+        }else{
+          dispatch( alertActions.success("adding investment failed") );
+        }
       },
       (error) => {
         dispatch(failure(error.toString()));
@@ -93,18 +104,45 @@ function adminAddMarket(user) {
     return { type: userConstants.SAVINGS_FAILURE, error };
   }
 }
+
+function adminUpdateMarket(user) {
+  return (dispatch) => {
+    console.log(user)
+    dispatch(request(user));
+    adminService.adminUpdateMarket(user).then(
+      (user) => {
+        dispatch(success());
+        history.push("/halal_investment");
+        dispatch( alertActions.success(user.message));
+      },
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.error(error));
+      }
+    );
+  };
+
+  function request(user) {
+    return { type: userConstants.SAVINGS_REQUEST, user };
+  }
+  function success(user) {
+    return { type: userConstants.SAVINGS_SUCCESS, user };
+  }
+  function failure(error) {
+    return { type: userConstants.SAVINGS_FAILURE, error };
+  }
+}
+
 
 function adminAddHalal(user) {
   return (dispatch) => {
+    console.log(user)
     dispatch(request(user));
-
     adminService.adminAddHalal(user).then(
       (user) => {
         dispatch(success());
-        history.push("/admin/market_view");
-        dispatch(
-          alertActions.success("New Market Investment Added")
-        );
+        history.push("/halal_investment");
+        dispatch( alertActions.success(user.message));
       },
       (error) => {
         dispatch(failure(error.toString()));
@@ -123,6 +161,35 @@ function adminAddHalal(user) {
     return { type: userConstants.SAVINGS_FAILURE, error };
   }
 }
+
+function adminUpdateHalal(user) {
+  return (dispatch) => {
+    console.log(user)
+    dispatch(request(user));
+    adminService.adminUpdateHalal(user).then(
+      (user) => {
+        dispatch(success());
+        history.push("/halal_investment");
+        dispatch( alertActions.success(user.message));
+      },
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.error(error));
+      }
+    );
+  };
+
+  function request(user) {
+    return { type: userConstants.SAVINGS_REQUEST, user };
+  }
+  function success(user) {
+    return { type: userConstants.SAVINGS_SUCCESS, user };
+  }
+  function failure(error) {
+    return { type: userConstants.SAVINGS_FAILURE, error };
+  }
+}
+
 
 function addTargetCommission(user) {
   return (dispatch) => {
@@ -375,8 +442,71 @@ function updateAdmin(user) {
   }
 }
 
-function modifyTargetCommission(user) {
+function disableAdmin(user) {
   console.log(user)
+  return (dispatch) => {
+    dispatch(request(user));
+
+    adminService.disableAdmin(user).then(
+      (user) => {
+        dispatch(success());
+        history.push("/admin");
+        dispatch(
+          alertActions.success(user.message)
+        );
+        window.location.reload();
+      },
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.error(error));
+      }
+    );
+  };
+
+  function request(user) {
+    return { type: userConstants.SAVINGS_REQUEST, user };
+  }
+  function success(user) {
+    return { type: userConstants.SAVINGS_SUCCESS, user };
+  }
+  function failure(error) {
+    return { type: userConstants.SAVINGS_FAILURE, error };
+  }
+}
+
+function enableAdmin(user) {
+  console.log(user)
+  return (dispatch) => {
+    dispatch(request(user));
+
+    adminService.enableAdmin(user).then(
+      (user) => {
+        dispatch(success());
+        history.push("/admin");
+        dispatch(
+          alertActions.success(user.message)
+        );
+        window.location.reload();
+      },
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.error(error));
+      }
+    );
+  };
+
+  function request(user) {
+    return { type: userConstants.SAVINGS_REQUEST, user };
+  }
+  function success(user) {
+    return { type: userConstants.SAVINGS_SUCCESS, user };
+  }
+  function failure(error) {
+    return { type: userConstants.SAVINGS_FAILURE, error };
+  }
+}
+
+function modifyTargetCommission(user) {
   return (dispatch) => {
     dispatch(request(user));
 
