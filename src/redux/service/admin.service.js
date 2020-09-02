@@ -38,6 +38,7 @@ export const adminService = {
   enableAdmin,
   adminAddHalalCategory,
   addTargetCommission,
+  adminApproveLoans,
   update,
   delete: _delete,
 };
@@ -72,114 +73,64 @@ function adminregister(user) {
 }
 
 // Add Halal
-function adminAddHalal(data) {
-  let fd = new FormData();
-  fd.append('investment_pic', data.investment_pic);
-  fd.append('expected_returns', data.expected_returns);
-  fd.append('current_values', data.current_values);
-  fd.append('maturity_date', data.maturity_date);
-  fd.append('start_date', data.start_date);
-  fd.append('application_date', data.application_date);
-  fd.append('payout_type', data.payout_type);
-  fd.append('unit_type', data.unit_type);
-  fd.append('insurance_partner', data.insurance_partner);
-  fd.append('investment_type', data.investment_type);
-  fd.append('category', data.category);
-   const headers =  { ...authHeader(), "Content-Type": "application/json" }
+function adminAddHalal(fd) {
+  const headers =  { ...authHeader(), "Content-Type": "application/json" }
   return axios.post(getConfig("adminAddHalal"), fd, {headers}).then((res) => {
-    console.log(res.data)
-    if (!res.ok) {
-      const error = (data && data.message) || res.statusText;
-      if (error === "Unauthorized") {
+    if(res.data == "Unauthorized"){
         history.push("/sign-in");
-      }
-      return Promise.reject(error);
     }
     return res.data
   })
 }
 
 // Update Halal
-function adminUpdateHalal(data) {
-  let fd = new FormData();
-  fd.append('investment_pic', data.investment_pic);
-  fd.append('expected_returns', data.expected_returns);
-  fd.append('current_values', data.current_values);
-  fd.append('maturity_date', data.maturity_date);
-  fd.append('start_date', data.start_date);
-  fd.append('application_date', data.application_date);
-  fd.append('payout_type', data.payout_type);
-  fd.append('unit_type', data.unit_type);
-  fd.append('insurance_partner', data.insurance_partner);
-  fd.append('investment_type', data.investment_type);
-  fd.append('category', data.category);
-   const headers =  { ...authHeader(), "Content-Type": "application/json" }
-  return axios.post(getConfig("adminUpdateHalal"), fd, {headers}).then((res) => {
-    console.log(res.data)
-    if (!res.ok) {
-      const error = (data && data.message) || res.statusText;
-      if (error === "Unauthorized") {
-        history.push("/sign-in");
-      }
-      return Promise.reject(error);
+function adminUpdateHalal(fd, id) {
+  let user = JSON.parse(localStorage.getItem('admin'));
+  const headers =  { ...authHeader(), "Content-Type": "application/json" }
+  return axios.post(getConfig("adminUpdateHalal")+id +"?token="+user.token, fd, {headers}).then((res) => {
+    if(res.data == "Unauthorized"){
+          history.push("/sign-in");
     }
     return res.data
   })
 }
 
 // Add market
-function adminAddMarket(data) {
-  let fd = new FormData();
-  fd.append('investment_pic', data.investment_pic);
-  fd.append('expected_returns', data.expected_returns);
-  fd.append('current_values', data.current_values);
-  fd.append('maturity_date', data.maturity_date);
-  fd.append('start_date', data.start_date);
-  fd.append('application_date', data.application_date);
-  fd.append('payout_type', data.payout_type);
-  fd.append('unit_type', data.unit_type);
-  fd.append('insurance_partner', data.insurance_partner);
-  fd.append('investment_type', data.investment_type);
-  fd.append('investment_category', data.category);
-   const headers =  { ...authHeader(), "Content-Type": "application/json" }
+function adminAddMarket(fd) {
+  const headers =  { ...authHeader(), "Content-Type": "application/json" }
   return axios.post(getConfig("adminAddMarket"), fd, {headers}).then((res) => {
-    console.log(res.data)
-    return res.data
-  })
-  .catch((error) => {
-    console.error(error.response)
-  });
-}
-
-// Update Market
-function adminUpdateMarket(data) {
-  let fd = new FormData();
-  fd.append('investment_pic', data.investment_pic);
-  fd.append('expected_returns', data.expected_returns);
-  fd.append('current_values', data.current_values);
-  fd.append('maturity_date', data.maturity_date);
-  fd.append('start_date', data.start_date);
-  fd.append('application_date', data.application_date);
-  fd.append('payout_type', data.payout_type);
-  fd.append('unit_type', data.unit_type);
-  fd.append('insurance_partner', data.insurance_partner);
-  fd.append('investment_type', data.investment_type);
-  fd.append('category', data.category);
-   const headers =  { ...authHeader(), "Content-Type": "application/json" }
-  return axios.post(getConfig("adminUpdateMarket"), fd, {headers}).then((res) => {
-    console.log(res.data)
-    if (!res.ok) {
-      const error = (data && data.message) || res.statusText;
-      if (error === "Unauthorized") {
-        history.push("/sign-in");
-      }
-      return Promise.reject(error);
+    if(res.data == "Unauthorized"){
+          history.push("/sign-in");
     }
     return res.data
   })
 }
 
-// Update market
+// Update Market
+function adminUpdateMarket(fd, id) {
+  let user = JSON.parse(localStorage.getItem('admin'));
+  const headers =  { ...authHeader(), "Content-Type": "application/json" }
+  return axios.post(getConfig("adminUpdateMarket")+id +"?token="+user.token, fd, {headers}).then((res) => {
+    if(res.data == "Unauthorized"){
+        history.push("/sign-in");
+    }
+    return res.data
+  })
+}
+
+// Approve Loan 
+function adminApproveLoans(data) {
+  const requestOptions = {
+    method: "POST",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  };
+  return fetch(getConfig("adminApproveLoans"), requestOptions).then(
+    handleResponse
+  );
+}
+
+// Update market category
 function adminUpdateMarketCategory(data) {
   let user = JSON.parse(localStorage.getItem('admin'));
   const requestOptions = {

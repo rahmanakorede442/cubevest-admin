@@ -158,6 +158,12 @@ const Routes = () => {
         path="/loan"
       />
       <RouteWithLayout
+        component={ApprovedLoanTabView}
+        exact
+        layout={MainLayout}
+        path="/loan-approved"
+      />
+      <RouteWithLayout
         component={ReportView}
         exact
         layout={MainLayout}

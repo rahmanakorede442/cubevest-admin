@@ -32,6 +32,10 @@ class Dashboard extends Component{
     this.state={
         transactions:[],
         savingsData:[],
+        histogramSavings:"",
+        histogramLoans:"",
+        histogramMarkets:"",
+        loans:[],
         count_users: 0,
         savings_balance: 0,
         save_loans:0,
@@ -47,19 +51,21 @@ class Dashboard extends Component{
     }
     this.fetchUsers = this.fetchUsers.bind(this);
     this.fetchTransac = this.fetchTransac.bind(this);
+    this.fetchLoanApproved = this.fetchLoanApproved.bind(this);
     
   }
 
 componentDidMount(){
+  const requestOptions = {
+    method: 'GET',
+    headers: { ...authHeader(), 'Content-Type': 'application/json' },
+};
+  this.fetchUsers(requestOptions);
+  this.fetchLoanApproved(requestOptions)
   this.fetchTransac();
-  this.fetchUsers();
 }
 
-fetchUsers = () =>{
-    const requestOptions = {
-        method: 'GET',
-        headers: { ...authHeader(), 'Content-Type': 'application/json' },
-    };
+fetchUsers = (requestOptions) =>{
   fetch(getConfig('getAllDashboard'), requestOptions)
     .then(async response => {
     const data = await response.json();
@@ -71,6 +77,23 @@ fetchUsers = () =>{
     this.setState({count_users: data[0], savings_balance:data[1], save_loans:data[2],
        target_balance:data[3],market_balance:data[4],halal_balance:data[5], wallet_balance:data[6]});
 })
+.catch(error => {
+    if (error === "Unauthorized") {
+        this.props.logout();
+       }
+    this.setState({loading:false });
+});
+
+fetch(getConfig('histogramData'), requestOptions)
+    .then(async response => {
+    const data = await response.json();
+    if (!response.ok) {
+        this.setState({loading:false });
+        const error = (data && data.message) || response.statusText;
+        return Promise.reject(error);
+    }
+    this.setState({histogramSavings: Object.values(data.month.savings), histogramLoans: Object.values(data.month.loan), histogramMarkets: Object.values(data.month.market) })
+  })
 .catch(error => {
     if (error === "Unauthorized") {
         this.props.logout();
@@ -98,11 +121,34 @@ fetch(getConfig('savingsData'), requestOptions)
 
 }
 
+fetchLoanApproved = (requestOptions)=>{
+  fetch(getConfig('getAllApprovedLoan'), requestOptions)
+  .then(async response => {
+  const data = await response.json();
+  if (!response.ok) {
+      const error = (data && data.message) || response.statusText;
+      return Promise.reject(error);
+  }
+  console.log(data)
+  if (data.success == false){
+    this.setState({loans:[]});
+  }else{
+    this.setState({loans:data});
+  }
+
+})
+.catch(error => {
+  if (error === "Unauthorized") {
+        this.props.logout()
+     }
+  this.setState({loading:false});
+});
+}
+
 fetchTransac = () =>{
   const requestOptions = {
       method: 'POST',
       headers: { ...authHeader(), 'Content-Type': 'application/json' },
-      // body: JSON.stringify(data),
   };
   fetch(getConfig('transactions'), requestOptions)
   .then(async response => {
@@ -123,7 +169,7 @@ fetchTransac = () =>{
 }
 render(){
   const {theme} = this.props
-  const {count_users,savings_balance, loading, transactions, save_loans,target_balance,wallet_balance,market_balance,halal_balance, savingsData} = this.state
+  const {count_users,savings_balance, loading, transactions, histogramSavings, histogramLoans, histogramMarkets, loans, save_loans,target_balance,wallet_balance,market_balance,halal_balance, savingsData} = this.state
   return (
     <div style={{padding: theme.spacing(4)}}>
       <Grid
@@ -201,8 +247,13 @@ render(){
           xl={9}
           xs={12}
         >
-          <LatestSales />
+          <LatestSales savings={histogramSavings} loans={histogramLoans} markets={histogramMarkets} />
         </Grid>
+        {savingsData.length == 0 ?
+        <img
+        style={{width:10, height:10, alignItems:"center"}}
+        src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
+        />:
         <Grid
           item
           lg={4}
@@ -211,16 +262,16 @@ render(){
           xs={12}
         >
           <UsersByDevice savingsData={savingsData}/>
-        </Grid>
-        <Grid
+        </Grid>}
+        {loans.length != 0 && <Grid
           item
           lg={4}
           md={6}
           xl={3}
           xs={12}
         >
-          <LatestProducts />
-        </Grid>
+          <LatestProducts loans={loans}/>
+        </Grid>}
         <Grid
           item
           lg={8}
@@ -228,7 +279,6 @@ render(){
           xl={9}
           xs={12}
         >
-          {/* <TransactionTable users={transactions} /> */}
           <LatestOrders users={transactions} loading={loading}/>
         </Grid>
       </Grid>

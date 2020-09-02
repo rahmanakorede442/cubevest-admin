@@ -1,1 +1,1 @@
-export { default as ApprovedLoanTab} from './ApprovedLoanTab';
+export { default} from './ApprovedLoanTab';

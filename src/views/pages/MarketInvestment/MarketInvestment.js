@@ -80,6 +80,7 @@ fetchUsers = () =>{
         const error = (data && data.message) || response.statusText;
         return Promise.reject(error);
     }
+    console.log(data)
     this.setState({users: data, all:data.data, loading:false });
 })
 .catch(error => {
@@ -146,10 +147,10 @@ render(){
           style={{marginRight: theme.spacing(1), width:300, float:'left'}}
           placeholder="Search user"
         />
-        <UsersToolbar style={{float:'right'}} adminAddInvestment={this.props.adminAddMarket} loader={this.props.savings}/>
+        <UsersToolbar style={{float:'right'}} category={"getMarketCategoryType"} adminAddInvestment={this.props.adminAddMarket} loader={this.props.savings}/>
         </div>
         <div style={{marginTop: theme.spacing(2)}}>
-          <UsersTable users={users} loading={loading} handleOpen={this.handleOpen}/>
+          <UsersTable users={users} loading={loading} data={"singleMarketInvestment"} category={"getMarketCategoryType"} loader={this.props.savings} adminUpdateInvestment={this.props.adminUpdateMarket} handleOpen={this.handleOpen}/>
         </div>
         <Dialog
             open={open_news}
@@ -232,7 +233,6 @@ render(){
         </DialogActions>
         </DialogContent>
       </Dialog>
-      
       </div>
     );
   };
@@ -245,6 +245,7 @@ function mapState(state) {
 const actionCreators = {
   adminAddMarketNews: adminActions.adminAddMarketNews,
   adminAddMarket: adminActions.adminAddMarket,
+  adminUpdateMarket: adminActions.adminUpdateMarket,
   logout: adminActions.logout,
 };
 

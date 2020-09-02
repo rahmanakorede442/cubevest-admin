@@ -14,7 +14,7 @@ import {
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 
-import { data, options } from './chart';
+import { options } from './chart';
 
 const useStyles = makeStyles(() => ({
   root: {},
@@ -28,25 +28,43 @@ const useStyles = makeStyles(() => ({
 }));
 
 const LatestSales = props => {
-  const { className, ...rest } = props;
-
+  const { savings, markets, loans, className, ...rest } = props;
   const classes = useStyles();
-
+  const data = {
+    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
+    datasets: [
+      {
+        label: 'Savings',
+        backgroundColor: "blue",
+        data: savings
+      },
+      {
+        label: 'Investments',
+        backgroundColor: "yellow",
+        data: markets
+      },
+      {
+        label: 'Loans',
+        backgroundColor: "red",
+        data: loans
+      }
+    ]
+  };
   return (
     <Card
       {...rest}
       className={clsx(classes.root, className)}
     >
       <CardHeader
-        action={
-          <Button
-            size="small"
-            variant="text"
-          >
-            Last 7 days <ArrowDropDownIcon />
-          </Button>
-        }
-        title="Latest Sales"
+        // action={
+        //   <Button
+        //     size="small"
+        //     variant="text"
+        //   >
+        //       <ArrowDropDownIcon />
+        //   </Button>
+        // }
+        title="Monthly Statistic"
       />
       <Divider />
       <CardContent>
@@ -58,15 +76,6 @@ const LatestSales = props => {
         </div>
       </CardContent>
       <Divider />
-      <CardActions className={classes.actions}>
-        <Button
-          color="primary"
-          size="small"
-          variant="text"
-        >
-          Overview <ArrowRightIcon />
-        </Button>
-      </CardActions>
     </Card>
   );
 };

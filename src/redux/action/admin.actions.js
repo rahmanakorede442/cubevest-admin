@@ -38,7 +38,8 @@ export const adminActions = {
   adminAddHalalNews,
   addAdmin,
   adminAddMarketNews,
-  addTargetCommission
+  addTargetCommission,
+  adminApproveLoans
   };
 
 function adminlogin(username, password) {
@@ -80,12 +81,9 @@ function adminAddMarket(user) {
     adminService.adminAddMarket(user).then(
       (user) => {
         dispatch(success());
-        history.push("/market_investment");
-        if(user.success){
-          dispatch( alertActions.success(user.message) );
-        }else{
-          dispatch( alertActions.success("adding investment failed") );
-        }
+        window.location.reload()
+        dispatch( alertActions.success(user.message) );
+        
       },
       (error) => {
         dispatch(failure(error.toString()));
@@ -105,14 +103,13 @@ function adminAddMarket(user) {
   }
 }
 
-function adminUpdateMarket(user) {
+function adminUpdateMarket(user, id) {
   return (dispatch) => {
-    console.log(user)
     dispatch(request(user));
-    adminService.adminUpdateMarket(user).then(
+    adminService.adminUpdateMarket(user, id).then(
       (user) => {
         dispatch(success());
-        history.push("/halal_investment");
+        window.location.reload()
         dispatch( alertActions.success(user.message));
       },
       (error) => {
@@ -133,15 +130,13 @@ function adminUpdateMarket(user) {
   }
 }
 
-
 function adminAddHalal(user) {
   return (dispatch) => {
-    console.log(user)
     dispatch(request(user));
     adminService.adminAddHalal(user).then(
       (user) => {
         dispatch(success());
-        history.push("/halal_investment");
+        window.location.reload()
         dispatch( alertActions.success(user.message));
       },
       (error) => {
@@ -162,14 +157,13 @@ function adminAddHalal(user) {
   }
 }
 
-function adminUpdateHalal(user) {
+function adminUpdateHalal(user, id) {
   return (dispatch) => {
-    console.log(user)
     dispatch(request(user));
-    adminService.adminUpdateHalal(user).then(
+    adminService.adminUpdateHalal(user, id).then(
       (user) => {
         dispatch(success());
-        history.push("/halal_investment");
+        window.location.reload()
         dispatch( alertActions.success(user.message));
       },
       (error) => {
@@ -190,6 +184,33 @@ function adminUpdateHalal(user) {
   }
 }
 
+function adminApproveLoans(user) {
+  return (dispatch) => {
+    dispatch(request(user));
+    adminService.adminApproveLoans(user).then(
+      (user) => {
+        dispatch(success());
+        history.push("/loan");
+        window.location.reload()
+        dispatch( alertActions.success(user.message));
+      },
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.error(error));
+      }
+    );
+  };
+
+  function request(user) {
+    return { type: userConstants.SAVINGS_REQUEST, user };
+  }
+  function success(user) {
+    return { type: userConstants.SAVINGS_SUCCESS, user };
+  }
+  function failure(error) {
+    return { type: userConstants.SAVINGS_FAILURE, error };
+  }
+}
 
 function addTargetCommission(user) {
   return (dispatch) => {

@@ -49,8 +49,8 @@ const UsersToolbar = props => {
   const uploadedImage = React.createRef();
   const imageUploader = React.createRef();
   const [data, setData] = useState({
-    expected_returns:"1000", current_values:"100", maturity_date:"2020-08-29", start_date:"2020-08-29", application_date:"2020-08-29", unit_type:"100",
-    investment_type:"Fishing", category:"Agriculture", insurance_partner:"Aiico", payout_type:"Wallet", investment_pic:null});
+    expected_returns:"", current_values:"", maturity_date:"", start_date:"", application_date:"", unit_type:"",
+    investment_type:"", category_name:"", insurance_partner:"", payout_type:"", investment_pic:null});
   const [category, setcategory] = useState([]);
   
   const [open, setOpen] = React.useState(false);
@@ -59,7 +59,7 @@ const UsersToolbar = props => {
         method: 'GET',
         headers: { ...authHeader(), 'Content-Type': 'application/json' },
       };
-      fetch(getConfig('getHalalCategoryType'), requestOptions)
+      fetch(getConfig(props.category), requestOptions)
       .then(async response => {
       const data = await response.json();
       if (!response.ok) {
@@ -82,8 +82,20 @@ const UsersToolbar = props => {
 
 const handleSubmit = (event)=>{
   event.preventDefault();
+  let fd = new FormData();
+  fd.append('investment_pic', data.investment_pic);
+  fd.append('expected_returns', data.expected_returns);
+  fd.append('current_values', data.current_values);
+  fd.append('maturity_date', data.maturity_date);
+  fd.append('start_date', data.start_date);
+  fd.append('application_date', data.application_date);
+  fd.append('payout_type', data.payout_type);
+  fd.append('unit_type', data.unit_type);
+  fd.append('insurance_partner', data.insurance_partner);
+  fd.append('investment_type', data.investment_type);
+  fd.append('category_name', data.category_name);
   if(data.investment_pic != null){
-    props.adminAddInvestment(data);
+    props.adminAddInvestment(fd);
   }else{
     swal("please add image to upload")
   }
@@ -200,6 +212,7 @@ const handleChange = (event) =>{
                   native: true,
                 }}
                 variant="outlined">
+                  <option></option>
                   <option value="Debit Card">Debit Card</option>
                   <option value="Wallet">Wallet</option>
               </TextValidator>
@@ -234,17 +247,18 @@ const handleChange = (event) =>{
                 select
                 placeholder="Investment Category"
                 margin="dense"
-                name="category"
+                name="category_name"
                 validators={[
                     "required"
                   ]}
-                value={data.category}
+                value={data.category_name}
                 variant="outlined"
                 SelectProps={{
                   native: true,
                 }}
                 helperText="Please select Investment Category"
                 onChange={handleChange}>
+                  <option></option>
                   {category.map((option) => (
                     <option key={option.id} 
                     value={option.category_name}>

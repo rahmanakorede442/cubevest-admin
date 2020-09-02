@@ -19,6 +19,7 @@ import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 import mockData from './data';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -41,55 +42,53 @@ const LatestProducts = props => {
 
   const classes = useStyles();
 
-  const [products] = useState(mockData);
-
   return (
     <Card
       {...rest}
       className={clsx(classes.root, className)}
     >
       <CardHeader
-        subtitle={`${products.length} in total`}
-        title="Latest products"
+        subtitle={`${props.loans.length} in total`}
+        title="Approved Loans"
       />
       <Divider />
       <CardContent className={classes.content}>
         <List>
-          {products.map((product, i) => (
+          {props.loans.map((product, i) => (
             <ListItem
-              divider={i < products.length - 1}
+              divider={i < props.loans.length - 1}
               key={product.id}
             >
-              <ListItemAvatar>
+              {/* <ListItemAvatar>
                 <img
                   alt="Product"
                   className={classes.image}
                   src={product.imageUrl}
                 />
-              </ListItemAvatar>
+              </ListItemAvatar> */}
               <ListItemText
-                primary={product.name}
-                secondary={`Updated ${product.updatedAt.fromNow()}`}
+                primary={product.first_name + " " + product.last_name}
+                secondary={`Updated ${product.start_date}`}
               />
-              <IconButton
+              {/* <IconButton
                 edge="end"
                 size="small"
               >
                 <MoreVertIcon />
-              </IconButton>
+              </IconButton> */}
             </ListItem>
           ))}
         </List>
       </CardContent>
       <Divider />
       <CardActions className={classes.actions}>
-        <Button
+        <Link to="/loan-approved"><Button
           color="primary"
           size="small"
           variant="text"
         >
           View all <ArrowRightIcon />
-        </Button>
+        </Button></Link>
       </CardActions>
     </Card>
   );

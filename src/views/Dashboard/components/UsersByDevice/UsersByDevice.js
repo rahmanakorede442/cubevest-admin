@@ -14,9 +14,6 @@ import {
 import MoneyIcon from '@material-ui/icons/Money';
 import PaymentsIcon from '@material-ui/icons/Payment';
 import TrackChangesIcon from '@material-ui/icons/TrackChanges';
-import PhoneIphoneIcon from '@material-ui/icons/PhoneIphone';
-import RefreshIcon from '@material-ui/icons/Refresh';
-import TabletMacIcon from '@material-ui/icons/TabletMac';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -43,14 +40,16 @@ const useStyles = makeStyles(theme => ({
 const UsersByDevice = props => {
   const { className, savingsData, ...rest } = props;
   let total = savingsData.regular_savings +savingsData.target_savings + savingsData.save_loan
-
+  let regular = Math.round((savingsData.regular_savings/total)*100);
+  let target = Math.round((savingsData.target_savings/total)*100);
+  let loan = Math.round((savingsData.save_loan/total)*100);
   const classes = useStyles();
   const theme = useTheme();
 
   const data = {
     datasets: [
       {
-        data: [63, 15, 22],
+        data: [regular, target, loan],
         backgroundColor: [
           theme.palette.primary.main,
           theme.palette.error.main,
@@ -89,19 +88,19 @@ const UsersByDevice = props => {
   const devices = [
     {
       title: 'Regular',
-      value: Math.round((savingsData.regular_savings/total)*100),
+      value: regular,
       icon: <MoneyIcon />,
       color: theme.palette.primary.main
     },
     {
       title: 'Target',
-      value: Math.round((savingsData.target_savings/total)*100),
+      value: target,
       icon: <TrackChangesIcon />,
       color: theme.palette.error.main
     },
     {
       title: 'Save To Loan',
-      value: Math.round((savingsData.save_loan/total)*100),
+      value: loan,
       icon: <PaymentsIcon />,
       color: theme.palette.warning.main
     }

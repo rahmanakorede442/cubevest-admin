@@ -61,8 +61,9 @@ fetchUsers = () =>{
   console.log(data)
   if (data.success == false){
     this.setState({users:[], loading:false });
+  }else{
+    this.setState({users:data, loading:false });
   }
-  this.setState({users:data, loading:false });
 
 })
 .catch(error => {
@@ -140,7 +141,7 @@ render(){
           md={12}
           xs={12}
         >
-          <UsersTable users={users} loading={loading}/>
+          <UsersTable users={users} loading={loading} status={true}/>
         </Grid>
       </Grid>
     </div>

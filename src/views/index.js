@@ -2,7 +2,7 @@ import { SavingsTab } from './pages/Savings/SavingTab';
 
 export { default as Loan } from './pages/Loan';
 export { default as AwaitingLoanTab } from './pages/Loan/components/AwaitingLoanTab';
-export { default as ApprovedLoanTab } from './pages/Loan';
+export { default as ApprovedLoanTab } from './pages/Loan/components/ApprovedLoanTab';
 export { default as Dashboard } from './Dashboard';
 export { default as Icons } from './Icons';
 export { default as NotFound } from './NotFound';

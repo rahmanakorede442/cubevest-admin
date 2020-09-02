@@ -35,6 +35,9 @@ import {
   DialogTitle,
   DialogContentText,
   DialogActions,
+  List,
+  ListItem,
+  ListItemText,
   Slide
 } from '@material-ui/core';
 import {Link} from 'react-router-dom';
@@ -80,7 +83,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const UsersTable = props => {
-  const { className, loading, users,  investments, ...rest} = props;
+  const { className, loading, users,  investments, status, ...rest} = props;
   const {savings} = props;
 
   const classes = useStyles();
@@ -114,8 +117,10 @@ const UsersTable = props => {
       newSelectedUsers = newSelectedUsers.concat(selectedUsers, id);
     } else if (selectedIndex === 0) {
       newSelectedUsers = newSelectedUsers.concat(selectedUsers.slice(1));
+      console.log("index is 0")
     } else if (selectedIndex === selectedUsers.length - 1) {
       newSelectedUsers = newSelectedUsers.concat(selectedUsers.slice(0, -1));
+      console.log("index is - user length -1")
     } else if (selectedIndex > 0) {
       newSelectedUsers = newSelectedUsers.concat(
         selectedUsers.slice(0, selectedIndex),
@@ -144,10 +149,10 @@ const UsersTable = props => {
     return <Slide direction="up" ref={ref} {...props} />;
  });
 
-const [name,setName] = useState("");
 const [open, setOpen] = useState(false);
 const [isLoading, setIsLoading] = useState(true);
 const [details, setDetails] = useState([]);
+
 const handleOpen = (id) => {
   setIsLoading(true)
   console.log(id)
@@ -185,6 +190,12 @@ const handleOpen = (id) => {
     setOpen(false);
   };
 
+  const handleDisburst = () =>{
+    if(selectedUsers.length != 0){
+      props.adminApproveLoans(selectedUsers)
+    }
+    
+  }
  return (
   <Card
     {...rest}
@@ -204,22 +215,21 @@ const handleOpen = (id) => {
         <Divider />     
         <DialogContent>
           {isLoading? <Typography>Loading...</Typography>:
-            <Grid container >
-              {details.map(det =>(
-              <>
-              <Grid item  md={6} xs={6}>
-                  <Typography variant="h6">First Name </Typography>
-                  <Typography variant="h6">Last Name </Typography>
-                  <Typography variant="h6">Guaranteed Amount </Typography>
-              </Grid>
-              <Grid item  md={6} xs={6}>
-                  <Typography variant="p">{det.first_name} </Typography>
-                  <Typography variant="p">{det.last_name} </Typography>
-                  <Typography variant="p">{det.guaranteed_amount} </Typography>
-              </Grid>
-              <Divider variant="inset" />
-              </>
-              ))}
+          <List>
+            {details.map((det, i) =>( 
+            <ListItem
+              divider={i < details.length - 1}
+              key={det.id}
+            >
+              <ListItemText
+                primary={`Guarantors Name: ${det.first_name + " " + det.last_name}`}
+                secondary={`Guaranteed Amount: ${det.guaranteed_amount}`}
+              />
+            </ListItem>
+            ))}
+           </List>}
+          
+            <Grid container>
               <Grid item md={10} xs={10} style={{ marginTop: '1rem' }}>
                 <Button onClick={handleClose} variant="contained" 
                   style={{marginLeft:10, color:'white', backgroundColor:'red'}}>
@@ -227,7 +237,6 @@ const handleOpen = (id) => {
                 </Button>
               </Grid>
             </Grid>
-          }   
         </DialogContent>
       </Dialog>
       {/* Modal */}
@@ -238,7 +247,7 @@ const handleOpen = (id) => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell padding="checkbox">
+                {status && <TableCell padding="checkbox">
                   <Checkbox
                     checked={selectedUsers.length === users.length}
                     color="primary"
@@ -248,7 +257,7 @@ const handleOpen = (id) => {
                     }
                     onChange={handleSelectAll}
                   />
-                </TableCell>
+                </TableCell>}
                 <TableCell>Name</TableCell>
                 <TableCell>Group Name</TableCell>
                 <TableCell>Loan Amount</TableCell>
@@ -274,14 +283,14 @@ const handleOpen = (id) => {
                 key={user.id}
                 selected={selectedUsers.indexOf(user.id) !== -1}
               >
-                <TableCell padding="checkbox">
+                {status && <TableCell padding="checkbox">
                   <Checkbox
                     checked={selectedUsers.indexOf(user.id) !== -1}
                     color="primary"
                     onChange={event => handleSelectOne(event, user.id)}
                     value="true"
                   />
-                </TableCell>
+                </TableCell>}
                  <TableCell>{user.first_name + " " + user.last_name}</TableCell>
                  <TableCell>{user.group_name}</TableCell>
                 <TableCell>{numberFormat(user.loan_amount)}</TableCell>
@@ -298,7 +307,7 @@ const handleOpen = (id) => {
               </TableRow>
             )):
             <TableRow>
-            <TableCell colSpan={8} >
+              <TableCell colSpan={8} >
                 No Record Found
               </TableCell> 
             </TableRow>
@@ -309,6 +318,12 @@ const handleOpen = (id) => {
       </PerfectScrollbar>
     </CardContent>
     <CardActions className={classes.actions}>
+        {props.savings && <img
+          alt=""
+          className="loader"
+          src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
+          />}
+      {status && <Button variant="contained" color="primary" onClick={handleDisburst} >Disburst</Button>}
       <TablePagination
         component="div"
         count={users.length}
@@ -331,6 +346,7 @@ function mapState(state) {
 const actionCreators = {
   logout: adminActions.logout,
   modifyTargetCommission: adminActions.modifyTargetCommission,
+  adminApproveLoans: adminActions.adminApproveLoans,
   deleteTargetCommission: adminActions.deleteTargetCommission,
 };
 // export default UsersTable;

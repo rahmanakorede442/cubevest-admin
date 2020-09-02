@@ -58,8 +58,7 @@ fetchUsers = () =>{
   if (!response.ok) {
       const error = (data && data.message) || response.statusText;
       return Promise.reject(error);
-  }
-  console.log(data)
+  }console.log(data)
   if (data.success == false){
     this.setState({users:[], loading:false });
   }else{
@@ -137,12 +136,12 @@ render(){
        </div>
        </Grid>
 
-        <Grid
+      <Grid
           item
           md={12}
           xs={12}
         >
-          <UsersTable users={users} loading={loading}/>
+          <UsersTable users={users} loading={loading} status={false}/>
         </Grid>
       </Grid>
     </div>

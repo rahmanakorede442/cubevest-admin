@@ -82,6 +82,9 @@ const serverVars = {
   getAllApprovedLoan:"adminAllUsersDatAvCollectedLoans?token=",
   adminUpdateHalal:"halai/update/",
   adminUpdateMarket:"market_place/update/",
+  adminApproveLoans:"adminApproveLoans",
+  singleHalalInvestment:"singleHalalInvestment/",
+  singleMarketInvestment:"singleMarketInvestment/",
   
 
 };
@@ -264,9 +267,15 @@ export function getConfig(apiName) {
     case "getAllApprovedLoan":
       return serverVars.baseUrl + serverVars.getAllApprovedLoan + user.token;
     case "adminUpdateHalal":
-      return serverVars.baseUrl + serverVars.adminUpdateHalal + user.token;
+      return serverVars.baseUrl + serverVars.adminUpdateHalal;
     case "adminUpdateMarket":
-      return serverVars.baseUrl + serverVars.adminUpdateMarket + user.token;
+      return serverVars.baseUrl + serverVars.adminUpdateMarket;
+    case "adminApproveLoans":
+      return serverVars.baseUrl + serverVars.adminApproveLoans;
+    case "singleHalalInvestment":
+      return serverVars.baseUrl + serverVars.singleHalalInvestment;
+    case "singleMarketInvestment":
+      return serverVars.baseUrl + serverVars.singleMarketInvestment;
     default:
       return null;
   }

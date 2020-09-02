@@ -160,13 +160,6 @@ const UsersToolbar = props => {
       <div className={classes.row}>
         <span className={classes.spacer} />
         <Button className={classes.exportButton}>Export</Button>
-        <Button
-          color="primary"
-          variant="contained"
-          onClick={()=> handleOpen()}
-        >
-          Add Investors
-        </Button>
       </div>
     </div>
   );
