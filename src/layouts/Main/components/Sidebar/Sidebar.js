@@ -13,6 +13,7 @@ import { withStyles } from "@material-ui/styles";
 import { Link as RouterLink, withRouter } from 'react-router-dom';
 import { connect } from "react-redux";
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
+import PaymentIcon from '@material-ui/icons/Payment';
 import MoneyIcon from '@material-ui/icons/Money';
 import SettingsIcon from '@material-ui/icons/Settings';
 import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
@@ -81,13 +82,13 @@ const Sidebar = props => {
     {
       title: 'Loan',
       href: '/loan',
-      icon: <AccountBoxIcon />
+      icon: <MoneyIcon />
     },
 
     {
       title: 'Transactions',
       href: '/transactions',
-      icon: <AccountBoxIcon />
+      icon: <PaymentIcon />
     },
     {
       title: 'Activity Log',

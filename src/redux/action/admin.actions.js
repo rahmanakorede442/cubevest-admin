@@ -39,7 +39,9 @@ export const adminActions = {
   addAdmin,
   adminAddMarketNews,
   addTargetCommission,
-  adminApproveLoans
+  adminApproveLoans,
+  hideOrShowMarketInvestment,
+  hideOrShowHalalInvestment
   };
 
 function adminlogin(username, password) {
@@ -134,6 +136,60 @@ function adminAddHalal(user) {
   return (dispatch) => {
     dispatch(request(user));
     adminService.adminAddHalal(user).then(
+      (user) => {
+        dispatch(success());
+        window.location.reload()
+        dispatch( alertActions.success(user.message));
+      },
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.error(error));
+      }
+    );
+  };
+
+  function request(user) {
+    return { type: userConstants.SAVINGS_REQUEST, user };
+  }
+  function success(user) {
+    return { type: userConstants.SAVINGS_SUCCESS, user };
+  }
+  function failure(error) {
+    return { type: userConstants.SAVINGS_FAILURE, error };
+  }
+}
+
+function hideOrShowMarketInvestment(user) {
+  return (dispatch) => {
+    dispatch(request(user));
+    adminService.hideOrShowMarketInvestment(user).then(
+      (user) => {
+        dispatch(success());
+        window.location.reload()
+        dispatch( alertActions.success(user.message));
+      },
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.error(error));
+      }
+    );
+  };
+
+  function request(user) {
+    return { type: userConstants.SAVINGS_REQUEST, user };
+  }
+  function success(user) {
+    return { type: userConstants.SAVINGS_SUCCESS, user };
+  }
+  function failure(error) {
+    return { type: userConstants.SAVINGS_FAILURE, error };
+  }
+}
+
+function hideOrShowHalalInvestment(user) {
+  return (dispatch) => {
+    dispatch(request(user));
+    adminService.hideOrShowHalalInvestment(user).then(
       (user) => {
         dispatch(success());
         window.location.reload()

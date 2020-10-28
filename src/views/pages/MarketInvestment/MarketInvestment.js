@@ -150,7 +150,7 @@ render(){
         <UsersToolbar style={{float:'right'}} category={"getMarketCategoryType"} adminAddInvestment={this.props.adminAddMarket} loader={this.props.savings}/>
         </div>
         <div style={{marginTop: theme.spacing(2)}}>
-          <UsersTable users={users} loading={loading} data={"singleMarketInvestment"} category={"getMarketCategoryType"} loader={this.props.savings} adminUpdateInvestment={this.props.adminUpdateMarket} handleOpen={this.handleOpen}/>
+          <UsersTable users={users} loading={loading} data={"singleMarketInvestment"} category={"getMarketCategoryType"} loader={this.props.savings} adminUpdateInvestment={this.props.adminUpdateMarket} handleOpen={this.handleOpen} hideOrShow={this.props.hideOrShowMarketInvestment} />
         </div>
         <Dialog
             open={open_news}
@@ -246,6 +246,7 @@ const actionCreators = {
   adminAddMarketNews: adminActions.adminAddMarketNews,
   adminAddMarket: adminActions.adminAddMarket,
   adminUpdateMarket: adminActions.adminUpdateMarket,
+  hideOrShowMarketInvestment: adminActions.hideOrShowMarketInvestment,
   logout: adminActions.logout,
 };
 

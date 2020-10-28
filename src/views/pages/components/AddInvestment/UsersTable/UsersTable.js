@@ -33,7 +33,7 @@ import {
   Icon,
   Tooltip
 } from '@material-ui/core';
-import { Add, Edit } from '@material-ui/icons';
+import { Add, Edit, Visibility, VisibilityOff } from '@material-ui/icons';
 import {Link} from 'react-router-dom';
 
 
@@ -182,6 +182,33 @@ const handleChange = (event) =>{
   const handleClose = () => {
     setOpen(false);
   };
+  
+  const hideOrShow = (id, status) =>{
+    swal({
+      title: "Are you sure?",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    })
+    .then((willDelete) => {
+      if(willDelete){
+        if(status == "hide"){
+          props.hideOrShow({id, status})
+          swal("Loading...",{   
+            buttons:false
+          });
+        }else{
+          props.hideOrShow({id, status})
+          swal("Loading...",{   
+            buttons:false
+          });
+        }
+      }
+    });
+  }
+
+  let currentDate = new Date();
+  
   return (
     <Card
       {...rest}
@@ -193,83 +220,82 @@ const handleChange = (event) =>{
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>Investment Picture</TableCell>
-                  <TableCell>Investments Name</TableCell>
-                  <TableCell>Expected Return</TableCell>
-                  <TableCell>Insurance Partner</TableCell>
-                  <TableCell>Investment Type</TableCell>
+                  <TableCell> Picture</TableCell>
+                  <TableCell> Name</TableCell>
+                  <TableCell> Returns</TableCell>
+                  <TableCell> Partner</TableCell>
+                  <TableCell> Type</TableCell>
                   <TableCell>Entry Date</TableCell>
-                  <TableCell>Entered By</TableCell>
-                  <TableCell>Action</TableCell>
+                  <TableCell>Status</TableCell>
+                  <TableCell colSpan={3}>Action</TableCell>
                 </TableRow>
-              </TableHead>              
-                <TableCell></TableCell>
-                <TableCell></TableCell>
-                <TableCell></TableCell>
-              {loading?
-                <div style={{display:"flex", alignItems:"center", flexDirection:"column", justifyItems:"center"}}>
-                    <img
-                        img
-                        alt=""
-                        className="loader"
-                        src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
-                      />
-                </div>: 
-           <TableBody>
-           {users.length != 0 ?
-           users.slice(page * rowsPerPage, page* rowsPerPage + rowsPerPage).map(user => (
-            <TableRow
-              className={classes.tableRow}
-              hover
-              key={user.id}>
-                    <TableCell><img style={{width:150,height:100}} src={user.investment_pic}/></TableCell>
-                    <TableCell>{user.investment_type}</TableCell>
-                    <TableCell>{numberFormat(user.expected_returns)}</TableCell>
-                    <TableCell>{user.insurance_partner}</TableCell>
-                    <TableCell>{user.category_name}</TableCell>
-                    <TableCell>
-                      {moment(user.created_at).format('DD/MM/YYYY')}
-                    </TableCell>     
-                    <TableCell>{user.enter_by}</TableCell>               
-                    <TableCell>
-                      <Tooltip title="Edit Investment">
-                        <IconButton aria-label="edit" onClick={()=> handleOpen(user.id)}>
-                          <Edit />
-                        </IconButton>
-                      </Tooltip>
-                    </TableCell>
-                    <TableCell>
-                      <Tooltip title="Add News">
-                        <IconButton aria-label="add news" onClick={props.handleOpen}>
-                          <Add />
-                        </IconButton>
-                      </Tooltip>
-                    </TableCell>
-                  </TableRow>
-                )):
-                <TableRow>
-                <TableCell colSpan={8} style={{textAlign:"center"}}>
-                    No Record Found
-                </TableCell>     
+              </TableHead>
+          {loading?
+          <TableBody>
+            <TableRow>
+              <TableCell colSpan={8} style={{alignItems:"center"}}>
+                <img
+                className="loader"
+                src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
+              </TableCell>
+            </TableRow>
+          </TableBody>: 
+          <TableBody>
+          {users.length != 0 ?
+          users.slice(page * rowsPerPage, page* rowsPerPage + rowsPerPage).map(user => (
+          <TableRow
+            className={classes.tableRow}
+            hover
+            key={user.id}>
+                  <TableCell><img style={{width:150,height:100}} src={user.investment_pic}/></TableCell>
+                  <TableCell>{user.investment_type}</TableCell>
+                  <TableCell>{numberFormat(user.expected_returns)}</TableCell>
+                  <TableCell>{user.insurance_partner}</TableCell>
+                  <TableCell>{user.category_name}</TableCell>
+                  <TableCell>{moment(user.created_at).format('DD/MM/YYYY')}</TableCell>     
+                  <TableCell>{ new Date(user.maturity_date) < currentDate? "Closed": "Active"}</TableCell>               
+                  <TableCell colSpan={4}>
+                    <Tooltip title="Edit Investment">
+                      <IconButton aria-label="edit" onClick={()=> handleOpen(user.id)}>
+                        <Edit />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Add News">
+                      <IconButton aria-label="add news" onClick={props.handleOpen}>
+                        <Add />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title={user.status == 1?"Hide":"Show"}>
+                      <IconButton aria-label="enable" onClick={()=>{hideOrShow(user.id, user.status==1?"hide":"show")}}>
+                        {user.status == 1?<Visibility />:<VisibilityOff />}
+                      </IconButton>
+                    </Tooltip>
+                  </TableCell>
                 </TableRow>
-                }
-              </TableBody>
+              )):
+              <TableRow>
+              <TableCell colSpan={8} style={{textAlign:"center"}}>
+                  No Record Found
+              </TableCell>     
+              </TableRow>
               }
-           </Table>
-          </div>
-        </PerfectScrollbar>
-      </CardContent>
-      <CardActions className={classes.actions}>
-        <TablePagination
-          component="div"
-          count={users.length}
-          onChangePage={handlePageChange}
-          onChangeRowsPerPage={handleRowsPerPageChange}
-          page={page}
-          rowsPerPage={rowsPerPage}
-          rowsPerPageOptions={[5, 10, 25]}
-        />
-      </CardActions>
+            </TableBody>
+            }
+          </Table>
+        </div>
+      </PerfectScrollbar>
+    </CardContent>
+    <CardActions className={classes.actions}>
+      <TablePagination
+        component="div"
+        count={users.length}
+        onChangePage={handlePageChange}
+        onChangeRowsPerPage={handleRowsPerPageChange}
+        page={page}
+        rowsPerPage={rowsPerPage}
+        rowsPerPageOptions={[5, 10, 25]}
+      />
+    </CardActions>
     {/* Modal update investment start*/}
     <Dialog
         open={open}

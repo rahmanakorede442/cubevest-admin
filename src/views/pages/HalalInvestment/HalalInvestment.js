@@ -152,7 +152,7 @@ render(){
         <UsersToolbar style={{float:'right'}} category={"getHalalCategoryType"} adminAddInvestment={this.props.adminAddHalal} loader={this.props.savings}/>
         </div>
         <div style={{marginTop: theme.spacing(2)}}>
-          <UsersTable users={users} loading={loading} data={"singleHalalInvestment"} category={"getHalalCategoryType"} loader={this.props.savings} adminUpdateInvestment={this.props.adminUpdateHalal} handleOpen={this.handleOpen} />
+          <UsersTable users={users} loading={loading} data={"singleHalalInvestment"} category={"getHalalCategoryType"} loader={this.props.savings} adminUpdateInvestment={this.props.adminUpdateHalal} handleOpen={this.handleOpen} hideOrShow={this.props.hideOrShowHalalInvestment} />
         </div>
         <Dialog
             open={open_news}
@@ -249,6 +249,7 @@ const actionCreators = {
   adminAddHalalNews: adminActions.adminAddHalalNews,
   adminAddHalal: adminActions.adminAddHalal,
   adminUpdateHalal: adminActions.adminUpdateHalal,
+  hideOrShowHalalInvestment: adminActions.hideOrShowHalalInvestment,
   logout: adminActions.logout,
 };
 

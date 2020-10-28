@@ -1,7 +1,7 @@
 
 import { history } from '../logic';
 const serverVars = {
-  baseUrl: "https://api.cubevest.com/test/api/",
+  baseUrl: "https://api.cubevest.com/api/",
   adminlogin:"admin/login",
   adminsignup: "admin/signup",
   resetPass: "admin/adminResetPassword",
@@ -85,7 +85,8 @@ const serverVars = {
   adminApproveLoans:"adminApproveLoans",
   singleHalalInvestment:"singleHalalInvestment/",
   singleMarketInvestment:"singleMarketInvestment/",
-  
+  hideOrShowMarketInvestment:"adminHideShowInvestment/",
+  hideOrShowHalalInvestment:"adminHideShowHalai/",
 
 };
 
@@ -101,8 +102,9 @@ export const payID = () => {
 
 export const checkToken = ()=>{
   let token =  JSON.parse(localStorage.getItem('admin'));
+  console.log(token)
     if (token == null) {
-        history.push('/admin/login');
+        history.push('sign-in');
       }
 }
 
@@ -111,7 +113,7 @@ export function getConfig(apiName) {
   if ((apiName != 'adminlogin') && user == null) {
     if(apiName != "adminsignup"){
       if(apiName != "recoverpass"){
-        history.push('/admin/login');
+        history.push('/sign-in');
         return
       }
     }
@@ -276,6 +278,10 @@ export function getConfig(apiName) {
       return serverVars.baseUrl + serverVars.singleHalalInvestment;
     case "singleMarketInvestment":
       return serverVars.baseUrl + serverVars.singleMarketInvestment;
+    case "hideOrShowHalalInvestment":
+      return serverVars.baseUrl + serverVars.hideOrShowHalalInvestment;
+    case "hideOrShowMarketInvestment":
+      return serverVars.baseUrl + serverVars.hideOrShowMarketInvestment;
     default:
       return null;
   }

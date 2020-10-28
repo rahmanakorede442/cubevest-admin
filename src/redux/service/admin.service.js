@@ -39,6 +39,8 @@ export const adminService = {
   adminAddHalalCategory,
   addTargetCommission,
   adminApproveLoans,
+  hideOrShowMarketInvestment,
+  hideOrShowHalalInvestment,
   update,
   delete: _delete,
 };
@@ -163,6 +165,30 @@ function updateAdmin(data) {
     body: JSON.stringify(data),
   };
   return fetch(getConfig("updateAdmin")+data.id+"?token="+user.token, requestOptions).then(
+    handleResponse
+  );
+}
+
+function hideOrShowMarketInvestment(data) {
+  let user = JSON.parse(localStorage.getItem('admin'));
+  const requestOptions = {
+    method: "POST",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  };
+  return fetch(getConfig("hideOrShowMarketInvestment")+data.id+"?token="+user.token, requestOptions).then(
+    handleResponse
+  );
+}
+
+function hideOrShowHalalInvestment(data) {
+  let user = JSON.parse(localStorage.getItem('admin'));
+  const requestOptions = {
+    method: "POST",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  };
+  return fetch(getConfig("hideOrShowHalalInvestment")+data.id+"?token="+user.token, requestOptions).then(
     handleResponse
   );
 }
