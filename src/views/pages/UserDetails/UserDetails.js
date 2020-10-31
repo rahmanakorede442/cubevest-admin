@@ -184,7 +184,9 @@ render(){
                   <Link to="/"><Button style={{width:"100%"}} variant="outlined">Market Investment</Button></Link>
                   <Link to="/"><Button style={{width:"100%"}} variant="outlined">Halal Investment</Button></Link>
                   <Typography variant="h6">Loans</Typography>
-                  <Link to="/"><Button style={{width:"100%"}} variant="outlined">Loans</Button></Link>
+                  <Link to="/loan"><Button style={{width:"100%"}} variant="outlined">Loans</Button></Link>
+                  <Typography variant="h6">Wallet</Typography>
+                  <Link to="/wallet"><Button style={{width:"100%"}} variant="outlined">Wallet</Button></Link>
               </Grid>
             </Grid>
             <Grid

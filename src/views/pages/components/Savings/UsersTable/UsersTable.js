@@ -112,10 +112,11 @@ const UsersTable = props => {
               <TableHead>
                 <TableRow>
                   <TableCell>Name</TableCell>
-                  <TableCell>Amount</TableCell>
+                  <TableCell>Balance</TableCell>
                   <TableCell>Frequency</TableCell>
                   <TableCell>Payment Method</TableCell>
                   <TableCell>Date</TableCell>
+                  <TableCell>Time</TableCell>
                   <TableCell>Action</TableCell>
                 </TableRow>
               </TableHead>
@@ -146,12 +147,11 @@ const UsersTable = props => {
                       <Typography variant="body1">{user.first_name}{' '}{user.last_name}</Typography>
                     </div>
                   </TableCell>
-                  <TableCell>{numberFormat(user.amount)}</TableCell>
+                  <TableCell>{numberFormat(user.balance)}</TableCell>
                   <TableCell>{user.frequency}</TableCell>
                   <TableCell>{user.payment_method}</TableCell>
-                  <TableCell>
-                    {moment(user.start_date).format('DD/MM/YYYY')}
-                  </TableCell>
+                  <TableCell>{moment(user.created_at).format('DD/MM/YYYY')} </TableCell>
+                  <TableCell>{user.transaction_time}</TableCell>
                   <TableCell>
                     <Link to ={props.link =="regular"?`/regulardetails/${user.user_id}`:props.link =="target"?`/target_details/${user.id}`:`/savetoloan_details/${user.user_id}`}>
                       <Button color="primary" variant="contained" > Details</Button>

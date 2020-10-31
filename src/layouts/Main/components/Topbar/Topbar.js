@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, withRouter } from 'react-router-dom';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
@@ -7,6 +7,8 @@ import { AppBar, Toolbar, Badge, Hidden, IconButton } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import NotificationsIcon from '@material-ui/icons/NotificationsOutlined';
 import InputIcon from '@material-ui/icons/Input';
+import { adminActions } from 'redux/action';
+import { connect } from 'react-redux';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -43,18 +45,10 @@ const Topbar = props => {
         </RouterLink>
         <div className={classes.flexGrow} />
         <Hidden mdDown>
-          {/* <IconButton color="inherit">
-            <Badge
-              badgeContent={notifications.length}
-              color="primary"
-              variant="dot"
-            >
-              <NotificationsIcon />
-            </Badge>
-          </IconButton> */}
           <IconButton
             className={classes.signOutButton}
             color="inherit"
+            onClick={props.logout}
           >
             <InputIcon />
           </IconButton>
@@ -77,4 +71,12 @@ Topbar.propTypes = {
   onSidebarOpen: PropTypes.func
 };
 
-export default Topbar;
+function mapState(state) {
+  const { savings } = state.savings;
+  return { savings };
+}
+const actionCreators = {
+  logout: adminActions.logout,
+};
+
+export default withRouter(connect(mapState,  actionCreators)(Topbar));

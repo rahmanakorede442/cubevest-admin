@@ -123,16 +123,6 @@ render(){
   const {users, loading, data, datat, handleClose, handleOpen, search, open, investments} = this.state
     return (
       <div style={{padding: theme.spacing(3)}}>
-        {/* <CardActions>
-              <Link to="/admin">
-                <Button
-                color="secondary"
-                variant="contained"
-              >
-                Back
-              </Button> 
-              </Link>
-          </CardActions> */}
           <div style={{height: '42px',alignItems: 'center',marginTop: theme.spacing(1)}}>
           <SearchInput
             value={search}
@@ -142,8 +132,7 @@ render(){
           />
          
        <div style={{float:'right'}}>
-          {/* Modal */}
-          
+      {/* Modal */}
        < Dialog
         open={open}
         // TransitionComponent={Transition}
@@ -236,7 +225,6 @@ render(){
        
         </DialogContent>
       </Dialog>
-      
       {/* Modal */}
       <div className="row">
         <span className="spacer" />
@@ -255,9 +243,6 @@ render(){
         <div style={{marginTop: theme.spacing(2)}}>
           <UsersTable users={users} loading={loading}/>
         </div>
-        {/* <div style={{marginTop: theme.spacing(2)}}>
-          <CategoryTable users={users} />
-        </div> */}
       </div>
     );
   };

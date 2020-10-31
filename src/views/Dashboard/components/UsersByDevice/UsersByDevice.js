@@ -88,19 +88,19 @@ const UsersByDevice = props => {
   const devices = [
     {
       title: 'Regular',
-      value: regular,
+      value: regular ? regular : 0,
       icon: <MoneyIcon />,
       color: theme.palette.primary.main
     },
     {
       title: 'Target',
-      value: target,
+      value: target ? target : 0,
       icon: <TrackChangesIcon />,
       color: theme.palette.error.main
     },
     {
       title: 'Save To Loan',
-      value: loan,
+      value: loan? loan : 0,
       icon: <PaymentsIcon />,
       color: theme.palette.warning.main
     }

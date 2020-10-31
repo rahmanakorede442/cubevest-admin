@@ -237,7 +237,7 @@ render(){
           xl={3}
           xs={12}
         >
-          <Link to="/"><WalletBalance wallet_balance={numberFormat(wallet_balance)}/></Link>
+          <Link to="/wallet"><WalletBalance wallet_balance={numberFormat(wallet_balance)}/></Link>
         </Grid>
          
          <Grid

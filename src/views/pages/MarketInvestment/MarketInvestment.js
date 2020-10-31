@@ -81,7 +81,7 @@ fetchUsers = () =>{
         return Promise.reject(error);
     }
     console.log(data)
-    this.setState({users: data, all:data.data, loading:false });
+    this.setState({users: data, all:data, loading:false });
 })
 .catch(error => {
     if (error === "Unauthorized") {
@@ -94,11 +94,11 @@ fetchUsers = () =>{
 searchChange(event) {
   const { name, value } = event.target;
   const { search, users, all } = this.state;
-  
   this.setState({ search: value, users: value == "" ? all : all.filter((q)=>
-  q.last_name.toLowerCase().indexOf(value.toLowerCase())  !== -1 
-  || q.first_name.toLowerCase().indexOf(value.toLowerCase())  !== -1 
-  || q.frequency.toLowerCase().indexOf(value.toLowerCase())  !== -1 )});
+  q.category_name.toLowerCase().indexOf(value.toLowerCase())  !== -1  
+  || q.insurance_partner.toLowerCase().indexOf(value.toLowerCase())  !== -1
+  || q.investment_type.toLowerCase().indexOf(value.toLowerCase())  !== -1
+  )});
 }
 
 handleChange(event) {
@@ -140,15 +140,16 @@ render(){
               </Button> 
               </Link>
         </CardActions>
-        <div style={{height: '42px',alignItems: 'center',marginTop: theme.spacing(1)}}>
-        <SearchInput
-          value={search}
-          onChange={this.searchChange}
-          style={{marginRight: theme.spacing(1), width:300, float:'left'}}
-          placeholder="Search user"
-        />
-        <UsersToolbar style={{float:'right'}} category={"getMarketCategoryType"} adminAddInvestment={this.props.adminAddMarket} loader={this.props.savings}/>
-        </div>
+        <Grid  container justify="space-between" >
+          <TextField
+            name="search"
+            value={search}
+            onChange={this.searchChange}
+            style={{marginRight: theme.spacing(1), width:200, float:'left'}}
+            placeholder="Search Investment"/>
+          <UsersToolbar category={"getMarketCategoryType"} adminAddInvestment={this.props.adminAddMarket} loader={this.props.savings}/>
+        </Grid>
+          
         <div style={{marginTop: theme.spacing(2)}}>
           <UsersTable users={users} loading={loading} data={"singleMarketInvestment"} category={"getMarketCategoryType"} loader={this.props.savings} adminUpdateInvestment={this.props.adminUpdateMarket} handleOpen={this.handleOpen} hideOrShow={this.props.hideOrShowMarketInvestment} />
         </div>

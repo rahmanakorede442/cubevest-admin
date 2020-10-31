@@ -81,26 +81,6 @@ const LatestOrders = props => {
         <PerfectScrollbar>
           <div className={classes.inner}>
             <Table>
-              {/* <TableHead>
-                <TableRow>
-                  <TableCell>Order Ref</TableCell>
-                  <TableCell>Customer</TableCell>
-                  <TableCell sortDirection="desc">
-                    <Tooltip
-                      enterDelay={300}
-                      title="Sort"
-                    >
-                      <TableSortLabel
-                        active
-                        direction="desc"
-                      >
-                        Date
-                      </TableSortLabel>
-                    </Tooltip>
-                  </TableCell>
-                  <TableCell>Status</TableCell>
-                </TableRow>
-              </TableHead> */}
               <TableHead>
                 <TableRow>
                   <TableCell colSpan={4}>Name</TableCell>
@@ -112,13 +92,17 @@ const LatestOrders = props => {
                 </TableRow>
               </TableHead>
               {loading?
-                <div style={{marginTop:15, textAlign:"center", alignItems:"center", flexDirection:"column", justifyItems:"center"}}>
-                    <img
+              <TableBody>
+                <TableRow>
+                  <TableCell colSpan={8}>
+                      <img
                         alt=""
                         className="loader"
                         src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
                       />
-                </div>: 
+                  </TableCell>
+                </TableRow>
+              </TableBody>: 
               <TableBody>
                {users.length != 0 ?
                 users.slice(page * rowsPerPage, page* rowsPerPage + rowsPerPage).map(user => (

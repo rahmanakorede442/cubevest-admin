@@ -17,7 +17,6 @@ import PaymentIcon from '@material-ui/icons/Payment';
 import MoneyIcon from '@material-ui/icons/Money';
 import SettingsIcon from '@material-ui/icons/Settings';
 import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
-import LockOpenIcon from '@material-ui/icons/LockOpen';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import HomeIcon from '@material-ui/icons/Home';
 import BusinessCenterIcon from '@material-ui/icons/BusinessCenter';
@@ -49,7 +48,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Sidebar = props => {
-  const { open, variant, onClose, className, ...rest } = props;
+  const { open, variant, onClose, className, staticContext, logout, ...rest } = props;
 
   const classes = useStyles();
 
@@ -84,10 +83,14 @@ const Sidebar = props => {
       href: '/loan',
       icon: <MoneyIcon />
     },
-
     {
       title: 'Transactions',
       href: '/transactions',
+      icon: <PaymentIcon />
+    },
+    {
+      title: 'Wallet',
+      href: '/wallet',
       icon: <PaymentIcon />
     },
     {
@@ -102,9 +105,7 @@ const Sidebar = props => {
     }
   ];
 
-  const logout = () => {
-    props.logout()
-  }
+  
 
   return (
     <Drawer
@@ -139,7 +140,7 @@ const Sidebar = props => {
             variant="outlined" 
             size="small" 
             style={{marginTop:60, color:'#fff',borderColor:'#fff'}}
-            onClick={logout}
+            onClick={props.logout}
           >
         Logout
         </Button>
@@ -158,18 +159,12 @@ Sidebar.propTypes = {
   variant: PropTypes.string.isRequired
 };
 
-// export default Sidebar;
-// export default UserList;
 function mapState(state) {
   const { savings } = state.savings;
   return { savings };
 }
-// export default withStyles({}, { withTheme: true })(Dashboard1);
 const actionCreators = {
-  saveWallet: adminActions.saveWallet,
   logout: adminActions.logout,
 };
 
-export default withStyles({}, { withTheme: true })(
-  withRouter(connect(mapState,  actionCreators)(Sidebar))
-);
+export default withRouter(connect(mapState,  actionCreators)(Sidebar));

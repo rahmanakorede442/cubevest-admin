@@ -8,7 +8,7 @@ import { getConfig, checkToken, numberFormat } from '../../../redux/config/confi
 import { authHeader, history } from '../../../redux/logic';
 import { SearchInput } from 'components';
 import { UsersToolbar, UsersTable } from '../components/Investment';
-import { Grid, Button } from '@material-ui/core';
+import { Grid, Button, TextField } from '@material-ui/core';
 
 
 class MarketPlace extends Component {
@@ -22,10 +22,15 @@ class MarketPlace extends Component {
       loading: true,
     }
     this.fetchUsers = this.fetchUsers.bind(this);
-    this.fetchUsers();
+    this.searchChange = this.searchChange.bind(this);
+    
   }
 
-  fetchUsers = () =>{
+componentDidMount(){
+  this.fetchUsers();
+}
+
+fetchUsers = () =>{
     const requestOptions = {
         method: 'GET',
         headers: { ...authHeader(), 'Content-Type': 'application/json' },
@@ -38,7 +43,7 @@ class MarketPlace extends Component {
         return Promise.reject(error);
     }
     console.log(data)
-    this.setState({users: data.data, loading:false});
+    this.setState({users: data.data, all:data.data, loading:false});
   })
 .catch(error => {
  
@@ -49,13 +54,23 @@ class MarketPlace extends Component {
     console.error('There was an error!', error);
 });
 }
+
+searchChange(event) {
+  const { name, value } = event.target;
+  const { search, users, all } = this.state;
+  this.setState({ search: value, users: value == "" ? all : all.filter((q)=>
+  q.first_name.toLowerCase().indexOf(value.toLowerCase())  !== -1  
+  || q.last_name.toLowerCase().indexOf(value.toLowerCase())  !== -1
+  )});
+}
 render(){
   const {theme} = this.props
   const {users, loading, search, open} = this.state
     return (
       <div style={{padding: theme.spacing(3)}}>
         <div style={{height: '42px',alignItems: 'center',marginTop: theme.spacing(1)}}>
-        <SearchInput
+        <TextField
+          name="search"
           value={search}
           onChange={this.searchChange}
           style={{marginRight: theme.spacing(1), width:300, float:'left'}}

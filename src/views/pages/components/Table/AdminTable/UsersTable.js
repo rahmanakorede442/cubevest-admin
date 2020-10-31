@@ -346,9 +346,9 @@ const handleSubmitEdit = (event) => {
                   >
                     <TableCell>{user.name}</TableCell>
                     <TableCell>{user.email}</TableCell>
-                    <TableCell>{user.status==0?<span style={{color:'red',fontWeight:'bold'}}>Unactive</span>:
+                    <TableCell>{user.status==0?<span style={{color:'red',fontWeight:'bold'}}>Inactive</span>:
                                 user.status==1?<span style={{color:'green',fontWeight:'bold'}}>Active</span>:
-                                <span style={{color:'red',fontWeight:'bold'}}>Unactive</span>}                      
+                                <span style={{color:'red',fontWeight:'bold'}}>Inactive</span>}                      
                     </TableCell>
                     <TableCell>
                       {moment(user.entery_date).format('DD/MM/YYYY')}

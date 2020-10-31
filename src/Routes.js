@@ -42,7 +42,9 @@ import {
   MarketInvestment as MarketInvestmentView,
   HalalInvestment as HalalInvestmentView,
   Transactions as TransactionsView,
-  Admin as AdminView
+  Admin as AdminView,
+  WalletBalance as WalletBalanceView,
+  WalletHistory as WalletHistoryView
 } from './views';
 import MarketTab  from "../src/views/pages/MarketPlace/index";
 
@@ -120,13 +122,19 @@ const Routes = () => {
         exact
         layout={MainLayout}
         path="/market_tab"
-      />            
-      {/* <RouteWithLayout
-        component={InvestmentView}
+      />
+      <RouteWithLayout
+        component={WalletBalanceView}
         exact
         layout={MainLayout}
-        path="/halal_investment"
-      /> */}
+        path="/wallet"
+      />
+      <RouteWithLayout
+        component={WalletHistoryView}
+        exact
+        layout={MainLayout}
+        path="/wallet"
+      />
       <RouteWithLayout
         component={UserListsView}
         exact
