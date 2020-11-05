@@ -44,7 +44,9 @@ import {
   Transactions as TransactionsView,
   Admin as AdminView,
   WalletBalance as WalletBalanceView,
-  WalletHistory as WalletHistoryView
+  WalletHistory as WalletHistoryView,
+  WalletBalanceDetails as WalletBalanceDetailsView,
+  WalletBalanceDetails,
 } from './views';
 import MarketTab  from "../src/views/pages/MarketPlace/index";
 
@@ -133,7 +135,13 @@ const Routes = () => {
         component={WalletHistoryView}
         exact
         layout={MainLayout}
-        path="/wallet"
+        path="/wallet-history"
+      />
+      <RouteWithLayout
+        component={WalletBalanceDetails}
+        exact
+        layout={MainLayout}
+        path="/walletBalanceDetails/:id"
       />
       <RouteWithLayout
         component={UserListsView}

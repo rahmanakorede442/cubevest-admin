@@ -3,6 +3,7 @@ import { SavingsTab } from './pages/Savings/SavingTab';
 export { default as Loan } from './pages/Loan';
 export { default as WalletBalance } from './pages/Wallet/components/WalletBalanceTab';
 export { default as WalletHistory } from './pages/Wallet/components/WalletHistoryTab';
+export { WalletBalanceDetails } from './pages/Wallet';
 export { default as AwaitingLoanTab } from './pages/Loan/components/AwaitingLoanTab';
 export { default as ApprovedLoanTab } from './pages/Loan/components/ApprovedLoanTab';
 export { default as Dashboard } from './Dashboard';

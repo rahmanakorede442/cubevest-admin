@@ -88,7 +88,8 @@ const serverVars = {
   hideOrShowMarketInvestment:"adminHideShowInvestment/",
   hideOrShowHalalInvestment:"adminHideShowHalai/",
   walletHistory:"wallet_history?token=",
-  walletBalance:"wallet_balances?token="
+  walletBalance:"wallet_balances?token=",
+  walletBalanceDetails:"admin_wallet_balance_details/"
 
 };
 
@@ -288,6 +289,8 @@ export function getConfig(apiName) {
       return serverVars.baseUrl + serverVars.walletHistory + user.token;
     case "walletBalance":
       return serverVars.baseUrl + serverVars.walletBalance + user.token;
+    case "walletBalanceDetails":
+      return serverVars.baseUrl + serverVars.walletBalanceDetails;
     default:
       return null;
   }

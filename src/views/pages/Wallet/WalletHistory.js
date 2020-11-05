@@ -48,7 +48,7 @@ fetchUsers = (data) =>{
   const requestOptions = {
       method: 'POST',
       headers: { ...authHeader(), 'Content-Type': 'application/json' },
-      body:data
+      body:JSON.stringify(data)
   };
   fetch(getConfig('walletHistory'), requestOptions)
   .then(async response => {

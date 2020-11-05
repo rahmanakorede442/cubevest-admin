@@ -82,15 +82,10 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const WalletBalanceTable = props => {
-  const { className, loading, users,  investments, status, ...rest} = props;
-  const {savings} = props;
+const WalletDetailsTable = props => {
+  const { className, loading, data, ...rest} = props;
 
   const classes = useStyles();
-
-  const [selectedUsers, setSelectedUsers] = useState([]);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [page, setPage] = useState(0);
 
  return (
   <Card
@@ -104,9 +99,11 @@ const WalletBalanceTable = props => {
             <TableHead>
               <TableRow>
                 <TableCell>ID</TableCell>
-                <TableCell>Name</TableCell>
-                <TableCell>Balance</TableCell>
-                <TableCell>Action</TableCell>
+                <TableCell>Amount</TableCell>
+                <TableCell>Wallet Type</TableCell>
+                <TableCell>Payment Method</TableCell>
+                <TableCell>Paystack ID</TableCell>
+                <TableCell>Entry Date</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -120,25 +117,19 @@ const WalletBalanceTable = props => {
                     />
                 </TableCell>
               </TableRow>: 
-              users.length != 0 ?
-              users.map(user => (
-              <TableRow
-                className={classes.tableRow}
-                hover
-                key={user.id}
-                selected={selectedUsers.indexOf(user.id) !== -1}>
-                <TableCell>{user.id}</TableCell>
-                <TableCell>{user.first_name + " " + user.last_name}</TableCell>
-                <TableCell>{numberFormat(user.balance)}</TableCell>
-                <TableCell>
-                  <Link to ={`/walletBalanceDetails/${user.user_id}`}>
-                    <Button color="primary" variant="contained" > Details</Button>
-                  </Link>
-                </TableCell>
+              data.length != 0 ?
+              data.map((d, index) => (
+              <TableRow className={classes.tableRow} hover key={d.id}>
+                <TableCell>{index+1}</TableCell>
+                <TableCell>{numberFormat(d.amount)}</TableCell>
+                <TableCell>{d.wallet_type}</TableCell>
+                <TableCell>{d.payment_method}</TableCell>
+                <TableCell>{d.paystack_id}</TableCell>
+                <TableCell>{moment(d.entry_date).format('DD/MM/YYYY')}</TableCell>
               </TableRow>
             )):
             <TableRow>
-              <TableCell colSpan={5} >
+              <TableCell colSpan={8} >
                 No Record Found
               </TableCell> 
             </TableRow>
@@ -153,4 +144,4 @@ const WalletBalanceTable = props => {
 };
 
 
-export default WalletBalanceTable;
+export default WalletDetailsTable;
