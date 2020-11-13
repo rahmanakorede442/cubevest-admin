@@ -9,6 +9,7 @@ import Tab from '@material-ui/core/Tab';
 import RegularSavings from '../../RegularSavings';
 import TargetSavings from '../../TargetSavings';
 import SaveToLoanSavings from '../../SaveToLoanSavings';
+import InfinitoSavings from '../../InfinitoSavings';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -71,6 +72,7 @@ export default function SimpleTabs(props) {
             <Tab label="Regular Savings" {...a11yProps(0)} />
             <Tab label="Target Savings" {...a11yProps(1)} />
             <Tab label="Save To Loan" {...a11yProps(2)} />
+            <Tab label="Infinito Savings" {...a11yProps(3)} />
           </Tabs>
         </AppBar>
         <TabPanel value={value} index={0}>
@@ -81,6 +83,9 @@ export default function SimpleTabs(props) {
         </TabPanel>
         <TabPanel value={value} index={2}>
           <SaveToLoanSavings/>         
+        </TabPanel>
+        <TabPanel value={value} index={3}>
+          <InfinitoSavings/>
         </TabPanel>
       </div>
     );

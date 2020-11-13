@@ -1,7 +1,7 @@
 
 import { history } from '../logic';
 const serverVars = {
-  baseUrl: "https://api.cubevest.com/api/",
+  baseUrl: "https://api.cubevest.com/test/api/",
   adminlogin:"admin/login",
   adminsignup: "admin/signup",
   resetPass: "admin/adminResetPassword",
@@ -89,8 +89,11 @@ const serverVars = {
   hideOrShowHalalInvestment:"adminHideShowHalai/",
   walletHistory:"wallet_history?token=",
   walletBalance:"wallet_balances?token=",
-  walletBalanceDetails:"admin_wallet_balance_details/"
-
+  walletBalanceDetails:"admin_wallet_balance_details/",
+  getAllInfinitoSavings:"infinitoSavingsAdmin?token=",
+  addUserPort:"add_port_no/",
+  getWithdrawal:"view_withdrawal_lists?token=",
+  makeWithdrawal:"admin_make_bank_transfers?token="
 };
 
 export const numberFormat = (value) =>
@@ -291,6 +294,14 @@ export function getConfig(apiName) {
       return serverVars.baseUrl + serverVars.walletBalance + user.token;
     case "walletBalanceDetails":
       return serverVars.baseUrl + serverVars.walletBalanceDetails;
+    case "getAllInfinitoSavings":
+      return serverVars.baseUrl + serverVars.getAllInfinitoSavings;
+    case "addUserPort":
+      return serverVars.baseUrl + serverVars.addUserPort;
+    case "getWithdrawal":
+      return serverVars.baseUrl + serverVars.getWithdrawal;
+    case "makeWithdrawal":
+      return serverVars.baseUrl + serverVars.makeWithdrawal;
     default:
       return null;
   }

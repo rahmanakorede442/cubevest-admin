@@ -74,6 +74,11 @@ const Sidebar = props => {
       icon: <MoneyIcon />
     },
     {
+      title: 'Withdrawals',
+      href: '/pending-withdrawal',
+      icon: <BusinessCenterIcon />
+    },
+    {
       title: 'Investment',
       href: '/investment_tab',
       icon: <BusinessCenterIcon />

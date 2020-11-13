@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SimpleTabs(props) {
     const classes = useStyles();
-    const [value, setValue] = React.useState(2);
+    const [value, setValue] = React.useState(3);
     const [opened, setOpened] = React.useState(false);
   
     const handleChange = (event, newValue) => {
@@ -87,8 +87,6 @@ export default function SimpleTabs(props) {
         <TabPanel value={value} index={3}>
           <InfinitoSavings/>
         </TabPanel>
-        {/* </div> */}
-      {/* </div> */}
       </div>
     );
   }

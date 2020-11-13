@@ -7,7 +7,6 @@ import { withStyles } from "@material-ui/styles";
 import { getConfig, checkToken, numberFormat } from '../../../redux/config/config'
 import { authHeader, history } from '../../../redux/logic';
 import { UsersToolbar, UsersTable } from '../components/Users';
-import mockData from './data';
 import { SearchInput } from 'components';
 
 

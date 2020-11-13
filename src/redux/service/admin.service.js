@@ -41,6 +41,8 @@ export const adminService = {
   adminApproveLoans,
   hideOrShowMarketInvestment,
   hideOrShowHalalInvestment,
+  addUserPort,
+  makeWithdrawal,
   update,
   delete: _delete,
 };
@@ -132,6 +134,18 @@ function adminApproveLoans(data) {
   );
 }
 
+// make withdrawal 
+function makeWithdrawal(data) {
+  const requestOptions = {
+    method: "POST",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  };
+  return fetch(getConfig("makeWithdrawal"), requestOptions).then(
+    handleResponse
+  );
+}
+
 // Update market category
 function adminUpdateMarketCategory(data) {
   let user = JSON.parse(localStorage.getItem('admin'));
@@ -177,6 +191,18 @@ function hideOrShowMarketInvestment(data) {
     body: JSON.stringify(data),
   };
   return fetch(getConfig("hideOrShowMarketInvestment")+data.id+"?token="+user.token, requestOptions).then(
+    handleResponse
+  );
+}
+
+function addUserPort(data) {
+  let user = JSON.parse(localStorage.getItem('admin'));
+  const requestOptions = {
+    method: "POST",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  };
+  return fetch(getConfig("addUserPort")+data.id+"?token="+user.token, requestOptions).then(
     handleResponse
   );
 }

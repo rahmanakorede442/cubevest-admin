@@ -1,21 +1,15 @@
-import React, { useState, Component } from 'react';
-import { makeStyles } from '@material-ui/styles';
+import React, { Component } from 'react';
 import { withRouter, Link } from "react-router-dom";
 import { adminActions } from "../../../redux/action";
 import { connect } from "react-redux";
 import { withStyles } from "@material-ui/styles";
-import { getConfig, checkToken} from '../../../redux/config/config'
+import { getConfig} from '../../../redux/config/config'
 import { authHeader } from '../../../redux/logic';
-import { SearchInput } from 'components';
-import { Grid, Card, Button, ButtonGroup, Hidden, Icon, Fab, CardActions, Typography } from '@material-ui/core';
+import { Grid, Dialog, Button, TextField, DialogContent, CardContent, DialogTitle, Divider, DialogActions, CardActions, Typography } from '@material-ui/core';
 import UserAccount from './compnent/UserAccount/UserAccount';
-// import Loading from "matx/components/MatxLoading/MatxLoading";
 import swal from 'sweetalert'
 
-import { UsersToolbar, UsersTable } from '../components/Savings';
 import UserProfile from './compnent/UserAccount/UserProfile';
-// import { UserDetails } from 'views';
-
 
 class UserDetails extends Component {
   constructor(props){
@@ -29,14 +23,22 @@ class UserDetails extends Component {
       search: "",
       user_status:'',
       open:false,
-      id
+      id,
+      data:{
+        id,
+        port_no:"",
+        member_id:""
+      }
     }
-    this.searchChange = this.searchChange.bind(this);
     this.handleEnable = this.handleEnable.bind(this);
-    this.handleDeclaine = this.handleDeclaine.bind(this);
+    this.handleDecline = this.handleDecline.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleOpen = this.handleOpen.bind(this);
+    this.handleClose = this.handleClose.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }   
 
-  componentDidMount(){
+componentDidMount(){
     let user = JSON.parse(localStorage.getItem('admin'));
     const id = this.props.match.params.id;
     const requestOptions = {
@@ -72,11 +74,10 @@ class UserDetails extends Component {
 }
 
 
-handleDeclaine = () => {
+handleDecline = () => {
   const id = this.props.match.params.id;
   swal({
     title: "Are you sure?",
-    text: "Do you to Disable this User?",
     icon: "warning",
     buttons: true,
     dangerMode: true,
@@ -95,7 +96,6 @@ handleEnable = () => {
   const id = this.props.match.params.id;
   swal({
     title: "Are you sure?",
-    text: "Do you to Enable this User?",
     icon: "success",
     buttons: true,
     dangerMode: true,
@@ -109,19 +109,44 @@ handleEnable = () => {
   }
 });
 }
-searchChange(event) {
-  const { name, value } = event.target;
-  const { search, users, all } = this.state;
-  
-  this.setState({ search: value, users: value == "" ? all : all.filter((q)=>
-  q.last_name.toLowerCase().indexOf(value.toLowerCase())  !== -1 
-  || q.first_name.toLowerCase().indexOf(value.toLowerCase())  !== -1 
-  || q.frequency.toLowerCase().indexOf(value.toLowerCase())  !== -1 )});
+
+handleSubmit = () => {
+  // const id = this.props.match.params.id;
+  const {data} =this.state
+  swal({
+    title: "Press ok to continue",
+    icon: "success",
+    buttons: true,
+    dangerMode: true,
+  })
+  .then((willDelete) => {
+  if (willDelete) {
+    this.props.addUserPort(data);
+    swal("Loading...",{   
+      buttons:false
+    });
+  }
+});
+}
+
+handleOpen = () =>{
+  this.setState({open:true})
+}
+
+handleClose = () =>{
+  this.setState({open:false })
+}
+
+handleChange = (event) =>{
+  const {name, value} = event.target
+  const {data} = this.state
+  this.setState({data:{...data, [name]: value}})
 }
 
 render(){
+  const ports = [1,2,3,4,5,6,7,8,9,10]
   const {theme} = this.props
-  const {users, bank, loading, search, open, id} = this.state
+  const {users, bank, loading, data, open, id} = this.state
     return (
       <div style={{padding: theme.spacing(3)}}>
     
@@ -164,7 +189,7 @@ render(){
                   <Button
                     style={{background:'red', color:'white'}}
                     variant="contained"
-                    onClick={()=>this.handleDeclaine()}>Disable
+                    onClick={()=>this.handleDecline()}>Disable
                   </Button> :
                   <Button
                     style={{color:'white',background:'blue'}}
@@ -172,6 +197,11 @@ render(){
                   onClick={()=>this.handleEnable()}>Enable
                   </Button>
                   }
+                  <Button
+                    style={{color:'white',background:'blue'}}
+                    variant="contained"
+                  onClick={()=>this.handleOpen()}>Update
+                  </Button>
                 </CardActions>
               </Grid>
               <Grid item lg={12} md={12} sm={12} xs={12}>
@@ -180,6 +210,7 @@ render(){
                   <Link to={`/regulardetails/${id}`}><Button style={{width:"100%"}} variant="outlined">Regular Savings</Button></Link>
                   <Link to={`/target_details/${users.id}`}><Button style={{width:"100%"}} variant="outlined">Target Savings</Button></Link>
                   <Link to={`/savetoloan_details/${id}`}><Button style={{width:"100%"}} variant="outlined">Save To Loan</Button></Link>
+                  <Link><Button style={{width:"100%"}} variant="outlined">Infinito Savings</Button></Link>
                   <Typography variant="h6">Investments Account</Typography>
                   <Link to="/"><Button style={{width:"100%"}} variant="outlined">Market Investment</Button></Link>
                   <Link to="/"><Button style={{width:"100%"}} variant="outlined">Halal Investment</Button></Link>
@@ -199,8 +230,81 @@ render(){
               <UserProfile users={users} bank={bank} loading={loading}/>
             </Grid>
             </Grid>
-          </div>
+        </div>
       }
+      {/* Modal */}
+      < Dialog
+        open={open}
+        fullWidth={true}
+        maxWidth = {'xs'}
+        keepMounted
+        onClose={this.handleClose}
+        aria-labelledby="alert-dialog-slide-title"
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogTitle bold id="alert-dialog-slide-title">Add User Port</DialogTitle>  
+        <Divider />     
+        <DialogContent>
+          <CardContent className="content">
+            <form  noValidate autoComplete="off" onSubmit={this.handleSubmit}>
+              <Grid >
+                    <Grid>
+                    <label>Choose Port number</label>
+                    <TextField
+                        fullWidth
+                        select
+                        variant="outlined"
+                        value={data.port_no}
+                        name="port_no"
+                        onChange={this.handleChange}
+                        SelectProps={{
+                          native: true,
+                        }}
+                        helperText="Please select Investment Name">
+                        {ports.map((option, index) => (
+                          <option key={index} value={option}>
+                            {option}
+                          </option>
+                        ))}
+                    </TextField>
+                    </Grid><br/>
+                    <Grid>
+                    <label>Change Member Id</label>
+                    <TextField
+                      fullWidth
+                      placeholder="Category Name"
+                      name="member_id"
+                      type="text"
+                      value={data.member_id} 
+                      onChange={this.handleChange}
+                      variant="outlined"
+                    />
+                  </Grid>                   
+              </Grid>
+            </form>
+            </CardContent>              
+          {/* </DialogContentText> */}
+          <Divider /> 
+        <DialogActions>
+          <Grid item md={10} xs={10}>
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              style={{marginLeft:8}}
+              onClick={this.handleSubmit}>
+              Add Port
+            </Button>
+            </Grid> 
+            <Button onClick={this.handleClose} 
+              variant="contained"
+              style={{color:'white', marginRight:8, backgroundColor:'red'}}>
+              Cancel
+            </Button>
+          </DialogActions>
+        </DialogContent>
+      </Dialog>
+      {/* Modal */}
       </div>
     );
   };
@@ -213,6 +317,7 @@ function mapState(state) {
 const actionCreators = {
   disableUsers: adminActions.disableUsers,
   enableUsers: adminActions.enableUsers,
+  addUserPort: adminActions.addUserPort,
   logout: adminActions.logout,
 };
 

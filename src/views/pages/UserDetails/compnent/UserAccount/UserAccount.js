@@ -39,42 +39,15 @@ const useStyles = makeStyles(theme => ({
 
 const UserAccount = props => {
   const { className, loading, users, ...rest } = props;
-console.log(users)
   const classes = useStyles();
 
-  const user = {
-    name: 'Shen Zhi',
-    city: 'Los Angeles',
-    country: 'USA',
-    timezone: 'GTM-7',
-    avatar: '/images/avatars/avatar_11.png'
-  };
-
-  // const handleDelete = (users,id) => {
-  //   swal({
-  //     title: "Are you sure?",
-  //     text: "Once deleted, you will not be able to recover this file!",
-  //     icon: "warning",
-  //     buttons: true,
-  //     dangerMode: true,
-  //   })
-  //   .then((willDelete) => {
-  //     if (willDelete) {
-  //       props.disableUsers(users,id);
-  //       swal("Loading...",{   
-  //         buttons:false
-  //       });
-  //     }
-  //   });
-  //   }
-
+ 
   return (
     <div>
     <Card
       {...rest}
       className={clsx(classes.root, className)}
     >
-    {/* {loading? <Typography>Loading...</Typography>: */}
     <Grid>
       <CardContent>
         <div className={classes.details}>
@@ -92,13 +65,6 @@ console.log(users)
             >
               {users.address}
             </Typography>
-            {/* <Typography
-              className={classes.dateText}
-              color="textSecondary"
-              variant="body1"
-            >
-              ({user.timezone})
-            </Typography> */}
           </div>
           <Avatar
             className={classes.avatar}
@@ -106,46 +72,9 @@ console.log(users)
           />
         </div>        
       </CardContent>
-    {/* } */}
     </Grid>
-    
-      <Divider />     
+    <Divider />     
     </Card>
-     {/* <Grid style={{display:'flex'}}>
-              <CardActions>
-              <Link to="/users">
-                <Button
-                  color="secondary"
-                  variant="contained"
-                >
-                  Back
-                </Button> 
-                </Link>
-              </CardActions>
-              <CardActions>
-                {users.user_status !=0 ?
-                <Button
-                  style={{background:'red', color:'white'}}
-                  // color="secondary"
-                  variant="contained"
-                  // onClick={()=>this.exitSavings(user.id)}
-                  onClick={()=> handleDelete(users.id)}
-                  >
-                  Disable
-                </Button> :
-                <Button
-                  style={{color:'white',background:'blue'}}
-                  // color="secondary"
-                  variant="contained"
-                  // onClick={()=>this.exitSavings(user.id)}
-                  onClick={()=>this.handleDelete(users.id)}
-                  >
-                  Enable
-                </Button>
-                }
-              </CardActions>
-              </Grid>
-            */}
     </div>
   );
 };

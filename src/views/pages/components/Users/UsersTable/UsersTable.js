@@ -105,21 +105,12 @@ const UsersTable = props => {
             <Table>
               <TableHead>
                 <TableRow>
-                  {/* <TableCell padding="checkbox">
-                    <Checkbox
-                      checked={selectedUsers.length === users.length}
-                      color="primary"
-                      indeterminate={
-                        selectedUsers.length > 0 &&
-                        selectedUsers.length < users.length
-                      }
-                      onChange={handleSelectAll}
-                    />
-                  </TableCell> */}
+                  <TableCell>Member ID</TableCell>
                   <TableCell>Name</TableCell>
                   <TableCell>Email</TableCell>
                   <TableCell>Location</TableCell>
                   <TableCell>Phone</TableCell>
+                  <TableCell>Port No</TableCell>
                   <TableCell>Registration date</TableCell>
                   <TableCell>Status</TableCell>
                   <TableCell>Action</TableCell>
@@ -145,14 +136,7 @@ const UsersTable = props => {
                     key={user.id}
                     selected={selectedUsers.indexOf(user.id) !== -1}
                   >
-                    {/* <TableCell padding="checkbox">
-                      <Checkbox
-                        checked={selectedUsers.indexOf(user.id) !== -1}
-                        color="primary"
-                        onChange={event => handleSelectOne(event, user.id)}
-                        value="true"
-                      />
-                    </TableCell> */}
+                    <TableCell>{user.member_id}</TableCell>
                     <TableCell>
                       <div className={classes.nameContainer}>
                         <Avatar
@@ -167,6 +151,7 @@ const UsersTable = props => {
                     <TableCell>{user.email}</TableCell>
                     <TableCell> {user.address}</TableCell>
                     <TableCell>{user.phone_no}</TableCell>
+                    <TableCell>{user.port}</TableCell>
                     <TableCell>
                       {moment(user.date_entered).format('DD/MM/YYYY')}
                     </TableCell>

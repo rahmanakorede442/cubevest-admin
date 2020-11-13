@@ -43,10 +43,13 @@ import {
   HalalInvestment as HalalInvestmentView,
   Transactions as TransactionsView,
   Admin as AdminView,
+  PendingWithdrawalTab as PendingWithdrawalTabView,
+  ApprovedWithdrawalTab as ApprovedWithdrawalTabView,
   WalletBalance as WalletBalanceView,
   WalletHistory as WalletHistoryView,
   WalletBalanceDetails as WalletBalanceDetailsView,
   WalletBalanceDetails,
+  ApprovedWithdrawalTab,
 } from './views';
 import MarketTab  from "../src/views/pages/MarketPlace/index";
 
@@ -90,11 +93,23 @@ const Routes = () => {
         path="/investment_tab/halal_tab"
       />
       <RouteWithLayout
-      component={MarketTabView}
-      exact
-      layout={MainLayout}
-      path="/investment_tab"
-    />
+        component={MarketTabView}
+        exact
+        layout={MainLayout}
+        path="/investment_tab"
+      />
+      <RouteWithLayout
+        component={ApprovedWithdrawalTabView}
+        exact
+        layout={MainLayout}
+        path="/approved-withdrawal"
+      />
+      <RouteWithLayout
+        component={PendingWithdrawalTabView}
+        exact
+        layout={MainLayout}
+        path="/pending-withdrawal"
+      />
       <RouteWithLayout
         component={LoanTabView}
         exact

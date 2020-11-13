@@ -6,6 +6,7 @@ export { default as WalletHistory } from './pages/Wallet/components/WalletHistor
 export { WalletBalanceDetails } from './pages/Wallet';
 export { default as AwaitingLoanTab } from './pages/Loan/components/AwaitingLoanTab';
 export { default as ApprovedLoanTab } from './pages/Loan/components/ApprovedLoanTab';
+export { ApprovedWithdrawalTab, PendingWithdrawalTab} from './pages/Withdrawal';
 export { default as Dashboard } from './Dashboard';
 export { default as Icons } from './Icons';
 export { default as NotFound } from './NotFound';
