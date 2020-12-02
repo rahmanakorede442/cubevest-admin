@@ -43,6 +43,7 @@ export const adminService = {
   hideOrShowHalalInvestment,
   addUserPort,
   makeWithdrawal,
+  deleteActivities,
   update,
   delete: _delete,
 };
@@ -74,6 +75,17 @@ function adminregister(user) {
   };
 
   return fetch(getConfig("adminsignup"), requestOptions).then(handleResponse);
+}
+
+function deleteActivities(data) {
+  const requestOptions = {
+    method: "POST",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  };
+  return fetch(getConfig("deleteActivities"), requestOptions).then(
+    handleResponse
+  );
 }
 
 // Add Halal

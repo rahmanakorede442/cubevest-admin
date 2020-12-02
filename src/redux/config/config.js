@@ -1,7 +1,7 @@
 
 import { history } from '../logic';
 const serverVars = {
-  baseUrl: "https://api.cubevest.com/test/api/",
+  baseUrl: "https://api.cubevest.com/api/",
   adminlogin:"admin/login",
   adminsignup: "admin/signup",
   resetPass: "admin/adminResetPassword",
@@ -93,7 +93,9 @@ const serverVars = {
   getAllInfinitoSavings:"infinitoSavingsAdmin?token=",
   addUserPort:"add_port_no/",
   getWithdrawal:"view_withdrawal_lists?token=",
-  makeWithdrawal:"admin_make_bank_transfers?token="
+  makeWithdrawal:"admin_make_bank_transfers?token=",
+  activitiesLog:"show_activity?token=",
+  deleteActivities:"delete_activity_logs?token="
 };
 
 export const numberFormat = (value) =>
@@ -302,6 +304,10 @@ export function getConfig(apiName) {
       return serverVars.baseUrl + serverVars.getWithdrawal;
     case "makeWithdrawal":
       return serverVars.baseUrl + serverVars.makeWithdrawal;
+    case "activitiesLog":
+      return serverVars.baseUrl + serverVars.activitiesLog+ user.token; 
+    case "deleteActivities":
+      return serverVars.baseUrl + serverVars.deleteActivities+ user.token;
     default:
       return null;
   }

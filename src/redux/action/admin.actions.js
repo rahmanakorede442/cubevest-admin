@@ -44,6 +44,7 @@ export const adminActions = {
   hideOrShowHalalInvestment,
   addUserPort,
   makeWithdrawal,
+  deleteActivities
   };
 
 function adminlogin(username, password) {
@@ -95,16 +96,6 @@ function adminAddMarket(user) {
       }
     );
   };
-
-  function request(user) {
-    return { type: userConstants.SAVINGS_REQUEST, user };
-  }
-  function success(user) {
-    return { type: userConstants.SAVINGS_SUCCESS, user };
-  }
-  function failure(error) {
-    return { type: userConstants.SAVINGS_FAILURE, error };
-  }
 }
 
 function adminUpdateMarket(user, id) {
@@ -122,16 +113,6 @@ function adminUpdateMarket(user, id) {
       }
     );
   };
-
-  function request(user) {
-    return { type: userConstants.SAVINGS_REQUEST, user };
-  }
-  function success(user) {
-    return { type: userConstants.SAVINGS_SUCCESS, user };
-  }
-  function failure(error) {
-    return { type: userConstants.SAVINGS_FAILURE, error };
-  }
 }
 
 function adminAddHalal(user) {
@@ -149,16 +130,6 @@ function adminAddHalal(user) {
       }
     );
   };
-
-  function request(user) {
-    return { type: userConstants.SAVINGS_REQUEST, user };
-  }
-  function success(user) {
-    return { type: userConstants.SAVINGS_SUCCESS, user };
-  }
-  function failure(error) {
-    return { type: userConstants.SAVINGS_FAILURE, error };
-  }
 }
 
 function hideOrShowMarketInvestment(user) {
@@ -176,16 +147,6 @@ function hideOrShowMarketInvestment(user) {
       }
     );
   };
-
-  function request(user) {
-    return { type: userConstants.SAVINGS_REQUEST, user };
-  }
-  function success(user) {
-    return { type: userConstants.SAVINGS_SUCCESS, user };
-  }
-  function failure(error) {
-    return { type: userConstants.SAVINGS_FAILURE, error };
-  }
 }
 
 function hideOrShowHalalInvestment(user) {
@@ -203,16 +164,6 @@ function hideOrShowHalalInvestment(user) {
       }
     );
   };
-
-  function request(user) {
-    return { type: userConstants.SAVINGS_REQUEST, user };
-  }
-  function success(user) {
-    return { type: userConstants.SAVINGS_SUCCESS, user };
-  }
-  function failure(error) {
-    return { type: userConstants.SAVINGS_FAILURE, error };
-  }
 }
 
 function addUserPort(user) {
@@ -230,16 +181,6 @@ function addUserPort(user) {
       }
     );
   };
-
-  function request(user) {
-    return { type: userConstants.SAVINGS_REQUEST, user };
-  }
-  function success(user) {
-    return { type: userConstants.SAVINGS_SUCCESS, user };
-  }
-  function failure(error) {
-    return { type: userConstants.SAVINGS_FAILURE, error };
-  }
 }
 
 function makeWithdrawal(user) {
@@ -257,16 +198,6 @@ function makeWithdrawal(user) {
       }
     );
   };
-
-  function request(user) {
-    return { type: userConstants.SAVINGS_REQUEST, user };
-  }
-  function success(user) {
-    return { type: userConstants.SAVINGS_SUCCESS, user };
-  }
-  function failure(error) {
-    return { type: userConstants.SAVINGS_FAILURE, error };
-  }
 }
 
 function adminUpdateHalal(user, id) {
@@ -284,16 +215,6 @@ function adminUpdateHalal(user, id) {
       }
     );
   };
-
-  function request(user) {
-    return { type: userConstants.SAVINGS_REQUEST, user };
-  }
-  function success(user) {
-    return { type: userConstants.SAVINGS_SUCCESS, user };
-  }
-  function failure(error) {
-    return { type: userConstants.SAVINGS_FAILURE, error };
-  }
 }
 
 function adminApproveLoans(user) {
@@ -312,16 +233,6 @@ function adminApproveLoans(user) {
       }
     );
   };
-
-  function request(user) {
-    return { type: userConstants.SAVINGS_REQUEST, user };
-  }
-  function success(user) {
-    return { type: userConstants.SAVINGS_SUCCESS, user };
-  }
-  function failure(error) {
-    return { type: userConstants.SAVINGS_FAILURE, error };
-  }
 }
 
 function addTargetCommission(user) {
@@ -343,16 +254,6 @@ function addTargetCommission(user) {
       }
     );
   };
-
-  function request(user) {
-    return { type: userConstants.SAVINGS_REQUEST, user };
-  }
-  function success(user) {
-    return { type: userConstants.SAVINGS_SUCCESS, user };
-  }
-  function failure(error) {
-    return { type: userConstants.SAVINGS_FAILURE, error };
-  }
 }
 
 function adminAddMarketNews(user) {
@@ -374,16 +275,6 @@ function adminAddMarketNews(user) {
       }
     );
   };
-
-  function request(user) {
-    return { type: userConstants.SAVINGS_REQUEST, user };
-  }
-  function success(user) {
-    return { type: userConstants.SAVINGS_SUCCESS, user };
-  }
-  function failure(error) {
-    return { type: userConstants.SAVINGS_FAILURE, error };
-  }
 }
 
 function addAdmin(user) {
@@ -405,16 +296,6 @@ function addAdmin(user) {
       }
     );
   };
-
-  function request(user) {
-    return { type: userConstants.SAVINGS_REQUEST, user };
-  }
-  function success(user) {
-    return { type: userConstants.SAVINGS_SUCCESS, user };
-  }
-  function failure(error) {
-    return { type: userConstants.SAVINGS_FAILURE, error };
-  }
 }
 
 function adminAddHalalNews(user) {
@@ -436,16 +317,6 @@ function adminAddHalalNews(user) {
       }
     );
   };
-
-  function request(user) {
-    return { type: userConstants.SAVINGS_REQUEST, user };
-  }
-  function success(user) {
-    return { type: userConstants.SAVINGS_SUCCESS, user };
-  }
-  function failure(error) {
-    return { type: userConstants.SAVINGS_FAILURE, error };
-  }
 }
 
 function adminAddMarketCategory(user) {
@@ -467,16 +338,6 @@ function adminAddMarketCategory(user) {
       }
     );
   };
-
-  function request(user) {
-    return { type: userConstants.SAVINGS_REQUEST, user };
-  }
-  function success(user) {
-    return { type: userConstants.SAVINGS_SUCCESS, user };
-  }
-  function failure(error) {
-    return { type: userConstants.SAVINGS_FAILURE, error };
-  }
 }
 
 function adminUpdateMarketCategory(user) {
@@ -499,16 +360,6 @@ function adminUpdateMarketCategory(user) {
       }
     );
   };
-
-  function request(user) {
-    return { type: userConstants.SAVINGS_REQUEST, user };
-  }
-  function success(user) {
-    return { type: userConstants.SAVINGS_SUCCESS, user };
-  }
-  function failure(error) {
-    return { type: userConstants.SAVINGS_FAILURE, error };
-  }
 }
 
 function adminUpdateMarketNews(user) {
@@ -531,16 +382,6 @@ function adminUpdateMarketNews(user) {
       }
     );
   };
-
-  function request(user) {
-    return { type: userConstants.SAVINGS_REQUEST, user };
-  }
-  function success(user) {
-    return { type: userConstants.SAVINGS_SUCCESS, user };
-  }
-  function failure(error) {
-    return { type: userConstants.SAVINGS_FAILURE, error };
-  }
 }
 
 function updateAdmin(user) {
@@ -563,16 +404,6 @@ function updateAdmin(user) {
       }
     );
   };
-
-  function request(user) {
-    return { type: userConstants.SAVINGS_REQUEST, user };
-  }
-  function success(user) {
-    return { type: userConstants.SAVINGS_SUCCESS, user };
-  }
-  function failure(error) {
-    return { type: userConstants.SAVINGS_FAILURE, error };
-  }
 }
 
 function disableAdmin(user) {
@@ -595,16 +426,6 @@ function disableAdmin(user) {
       }
     );
   };
-
-  function request(user) {
-    return { type: userConstants.SAVINGS_REQUEST, user };
-  }
-  function success(user) {
-    return { type: userConstants.SAVINGS_SUCCESS, user };
-  }
-  function failure(error) {
-    return { type: userConstants.SAVINGS_FAILURE, error };
-  }
 }
 
 function enableAdmin(user) {
@@ -627,16 +448,6 @@ function enableAdmin(user) {
       }
     );
   };
-
-  function request(user) {
-    return { type: userConstants.SAVINGS_REQUEST, user };
-  }
-  function success(user) {
-    return { type: userConstants.SAVINGS_SUCCESS, user };
-  }
-  function failure(error) {
-    return { type: userConstants.SAVINGS_FAILURE, error };
-  }
 }
 
 function modifyTargetCommission(user) {
@@ -658,16 +469,6 @@ function modifyTargetCommission(user) {
       }
     );
   };
-
-  function request(user) {
-    return { type: userConstants.SAVINGS_REQUEST, user };
-  }
-  function success(user) {
-    return { type: userConstants.SAVINGS_SUCCESS, user };
-  }
-  function failure(error) {
-    return { type: userConstants.SAVINGS_FAILURE, error };
-  }
 }
 
 function adminUpdateHalalNews(user) {
@@ -690,16 +491,6 @@ function adminUpdateHalalNews(user) {
       }
     );
   };
-
-  function request(user) {
-    return { type: userConstants.SAVINGS_REQUEST, user };
-  }
-  function success(user) {
-    return { type: userConstants.SAVINGS_SUCCESS, user };
-  }
-  function failure(error) {
-    return { type: userConstants.SAVINGS_FAILURE, error };
-  }
 }
 
 function regularSavingsTransactionsAdmin(user) {
@@ -725,16 +516,6 @@ function regularSavingsTransactionsAdmin(user) {
       }
     );
   };
-
-  function request(user) {
-    return { type: userConstants.SAVINGS_REQUEST, user };
-  }
-  function success(user) {
-    return { type: userConstants.SAVINGS_SUCCESS, user };
-  }
-  function failure(error) {
-    return { type: userConstants.SAVINGS_FAILURE, error };
-  }
 }
 
 function saveLoanTransactionsAdmin(user) {
@@ -760,16 +541,6 @@ function saveLoanTransactionsAdmin(user) {
       }
     );
   };
-
-  function request(user) {
-    return { type: userConstants.SAVINGS_REQUEST, user };
-  }
-  function success(user) {
-    return { type: userConstants.SAVINGS_SUCCESS, user };
-  }
-  function failure(error) {
-    return { type: userConstants.SAVINGS_FAILURE, error };
-  }
 }
 
 function targetTransactionsAdmin(user) {
@@ -795,16 +566,6 @@ function targetTransactionsAdmin(user) {
       }
     );
   };
-
-  function request(user) {
-    return { type: userConstants.SAVINGS_REQUEST, user };
-  }
-  function success(user) {
-    return { type: userConstants.SAVINGS_SUCCESS, user };
-  }
-  function failure(error) {
-    return { type: userConstants.SAVINGS_FAILURE, error };
-  }
 }
 
 function adminUpdateHalalCategory(user) {
@@ -827,16 +588,6 @@ function adminUpdateHalalCategory(user) {
       }
     );
   };
-
-  function request(user) {
-    return { type: userConstants.SAVINGS_REQUEST, user };
-  }
-  function success(user) {
-    return { type: userConstants.SAVINGS_SUCCESS, user };
-  }
-  function failure(error) {
-    return { type: userConstants.SAVINGS_FAILURE, error };
-  }
 }
 
 function admindeleteCategory(user) {
@@ -858,16 +609,6 @@ function admindeleteCategory(user) {
       }
     );
   };
-
-  function request(user) {
-    return { type: userConstants.SAVINGS_REQUEST, user };
-  }
-  function success(user) {
-    return { type: userConstants.SAVINGS_SUCCESS, user };
-  }
-  function failure(error) {
-    return { type: userConstants.SAVINGS_FAILURE, error };
-  }
 }
 
 function disableUsers(user) {
@@ -889,16 +630,6 @@ function disableUsers(user) {
       }
     );
   };
-
-  function request(user) {
-    return { type: userConstants.SAVINGS_REQUEST, user };
-  }
-  function success(user) {
-    return { type: userConstants.SAVINGS_SUCCESS, user };
-  }
-  function failure(error) {
-    return { type: userConstants.SAVINGS_FAILURE, error };
-  }
 }
 
 function enableUsers(user) {
@@ -920,16 +651,6 @@ function enableUsers(user) {
       }
     );
   };
-
-  function request(user) {
-    return { type: userConstants.SAVINGS_REQUEST, user };
-  }
-  function success(user) {
-    return { type: userConstants.SAVINGS_SUCCESS, user };
-  }
-  function failure(error) {
-    return { type: userConstants.SAVINGS_FAILURE, error };
-  }
 }
 
 function admindeleteMarketNews(user) {
@@ -951,16 +672,6 @@ function admindeleteMarketNews(user) {
       }
     );
   };
-
-  function request(user) {
-    return { type: userConstants.SAVINGS_REQUEST, user };
-  }
-  function success(user) {
-    return { type: userConstants.SAVINGS_SUCCESS, user };
-  }
-  function failure(error) {
-    return { type: userConstants.SAVINGS_FAILURE, error };
-  }
 }
 
 function deleteTargetCommission(user) {
@@ -982,16 +693,6 @@ function deleteTargetCommission(user) {
       }
     );
   };
-
-  function request(user) {
-    return { type: userConstants.SAVINGS_REQUEST, user };
-  }
-  function success(user) {
-    return { type: userConstants.SAVINGS_SUCCESS, user };
-  }
-  function failure(error) {
-    return { type: userConstants.SAVINGS_FAILURE, error };
-  }
 }
 
 function admindeleteHalalNews(user) {
@@ -1013,16 +714,6 @@ function admindeleteHalalNews(user) {
       }
     );
   };
-
-  function request(user) {
-    return { type: userConstants.SAVINGS_REQUEST, user };
-  }
-  function success(user) {
-    return { type: userConstants.SAVINGS_SUCCESS, user };
-  }
-  function failure(error) {
-    return { type: userConstants.SAVINGS_FAILURE, error };
-  }
 }
 
 function admindeleteHalaiCategory(user) {
@@ -1044,16 +735,6 @@ function admindeleteHalaiCategory(user) {
       }
     );
   };
-
-  function request(user) {
-    return { type: userConstants.SAVINGS_REQUEST, user };
-  }
-  function success(user) {
-    return { type: userConstants.SAVINGS_SUCCESS, user };
-  }
-  function failure(error) {
-    return { type: userConstants.SAVINGS_FAILURE, error };
-  }
 }
 
 function adminAddHalalCategory(user) {
@@ -1075,16 +756,6 @@ function adminAddHalalCategory(user) {
       }
     );
   };
-
-  function request(user) {
-    return { type: userConstants.SAVINGS_REQUEST, user };
-  }
-  function success(user) {
-    return { type: userConstants.SAVINGS_SUCCESS, user };
-  }
-  function failure(error) {
-    return { type: userConstants.SAVINGS_FAILURE, error };
-  }
 }
 
 function logout() {
@@ -1164,16 +835,6 @@ function resetpassword(user) {
       }
     );
   };
-
-  function request(user) {
-    return { type: userConstants.SAVINGS_REQUEST, user };
-  }
-  function success(user) {
-    return { type: userConstants.SAVINGS_SUCCESS, user };
-  }
-  function failure(error) {
-    return { type: userConstants.SAVINGS_FAILURE, error };
-  }
 }
 
 
@@ -1193,16 +854,6 @@ function recoverPassword(user) {
       }
     );
   };
-
-  function request(user) {
-    return { type: userConstants.SAVINGS_REQUEST, user };
-  }
-  function success(user) {
-    return { type: userConstants.SAVINGS_SUCCESS, user };
-  }
-  function failure(error) {
-    return { type: userConstants.SAVINGS_FAILURE, error };
-  }
 }
 
 function adminChangePassword(user) {
@@ -1223,14 +874,33 @@ function adminChangePassword(user) {
       }
     );
   };
-
-  function request(user) {
-    return { type: userConstants.SAVINGS_REQUEST, user };
-  }
-  function success(user) {
-    return { type: userConstants.SAVINGS_SUCCESS, user };
-  }
-  function failure(error) {
-    return { type: userConstants.SAVINGS_FAILURE, error };
-  }
+}
+function deleteActivities(user) {
+  return (dispatch) => {
+    dispatch(request({ user }));
+    adminService.deleteActivities(user).then(
+      (user) => {
+        dispatch(success(user));
+        if(user.status == false){
+          dispatch(alertActions.error(user.message));
+        }else{
+          dispatch(alertActions.success(user.message));
+        }
+        history.push("/logs");
+      },
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.error(error.toString()));
+      }
+    );
+  };
+}
+function request(user) {
+  return { type: userConstants.SAVINGS_REQUEST, user };
+}
+function success(user) {
+  return { type: userConstants.SAVINGS_SUCCESS, user };
+}
+function failure(error) {
+  return { type: userConstants.SAVINGS_FAILURE, error };
 }
