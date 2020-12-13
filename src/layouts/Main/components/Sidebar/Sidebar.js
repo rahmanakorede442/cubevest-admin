@@ -103,6 +103,12 @@ const Sidebar = props => {
       href: '/logs',
       icon: <AssignmentIcon />
     },
+    
+    {
+      title: 'Transaction Log',
+      href: '/transaction-logs',
+      icon: <AssignmentIcon />
+    },
     {
       title: 'Settings',
       href: '/settings',
@@ -120,10 +126,7 @@ const Sidebar = props => {
       open={open}
       variant={variant}
     >
-      <div
-        {...rest}
-        className={clsx(classes.root, className)}
-        
+      <div className={clsx(classes.root, className)}
       >
         <Profile />
         <Divider className={classes.divider} />

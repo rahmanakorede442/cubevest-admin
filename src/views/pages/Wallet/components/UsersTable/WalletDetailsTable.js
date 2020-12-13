@@ -89,7 +89,7 @@ const WalletDetailsTable = props => {
 
  return (
   <Card
-    {...rest}
+     
     className={clsx(classes.root, className)}
   >
     <CardContent className={classes.content}>

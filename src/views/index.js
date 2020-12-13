@@ -43,4 +43,4 @@ export {default as MarketTab} from './pages/MarketTab';
 export {default as Transactions} from './pages/Transactions'
 export {default as Admin} from './pages/Admin'
 export {default as Log} from './pages/Log'
-
+export {default as TransactionLog} from './pages/TransactionLog'

@@ -49,7 +49,7 @@ const Budget = props => {
 
   return (
     <Card
-      {...rest}
+       
       className={clsx(classes.root, className)}
       // style={{backgroundColor:"#4fa647"}} 
       elevation={6}

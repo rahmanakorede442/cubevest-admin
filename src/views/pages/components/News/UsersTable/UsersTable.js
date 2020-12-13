@@ -211,7 +211,7 @@ const handleSubmitEdit = (event) => {
 
   return (
     <Card
-      {...rest}
+       
       className={clsx(classes.root, className)}
     >
 

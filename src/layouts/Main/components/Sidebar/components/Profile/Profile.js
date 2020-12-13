@@ -38,9 +38,7 @@ const Profile = props => {
   };
 
   return (
-    <div
-      {...rest}
-      className={clsx(classes.root, className)}
+    <div className={clsx(classes.root, className)}
     >
       {/* <Avatar
         alt="Person"

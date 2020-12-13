@@ -51,7 +51,7 @@ const Savings = props => {
 
   return (
     <Card
-      {...rest}
+       
       className={clsx(classes.root, className)}
       // style={{backgroundColor:"#22591d"}}
        elevation={6}

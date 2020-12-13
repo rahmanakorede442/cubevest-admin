@@ -50,7 +50,7 @@ const Target = props => {
 
   return (
     <Card
-      {...rest}
+       
       className={clsx(classes.root, className)}
       // style={{backgroundColor:"#a64782"}} 
       elevation={6}

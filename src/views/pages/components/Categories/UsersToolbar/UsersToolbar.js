@@ -84,7 +84,7 @@ const UsersToolbar = props => {
 
   return (
     <div
-      {...rest}
+       
       className={clsx(classes.root, className)}
     >
        {/* Modal */}

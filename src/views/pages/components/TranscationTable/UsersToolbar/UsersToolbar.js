@@ -56,7 +56,7 @@ const UsersToolbar = props => {
   const [details, setDetails] = useState();  
   return (
     <div
-      {...rest}
+       
       className={clsx(classes.root, className)}>     
       <div className={classes.row}>
         <form autoComplete="off" noValidate  

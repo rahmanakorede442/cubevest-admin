@@ -16,9 +16,7 @@ const Footer = props => {
   const classes = useStyles();
 
   return (
-    <div
-      {...rest}
-      className={clsx(classes.root, className)}
+    <div className={clsx(classes.root, className)}
     >
       {/* <Typography variant="body1">
         &copy;{' '}

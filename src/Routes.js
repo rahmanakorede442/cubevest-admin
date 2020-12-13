@@ -43,6 +43,7 @@ import {
   HalalInvestment as HalalInvestmentView,
   Transactions as TransactionsView,
   Log as LogView,
+  TransactionLog as TransactionLogView,
   Admin as AdminView,
   PendingWithdrawalTab as PendingWithdrawalTabView,
   ApprovedWithdrawalTab as ApprovedWithdrawalTabView,
@@ -260,6 +261,12 @@ const Routes = () => {
         exact
         layout={MainLayout}
         path="/logs"
+      />
+      <RouteWithLayout
+        component={TransactionLogView}
+        exact
+        layout={MainLayout}
+        path="/transaction-logs"
       />
       <RouteWithLayout
         component={MarketInvestmentView}

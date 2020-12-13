@@ -147,7 +147,7 @@ const WithdrawalTable = (props) => {
 
   return (
     <Card
-      {...rest}
+       
       className={clsx(classes.root, className)}>
       <WithdrawalToolbar handleChange={handleChange}/>
       <CardContent className={classes.content}>

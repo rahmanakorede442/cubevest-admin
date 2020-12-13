@@ -108,7 +108,7 @@ const UsersByDevice = props => {
 
   return (
     <Card
-      {...rest}
+       
       className={clsx(classes.root, className)}
     >
       <CardHeader

@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
-import PropTypes from 'prop-types';
-import moment from 'moment';
 import { withRouter } from "react-router-dom";
 import { adminActions } from "../../../redux/action";
 import { connect } from "react-redux";
@@ -9,40 +7,26 @@ import { withStyles } from "@material-ui/styles";
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import { makeStyles } from '@material-ui/styles';
 import swal from 'sweetalert'
-import { getConfig, numberFormat, checkToken } from '../../../redux/config/config';
-import { authHeader, history } from '../../../redux/logic';
+import moment from 'moment';
 import {
   Card,
   CardActions,
   CardContent,
-  Avatar,
-  Checkbox,
   Table,
-  TextField,
   TableBody,
   TableCell,
   TableHead,
   TableRow,
-  Typography,
   TablePagination,
   Button,
+  CircularProgress,
+  CardHeader,
   Divider,
-  Dialog,
-  Grid,
   DialogContent,
   DialogTitle,
-  DialogContentText,
-  DialogActions,
-  List,
-  ListItem,
-  ListItemText,
-  Slide,
-  CircularProgress
+  Dialog,
+  Typography,
 } from '@material-ui/core';
-import {Link} from 'react-router-dom';
-
-import { getInitials } from 'helpers';
-import { single } from 'validate.js';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -83,20 +67,22 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const LogTable = props => {
-  const { className, loading, users,  investments, banks, status, ...rest} = props;
+  const { className, loading, logs,  investments, banks, status, ...rest} = props;
   const classes = useStyles();
 
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [page, setPage] = useState(0);
+  const [open, setOpen] = useState(false)
+  const [singleLog, setSingleLog] = useState({})
 
   const handleSelectAll = event => {
-    const { users } = props;
+    const { logs } = props;
 
     let selectedUsers;
 
     if (event.target.checked) {
-      selectedUsers = users.map(user => user.id);
+      selectedUsers = logs.map(log => log.id);
     } else {
       selectedUsers = [];
     }
@@ -150,55 +136,50 @@ const LogTable = props => {
     });
   }
 
+  const handleView = (id) =>{
+    const data = logs.find(log=>(log.id === id))
+    setSingleLog(data)
+    setOpen(true)
+  }
+
+  const handleClose = () =>{
+    setOpen(false)
+  }
   
  return (
-  <Card
-     
-    className={clsx(classes.root, className)}>
+  <Card className={clsx(classes.root, className)}>
     <CardContent className={classes.content}>
+      <CardHeader title="Transaction Log Table"/>
       <PerfectScrollbar>
         <div className={classes.inner}>
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell padding="checkbox">
-                  <Checkbox
-                    checked={selectedUsers.length === users.length}
-                    color="primary"
-                    indeterminate={
-                      selectedUsers.length > 0 &&
-                      selectedUsers.length < users.length
-                    }
-                    onChange={handleSelectAll}
-                  />
-                </TableCell>
-                <TableCell>Name</TableCell>
-                <TableCell>Description</TableCell>
-                <TableCell> Created Date</TableCell>
+                <TableCell>Id</TableCell>
+                <TableCell>Username </TableCell>
+                <TableCell>Bank Name</TableCell>
+                <TableCell>Status</TableCell>
+                <TableCell>Date</TableCell>
+                <TableCell>Action</TableCell>
               </TableRow>
             </TableHead>
             
             <TableBody>
             {loading? <CircularProgress />: 
-            users.length !== 0 ?
-            users.slice(page * rowsPerPage, page* rowsPerPage + rowsPerPage).map(user => (
+            logs.length !== 0 ?
+            logs.slice(page * rowsPerPage, page* rowsPerPage + rowsPerPage).map((log, index) => (
               <TableRow
                 className={classes.tableRow}
                 hover
-                key={user.id}
-                selected={selectedUsers.indexOf(user.id) !== -1}
+                key={log.id}
+                selected={selectedUsers.indexOf(log.id) !== -1}
               >
-                <TableCell padding="checkbox">
-                  <Checkbox
-                    checked={selectedUsers.indexOf(user.id) !== -1}
-                    color="primary"
-                    onChange={event => handleSelectOne(event, user.id)}
-                    value="true"
-                  />
-                </TableCell>
-                 <TableCell>{user.first_name + " " + user.last_name}</TableCell>
-                 <TableCell>{user.description}</TableCell>
-                <TableCell>{user.created_at}</TableCell>
+                 <TableCell>{index+1 }</TableCell>
+                 <TableCell>{log.first_name + " " + log.last_name }</TableCell>
+                 <TableCell>{log.bank }</TableCell>
+                 <TableCell>{log.status }</TableCell>
+                 <TableCell>{moment(log.created_at).format('DD/MM/YYYY')}</TableCell>
+                 <TableCell><Button variant="contained" color="primary" onClick={()=>handleView(log.id)}>View</Button></TableCell>
               </TableRow>
             )):
             <TableRow>
@@ -213,11 +194,9 @@ const LogTable = props => {
       </PerfectScrollbar>
     </CardContent>
     <CardActions className={classes.actions}>
-      <Button variant="contained" color="primary" onClick={handleSubmit}>Delete</Button>
-        {props.savings && <CircularProgress />}
       <TablePagination
         component="div"
-        count={users.length}
+        count={logs.length}
         onChangePage={handlePageChange}
         onChangeRowsPerPage={handleRowsPerPageChange}
         page={page}
@@ -225,6 +204,32 @@ const LogTable = props => {
         rowsPerPageOptions={[5, 10, 25]}
       />
     </CardActions>
+    {/* Modal */}
+    < Dialog
+        open={open}
+        fullWidth={true}
+        maxWidth = {'xs'}
+        keepMounted
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-slide-title"
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogTitle bold id="alert-dialog-slide-title">Trasanction Log Details</DialogTitle>  
+        <Divider />     
+        <DialogContent>
+          <CardContent className="content">
+            <Typography variant="h5">Name: {singleLog.first_name+ " " +singleLog.last_name}</Typography> <br />
+            <Typography variant="h5">Email: {singleLog.email}</Typography> <br />
+            <Typography variant="h5">Reference Number: {singleLog.reference}</Typography> <br />
+            <Typography variant="h5">Account Name: {singleLog.account_name}</Typography> <br />
+            <Typography variant="h5">Bank Name: {singleLog.bank}</Typography> <br />
+            <Typography variant="h5">Card Type: {singleLog.card_type}</Typography> <br />
+            <Typography variant="h5">Message Response: {singleLog.gateway_response}</Typography> <br />
+            <Typography variant="h5">Phone: {singleLog.phone}</Typography>
+          </CardContent>
+        </DialogContent>
+      </Dialog>
+      {/* Modal */}
   </Card>
 );
 };

@@ -50,7 +50,7 @@ const Regular = props => {
 
   return (
     <Card
-      {...rest}
+       
       className={clsx(classes.root, className)}
       // style={{backgroundColor:"#59153f"}}
        elevation={6}

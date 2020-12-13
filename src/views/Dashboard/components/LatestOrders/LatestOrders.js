@@ -70,7 +70,7 @@ const LatestOrders = props => {
 
   return (
     <Card
-      {...rest}
+       
       className={clsx(classes.root, className)}
     >
       <CardHeader

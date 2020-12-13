@@ -45,7 +45,7 @@ const UserAccount = props => {
   return (
     <div>
     <Card
-      {...rest}
+       
       className={clsx(classes.root, className)}
     >
     <Grid>

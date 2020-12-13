@@ -211,7 +211,7 @@ const handleChange = (event) =>{
   
   return (
     <Card
-      {...rest}
+       
       className={clsx(classes.root, className)}
     >
       <CardContent className={classes.content}>

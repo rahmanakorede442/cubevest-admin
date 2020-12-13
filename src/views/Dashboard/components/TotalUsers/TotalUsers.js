@@ -50,7 +50,7 @@ const TotalUsers = props => {
 
   return (
     <Card
-      {...rest}
+       
       className={clsx(classes.root, className)}
       // style={{}} 
       elevation={6}

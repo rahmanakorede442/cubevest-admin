@@ -49,7 +49,7 @@ const StatusBullet = props => {
 
   return (
     <span
-      {...rest}
+       
       className={clsx(
         {
           [classes.root]: true,

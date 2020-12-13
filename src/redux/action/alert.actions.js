@@ -22,7 +22,7 @@ function error(message) {
     swal({
         icon: "warning",
         text: `${message}`,
-        timer: 8000,
+        // timer: 8000,
     }).then(()=>{
         window.location.reload()
     })

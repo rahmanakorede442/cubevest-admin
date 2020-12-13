@@ -103,6 +103,7 @@ const handleSubmit = (event)=>{
 }
 const handleProfileImage=(e)=>{
   const [file, name] = e.target.files;
+  console.log(e.target.files)
   if(file){
       const reader = new FileReader();
       const { current } = uploadedImage;
@@ -118,10 +119,11 @@ const handleChange = (event) =>{
   const { name, value } = event.target;
   event.persist();
   setData(data=>({ ...data, [name]:value}))
+  console.log(data.investment_pic)
 }
   return (
     <div
-      {...rest}
+       
       className={clsx(classes.root, className)}
     >
      {/* Modal add investment start*/}

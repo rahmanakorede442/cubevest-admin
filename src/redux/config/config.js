@@ -95,7 +95,8 @@ const serverVars = {
   getWithdrawal:"view_withdrawal_lists?token=",
   makeWithdrawal:"admin_make_bank_transfers?token=",
   activitiesLog:"show_activity?token=",
-  deleteActivities:"delete_activity_logs?token="
+  deleteActivities:"delete_activity_logs?token=",
+  transactionLogs:"display_paystack_transactions"
 };
 
 export const numberFormat = (value) =>
@@ -308,6 +309,8 @@ export function getConfig(apiName) {
       return serverVars.baseUrl + serverVars.activitiesLog+ user.token; 
     case "deleteActivities":
       return serverVars.baseUrl + serverVars.deleteActivities+ user.token;
+    case "transactionLogs":
+      return serverVars.baseUrl + serverVars.transactionLogs
     default:
       return null;
   }

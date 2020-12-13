@@ -198,7 +198,7 @@ const handleOpen = (id) => {
   }
  return (
   <Card
-    {...rest}
+     
     className={clsx(classes.root, className)}
   >
       {/* Modal */}

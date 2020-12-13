@@ -48,7 +48,7 @@ const TotalInvestment = props => {
 
   return (
     <Card
-      {...rest}
+       
       className={clsx(classes.root, className)}
     >
       <CardContent>
