@@ -51,9 +51,9 @@ const Profile = props => {
         className={classes.name}
         variant="h4"
       >
-        {name}
+        {name && name}
       </Typography>
-      <Typography variant="body2">{bio}</Typography>
+      <Typography variant="body2">{bio && bio}</Typography>
     </div>
   );
 };

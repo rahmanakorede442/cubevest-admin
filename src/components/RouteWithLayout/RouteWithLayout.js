@@ -6,9 +6,7 @@ const RouteWithLayout = props => {
   const { layout: Layout, component: Component, ...rest } = props;
 
   return (
-    <Route
-       
-      render={matchProps => (
+    <Route {...rest} render={matchProps => (
         <Layout>
           <Component {...matchProps} />
         </Layout>
