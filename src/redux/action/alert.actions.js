@@ -29,6 +29,7 @@ function error(message) {
     return { type: alertConstants.ERROR, message };
 }
 
-function clear() {
+function clear(message) {
+    swal({ text: `${message}`})
     return { type: alertConstants.CLEAR };
 }

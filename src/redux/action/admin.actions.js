@@ -4,6 +4,7 @@ import { alertActions } from "./";
 import { history } from "../logic";
 
 export const adminActions = {
+  validateLogin,
   adminlogin,
   logout,
   adminregister,
@@ -44,19 +45,18 @@ export const adminActions = {
   hideOrShowHalalInvestment,
   addUserPort,
   makeWithdrawal,
-  deleteActivities
+  deleteActivities,
+  multipleTransaction
   };
 
-function adminlogin(username, password) {
+function validateLogin(username, password) {
   return (dispatch) => {
     dispatch(request({ username }));
 
-    adminService.adminlogin(username, password).then(
+    adminService.validateLogin(username, password).then(
       (user) => {
-        
         if(user.status){
           dispatch(success(user));
-          history.push("/dashboard");
         }else{
           dispatch(success(user));
           dispatch(alertActions.error(user.message));
@@ -64,7 +64,39 @@ function adminlogin(username, password) {
       },
       (error) => {
         dispatch(failure(error.toString()));
-        dispatch(alertActions.error(error.toString()));
+        dispatch(alertActions.clear(error.toString()));
+      }
+    );
+  };
+
+  function request(user) {
+    return { type: userConstants.LOGIN_REQUEST, user };
+  }
+  function success(user) {
+    return { type: userConstants.LOGIN_SUCCESS, user };
+  }
+  function failure(error) {
+    return { type: userConstants.LOGIN_FAILURE, error };
+  }
+}
+
+function adminlogin(data) {
+  return (dispatch) => {
+    dispatch(request(data.email));
+    adminService.adminlogin(data).then(
+      (user) => {
+        
+        if(user.status){
+          dispatch(success(user));
+          history.push("/dashboard");
+        }else{
+          dispatch(success(user));
+          dispatch(alertActions.clear(user.message));
+        }
+      },
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.clear(error.toString()));
       }
     );
   };
@@ -89,6 +121,26 @@ function adminAddMarket(user) {
         window.location.reload()
         dispatch( alertActions.success(user.message) );
         
+      },
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.error(error));
+      }
+    );
+  };
+}
+
+function multipleTransaction(user) {
+  return (dispatch) => {
+    dispatch(request(user));
+    adminService.multipleTransaction(user).then(
+      (user) => {
+        dispatch(success());
+        if(success.status === false){
+          dispatch( alertActions.success(user.message) );
+        }else{
+          dispatch( alertActions.error(user.message) );
+        }
       },
       (error) => {
         dispatch(failure(error.toString()));

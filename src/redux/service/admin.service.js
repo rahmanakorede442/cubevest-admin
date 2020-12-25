@@ -2,6 +2,7 @@ import { getConfig } from "../config/config";
 import axios from "axios"
 import { authHeader, history } from "../logic";
 export const adminService = {
+  validateLogin,
   adminlogin,
   relogin,
   logout,
@@ -46,13 +47,23 @@ export const adminService = {
   deleteActivities,
   update,
   delete: _delete,
+  multipleTransaction,
 };
 
-function adminlogin(email, password) {
+function validateLogin(email, password) {
   const requestOptions = {
     method: "POST",
     headers: { "Content-Type": "application/json", "Accept": "application/json" },
     body: JSON.stringify({ email, password }),
+  };
+  return fetch(getConfig("validateLogin"), requestOptions).then(handleResponse)
+}
+
+function adminlogin(data) {
+  const requestOptions = {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "Accept": "application/json" },
+    body: JSON.stringify(data),
   };
 
   return fetch(getConfig("adminlogin"), requestOptions)
@@ -83,9 +94,16 @@ function deleteActivities(data) {
     headers: { ...authHeader(), "Content-Type": "application/json" },
     body: JSON.stringify(data),
   };
-  return fetch(getConfig("deleteActivities"), requestOptions).then(
-    handleResponse
-  );
+  return fetch(getConfig("deleteActivities"), requestOptions).then(handleResponse);
+}
+
+function multipleTransaction(data) {
+  const requestOptions = {
+    method: "POST",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  };
+  return fetch(getConfig("multipleTransaction"), requestOptions).then(handleResponse);
 }
 
 // Add Halal

@@ -19,7 +19,6 @@ import {
   Link,
   Typography
 } from '@material-ui/core';
-import { Facebook as FacebookIcon, Google as GoogleIcon } from 'icons';
 
 const schema = {
   email: {

@@ -103,7 +103,7 @@ const handleSubmit = (event)=>{
 }
 const handleProfileImage=(e)=>{
   const [file, name] = e.target.files;
-  console.log(e.target.files)
+  console.log(e.target.files[0])
   if(file){
       const reader = new FileReader();
       const { current } = uploadedImage;

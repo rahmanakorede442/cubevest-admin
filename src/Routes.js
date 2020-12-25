@@ -49,6 +49,7 @@ import {
   ApprovedWithdrawalTab as ApprovedWithdrawalTabView,
   WalletBalance as WalletBalanceView,
   WalletHistory as WalletHistoryView,
+  Application as ApplicationView,
   WalletBalanceDetails as WalletBalanceDetailsView,
   WalletBalanceDetails,
   ApprovedWithdrawalTab,
@@ -141,6 +142,12 @@ const Routes = () => {
         exact
         layout={MainLayout}
         path="/market_tab"
+      />
+      <RouteWithLayout
+        component={ApplicationView}
+        exact
+        layout={MainLayout}
+        path="/payment"
       />
       <RouteWithLayout
         component={WalletBalanceView}

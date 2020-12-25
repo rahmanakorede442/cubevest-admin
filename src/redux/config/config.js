@@ -1,7 +1,9 @@
 
 import { history } from '../logic';
 const serverVars = {
+  // testUrl:"http://142.93.152.229/test/api/",
   baseUrl: "https://api.cubevest.com/api/",
+  validateLogin:"admin/validate_login",
   adminlogin:"admin/login",
   adminsignup: "admin/signup",
   resetPass: "admin/adminResetPassword",
@@ -10,6 +12,8 @@ const serverVars = {
   disableUsers: "disableUsers/",
   enableUsers: "enableUsers/",
   getAllUsers: "getAllUsers?token=",
+  autoSearchUsers:"admin/search_users?token=",
+  allUserPackages:"admin/fetch_user_packages?token=",
   getAllDashboard: "getAllDashboard?token=",
   getAdminShow:  "admin/adminShow?token=",
   // all regular savings
@@ -96,7 +100,8 @@ const serverVars = {
   makeWithdrawal:"admin_make_bank_transfers?token=",
   activitiesLog:"show_activity?token=",
   deleteActivities:"delete_activity_logs?token=",
-  transactionLogs:"display_paystack_transactions"
+  transactionLogs:"display_paystack_transactions",
+  multipleTransaction:"admin/post_transactions?token="
 };
 
 export const numberFormat = (value) =>
@@ -120,15 +125,19 @@ export const checkToken = ()=>{
 export function getConfig(apiName) {
   let user = JSON.parse(localStorage.getItem("admin"));
   if ((apiName != 'adminlogin') && user == null) {
-    if(apiName != "adminsignup"){
-      if(apiName != "recoverpass"){
-        history.push('/sign-in');
-        return
+    if(apiName !== 'validateLogin'){
+      if(apiName != "adminsignup"){
+        if(apiName != "recoverpass"){
+          history.push('/sign-in');
+          return
+        }
       }
     }
     
   }
   switch (apiName) {
+    case "validateLogin":
+      return serverVars.baseUrl + serverVars.validateLogin;
     case "adminlogin":
       return serverVars.baseUrl + serverVars.adminlogin;
     case "recoverpass":
@@ -311,6 +320,12 @@ export function getConfig(apiName) {
       return serverVars.baseUrl + serverVars.deleteActivities+ user.token;
     case "transactionLogs":
       return serverVars.baseUrl + serverVars.transactionLogs
+    case "autoSearchUsers":
+      return serverVars.baseUrl + serverVars.autoSearchUsers+ user.token
+    case "allUserPackages":
+      return serverVars.baseUrl + serverVars.allUserPackages+ user.token
+      case "multipleTransaction":
+        return serverVars.baseUrl + serverVars.multipleTransaction+ user.token
     default:
       return null;
   }

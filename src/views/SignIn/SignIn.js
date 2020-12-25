@@ -10,13 +10,20 @@ import { makeStyles } from '@material-ui/styles';
 import {
   Grid,
   Button,
-  IconButton,
+  Modal,
   TextField,
   Card,
   Link,
-  Typography
+  Typography,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogActions,
+  Divider,
+  CardContent
 } from '@material-ui/core';
-import { Facebook as FacebookIcon, Google as GoogleIcon } from 'icons';
+import swal from 'sweetalert';
+// import { data } from 'views/Dashboard/components/LatestSales/chart';
 
 const schema = {
   email: {
@@ -30,6 +37,12 @@ const schema = {
     presence: { allowEmpty: false, message: 'is required' },
     length: {
       maximum: 128
+    }
+  },
+  code: {
+    presence: { allowEmpty: false, message: 'is required' },
+    length: {
+      maximum: 7
     }
   }
 };
@@ -141,10 +154,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const SignIn = props => {
-  const { history } = props;
 
   const classes = useStyles();
 
+  const [modal, setModal] = useState(false)
   const [formState, setFormState] = useState({
     isValid: false,
     values: {},
@@ -187,9 +200,25 @@ const SignIn = props => {
     var email = formState.values.email;
     var password = formState.values.password;
     if(email && password ){
-    props.adminlogin(email, password)
+      props.validateLogin(email, password)
     }
+    setModal(true)
   };
+
+  const handleSubmitValidate =(event)=>{
+    event.preventDefault();
+    var email = formState.values.email;
+    var password = formState.values.password;
+    var code = formState.values.code;
+    if(code && email && password){
+      props.adminlogin({email, password, code})
+    }else{
+      swal({
+        icon: "warning",
+        text: "All fields are required",
+    })
+    }
+  }
 
   const hasError = field =>
     formState.touched[field] && formState.errors[field] ? true : false;
@@ -252,7 +281,7 @@ const SignIn = props => {
                 />
                 <Button
                   className={classes.signInButton}
-                  // disabled={!formState.isValid}
+                  // disabled={!props.loggingIn}
                   fullWidth
                   size="large"
                   type="submit"
@@ -274,21 +303,63 @@ const SignIn = props => {
           </Card>
         </Grid>
       </Grid>
+      {/* Modal */}
+      <Dialog
+        open={modal}
+        fullWidth={true}
+        maxWidth = {'xs'} 
+        aria-labelledby="alert-dialog-slide-title"
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogTitle bold id="alert-dialog-slide-title">Input OTP </DialogTitle>  
+        <Divider />
+        <DialogContent>
+          <form onSubmit={handleSubmitValidate}>
+            <CardContent className="content">
+              <TextField
+                className={classes.textField}
+                error={hasError('code')}
+                fullWidth
+                helperText={
+                  hasError('code') ? formState.errors.code[1] : null
+                }
+                label="Enter OTP"
+                name="code"
+                onChange={handleChange}
+                disabled={props.loggingIn}
+                type="text"
+                value={formState.values.code || ''}
+                variant="outlined"
+              />
+            </CardContent>            
+            <Divider /> 
+            <DialogActions>
+              <Button
+                type="submit"
+                variant="contained"
+                disabled={props.loggingIn}
+                color="primary"
+                style={{marginLeft:8}}
+                >
+                {props.loggingIn ?"Loading...": "Validate Token"}
+              </Button>
+            </DialogActions>
+          </form>
+        </DialogContent>
+      </Dialog>
+      {/* Modal */}
     </div>
   );
 };
 
-SignIn.propTypes = {
-  history: PropTypes.object
-};
-
 function mapState(state) {
-  const { loggingIn } = state.authentication;
-  return { loggingIn };
+  const { loggingIn, user } = state.authentication;
+  return { loggingIn, user };
 }
 
 const actionCreators = {
   adminlogin: adminActions.adminlogin,
+  validateLogin: adminActions.validateLogin,
 };
 
 const connectedSignIn = connect(mapState, actionCreators)(SignIn);

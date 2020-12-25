@@ -89,6 +89,11 @@ const Sidebar = props => {
       icon: <MoneyIcon />
     },
     {
+      title: 'Make Payment',
+      href: '/payment',
+      icon: <PaymentIcon />
+    },
+    {
       title: 'Transactions',
       href: '/transactions',
       icon: <PaymentIcon />
