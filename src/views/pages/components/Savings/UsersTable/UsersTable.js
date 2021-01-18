@@ -28,7 +28,8 @@ import {
   DialogTitle,
   DialogContentText,
   DialogActions,
-  Slide
+  Slide,
+  CircularProgress
 } from '@material-ui/core';
 import {Link} from 'react-router-dom';
 
@@ -112,25 +113,24 @@ const UsersTable = props => {
               <TableHead>
                 <TableRow>
                   <TableCell>Name</TableCell>
-                  <TableCell>Balance</TableCell>
+                  <TableCell>Total Balance</TableCell>
+                  <TableCell colSpan="5" style={{textAlign:"center"}}>Auto Save</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell></TableCell>
+                  <TableCell></TableCell>
                   <TableCell>Frequency</TableCell>
+                  <TableCell>Amount</TableCell>
                   <TableCell>Payment Method</TableCell>
                   <TableCell>Date</TableCell>
                   <TableCell>Time</TableCell>
                   <TableCell>Action</TableCell>
                 </TableRow>
               </TableHead>
-              {loading?
-                <div style={{marginTop:15, textAlign:"center", alignItems:"center", flexDirection:"column", justifyItems:"center"}}>
-                    <img
-                        img
-                        alt=""
-                        className="loader"
-                        src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
-                      />
-                </div>: 
               <TableBody>
-              {users.length != 0 ?
+              {loading?
+              <TableRow><TableCell><CircularProgress /></TableCell></TableRow>: 
+              users.length != 0 ?
               users.slice(page * rowsPerPage, page* rowsPerPage + rowsPerPage).map(user => (
                 <TableRow
                   className={classes.tableRow}
@@ -149,6 +149,7 @@ const UsersTable = props => {
                   </TableCell>
                   <TableCell>{numberFormat(user.balance)}</TableCell>
                   <TableCell>{user.frequency}</TableCell>
+                  <TableCell>{numberFormat(user.amount)}</TableCell>
                   <TableCell>{user.payment_method}</TableCell>
                   <TableCell>{moment(user.created_at).format('DD/MM/YYYY')} </TableCell>
                   <TableCell>{user.transaction_time}</TableCell>
@@ -163,11 +164,8 @@ const UsersTable = props => {
               <TableCell style={{textAlign:"center"}}>
                   No Record Found
                 </TableCell>                
-              </TableRow>
-              }
+              </TableRow>}
             </TableBody>
-            
-              }
            </Table>
           </div>
         </PerfectScrollbar>
