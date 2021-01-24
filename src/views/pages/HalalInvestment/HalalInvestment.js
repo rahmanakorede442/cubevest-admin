@@ -44,6 +44,9 @@ class HalalInvestment extends Component {
     this.handleOpen = this.handleOpen.bind(this);
     this.handleClose = this.handleClose.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.fetch_next_page = this.fetch_next_page.bind(this);
+    this.fetch_page = this.fetch_page.bind(this);
+    this.fetch_prev_page = this.fetch_prev_page.bind(this);
 
   }
 
@@ -70,10 +73,11 @@ componentDidMount() {
   });
 }
 
-fetchUsers = () =>{
+fetchUsers = (search_term) =>{
     const requestOptions = {
-        method: 'GET',
-        headers: { ...authHeader(), 'Content-Type': 'application/json' },
+      method: 'POST',
+      headers: { ...authHeader(), 'Content-Type': 'application/json' },
+      body:JSON.stringify({search_term})
     };
     fetch(getConfig('showHalaiInvestments'), requestOptions)
     .then(async response => {
@@ -82,8 +86,11 @@ fetchUsers = () =>{
         const error = (data && data.message) || response.statusText;
         return Promise.reject(error);
     }
-    console.log(data)
-    this.setState({users: data, all:data, loading:false });
+    if(data.success === false){
+      this.setState({users: [], all:[], loading:false });
+    }else{
+      this.setState({users: data.data, all:data, loading:false });
+    }
 })
 .catch(error => {
     if (error === "Unauthorized") {
@@ -127,9 +134,60 @@ handleSubmit(event) {
     }
 }
 
+fetch_next_page = ()=>{
+  const {all} = this.state
+  this.setState({ loading: true});
+  const requestOptions = {
+    method: "POST",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+  };
+  fetch(all.next_page_url, requestOptions).then(async (response) =>{
+    const data =await response.json();
+    this.setState({ loading: false, users:data.data, all:data });
+  }).catch(error=>{
+    if (error === "Unauthorized") {
+      this.props.logout();
+    }
+  })
+}
+
+fetch_prev_page = ()=>{
+  const {all} = this.state
+  this.setState({ loading: true});
+  const requestOptions = {
+    method: "POST",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+  };
+  fetch(all.prev_page_url, requestOptions).then(async (response) =>{
+    const data =await response.json();
+    this.setState({ loading: false, users:data.data, all:data });
+  }).catch(error=>{
+    if (error === "Unauthorized") {
+      this.props.logout();
+    }
+  })
+}
+
+fetch_page = (index)=>{
+  const {all} = this.state
+  this.setState({ loading: true});
+  const requestOptions = {
+    method: "POST",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+  };
+  fetch(all.path+"?page="+index, requestOptions).then(async (response) =>{
+    const data =await response.json();
+    this.setState({ loading: false, users:data.data, all:data });
+  }).catch(error=>{
+    if (error === "Unauthorized") {
+      this.props.logout();
+    }
+  })
+}
+
 render(){
   const {theme, savings} = this.props
-  const {users, loading, search, open, open_news, data, investments} = this.state
+  const {users, loading, search, all, open_news, data, investments} = this.state
   
     return (
       <div style={{padding: theme.spacing(3)}}>
@@ -153,7 +211,7 @@ render(){
             <UsersToolbar category={"getMarketCategoryType"} adminAddInvestment={this.props.adminAddMarket} loader={this.props.savings}/>
           </Grid>
         <div style={{marginTop: theme.spacing(2)}}>
-          <UsersTable users={users} loading={loading} data={"singleHalalInvestment"} category={"getHalalCategoryType"} loader={this.props.savings} adminUpdateInvestment={this.props.adminUpdateHalal} handleOpen={this.handleOpen} hideOrShow={this.props.hideOrShowHalalInvestment} />
+          <UsersTable users={users} pagination={all} fetch_page={this.fetch_page} fetch_next_page={this.fetch_next_page} fetch_prev_page={this.fetch_prev_page} loading={loading} data={"singleHalalInvestment"} category={"getHalalCategoryType"} loader={this.props.savings} adminUpdateInvestment={this.props.adminUpdateHalal} handleOpen={this.handleOpen} hideOrShow={this.props.hideOrShowHalalInvestment} />
         </div>
         <Dialog
             open={open_news}

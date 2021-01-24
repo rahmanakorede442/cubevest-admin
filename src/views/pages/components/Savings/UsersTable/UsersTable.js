@@ -34,6 +34,7 @@ import {
 import {Link} from 'react-router-dom';
 
 import { getInitials } from 'helpers';
+import Paginate from '../../Users/UsersTable/paginate';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -75,37 +76,10 @@ const useStyles = makeStyles(theme => ({
 
 const UsersTable = props => {
   const { className, loading, users, ...rest } = props;
-
   const classes = useStyles();
 
-  const [selectedUsers, setSelectedUsers] = useState([]);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [page, setPage] = useState(0);
-  const [rowsPerPages, setRowsPerPages] = useState(10);
-  const [pages, setPages] = useState(0);
-
-  const handlePageChange = (event, page) => {
-    setPage(page);
-  };
-
-  const handleRowsPerPageChange = event => {
-    setRowsPerPage(event.target.value);
-  };
-
-  const [open, setOpen] = React.useState(false);
- 
-  const handleOpen = (id) => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
   return (
-    <Card
-       
-      className={clsx(classes.root, className)}
-    >
+    <Card className={clsx(classes.root, className)}>
       <CardContent className={classes.content}>
         <PerfectScrollbar>
           <div className={classes.inner}>
@@ -131,7 +105,7 @@ const UsersTable = props => {
               {loading?
               <TableRow><TableCell><CircularProgress /></TableCell></TableRow>: 
               users.length != 0 ?
-              users.slice(page * rowsPerPage, page* rowsPerPage + rowsPerPage).map(user => (
+              users.map(user => (
                 <TableRow
                   className={classes.tableRow}
                   hover
@@ -147,7 +121,7 @@ const UsersTable = props => {
                       <Typography variant="body1">{user.first_name}{' '}{user.last_name}</Typography>
                     </div>
                   </TableCell>
-                  <TableCell>{numberFormat(user.balance)}</TableCell>
+                  <TableCell>{numberFormat(user.balance+user.balance1)}</TableCell>
                   <TableCell>{user.frequency}</TableCell>
                   <TableCell>{numberFormat(user.amount)}</TableCell>
                   <TableCell>{user.payment_method}</TableCell>
@@ -161,7 +135,7 @@ const UsersTable = props => {
                 </TableRow>
               )):
               <TableRow>
-              <TableCell style={{textAlign:"center"}}>
+              <TableCell colSpan="8" style={{textAlign:"center"}}>
                   No Record Found
                 </TableCell>                
               </TableRow>}
@@ -170,17 +144,7 @@ const UsersTable = props => {
           </div>
         </PerfectScrollbar>
       </CardContent>
-      <CardActions className={classes.actions}>
-        <TablePagination
-          component="div"
-          count={users.length}
-          onChangePage={handlePageChange}
-          onChangeRowsPerPage={handleRowsPerPageChange}
-          page={page}
-          rowsPerPage={rowsPerPage}
-          rowsPerPageOptions={[5, 10, 25]}
-        />
-      </CardActions>
+      <Paginate pagination={props.pagination} fetch_prev_page={props.fetch_prev_page} fetch_next_page={props.fetch_next_page} fetch_page={props.fetch_page}/>
     </Card>
   );
 };

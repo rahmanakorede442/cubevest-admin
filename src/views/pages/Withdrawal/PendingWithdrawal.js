@@ -14,22 +14,26 @@ class PendingWithdrawal extends Component{
     this.state={
         data: [],
         loading:true,
+        all:[]
     }
     this.fetchWithdrawal = this.fetchWithdrawal.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.fetch_next_page = this.fetch_next_page.bind(this);
+    this.fetch_page = this.fetch_page.bind(this);
+    this.fetch_prev_page = this.fetch_prev_page.bind(this);
+    this.getData = this.getData.bind(this);
 
   }
 
 componentDidMount(){
-  const val = ""
-  this.fetchWithdrawal(val)
+  this.fetchWithdrawal("")
 }
 
-fetchWithdrawal = (search_user) =>{
+fetchWithdrawal = (search_term) =>{
     const requestOptions = {
         method: 'POST',
         headers: { ...authHeader(), 'Content-Type': 'application/json' },
-        body:JSON.stringify({search_user})
+        body:JSON.stringify({search_term})
     };
   fetch(getConfig('getWithdrawal'), requestOptions)
     .then(async response => {
@@ -42,13 +46,7 @@ fetchWithdrawal = (search_user) =>{
     if(data.success == false){
       this.setState({data: [], loading:false});
     }else{
-      let newArray = []
-      data.forEach(d => {
-        if(d.withdrawal_status === 0){
-          newArray.push(d)
-        }
-      });
-      this.setState({data: newArray, all:data, loading:false});
+      this.getData(data)
     }
 })
 .catch(error => {
@@ -64,13 +62,78 @@ handleChange = (e) =>{
   this.fetchWithdrawal(e.target.value)
 }
 
+getData =(data)=>{
+  let newArray = []
+  if(data.success === false){
+    this.setState({users: [], all:[], loading:false });
+  }else{
+    data.data.forEach(d => {
+      if(d.withdrawal_status === 0){
+        newArray.push(d)
+      }
+    });
+    this.setState({data: newArray, all:data, loading:false});
+  }
+}
+
+fetch_next_page = ()=>{
+  const {all} = this.state
+  this.setState({ loading: true});
+  const requestOptions = {
+    method: "POST",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+  };
+  fetch(all.next_page_url, requestOptions).then(async (response) =>{
+    const data =await response.json();
+    this.getData(data)
+  }).catch(error=>{
+    if (error === "Unauthorized") {
+      this.props.logout();
+    }
+  })
+}
+
+fetch_prev_page = ()=>{
+  const {all} = this.state
+  this.setState({ loading: true});
+  const requestOptions = {
+    method: "POST",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+  };
+  fetch(all.prev_page_url, requestOptions).then(async (response) =>{
+    const data =await response.json();
+    this.getData(data)
+  }).catch(error=>{
+    if (error === "Unauthorized") {
+      this.props.logout();
+    }
+  })
+}
+
+fetch_page = (index)=>{
+  const {all} = this.state
+  this.setState({ loading: true});
+  const requestOptions = {
+    method: "POST",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+  };
+  fetch(all.path+"?page="+index, requestOptions).then(async (response) =>{
+    const data =await response.json();
+    this.getData(data)
+  }).catch(error=>{
+    if (error === "Unauthorized") {
+      this.props.logout();
+    }
+  })
+}
+
 render(){
   let {theme} = this.props
-  const {loading, data} = this.state
+  const {loading, data, all} = this.state
   return (
-    <div style={{padding: theme.spacing(3)}}>
-      <div style={{marginTop: theme.spacing(2)}}>
-        <WithdrawalTable table={'pending'} data={data} handleChange={this.handleChange} loading={loading} />
+    <div>
+      <div style={{marginTop: theme.spacing(3)}}>
+        <WithdrawalTable table={'pending'} pagination={all} fetch_page={this.fetch_page} fetch_next_page={this.fetch_next_page} fetch_prev_page={this.fetch_prev_page} data={data} handleChange={this.handleChange} loading={loading} />
       </div>
     </div>
     );

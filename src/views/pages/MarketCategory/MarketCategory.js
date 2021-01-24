@@ -7,11 +7,7 @@ import { withStyles } from "@material-ui/styles";
 import { getConfig, checkToken, numberFormat } from '../../../redux/config/config'
 import { authHeader, history } from '../../../redux/logic';
 import { SearchInput } from 'components';
-
-import { userConstants } from 'redux/_constants';
-import { users } from 'redux/_reducers/users.reducer';
-import CategoryTable from 'redux/components/CategoryTable';
-import { UsersTable, UsersToolbar } from 'views/pages/components/Categories';
+import { UsersTable } from 'views/pages/components/Categories';
 import { Grid, Card, Button, Typography, TextField,
         CardContent, DialogTitle, DialogContent,
          DialogActions, Divider, Dialog, CardActions } from '@material-ui/core';
@@ -38,43 +34,26 @@ class MarketCategory extends Component {
       loading: true,
     }
     this.fetchUsers = this.fetchUsers.bind(this);
-    this.fetchUsers();
     this.searchChange = this.searchChange.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.fetch_next_page = this.fetch_next_page.bind(this);
+    this.fetch_page = this.fetch_page.bind(this);
+    this.fetch_prev_page = this.fetch_prev_page.bind(this);
     // this.handleSubmitEdit = this.handleSubmitEdit.bind(this);
     // this.handleChangeEdit = this.handleChangeEdit.bind(this);
 
   }
 
-  componentDidMount() {
-    const requestOptions = {
-      method: 'GET',
-      headers: { ...authHeader(), 'Content-Type': 'application/json' },
-  };
-  fetch(getConfig('getMarketCategoryName'), requestOptions)
-  .then(async response => {
-  const data = await response.json();
-  if (!response.ok) {
-      const error = (data && data.message) || response.statusText;
-      return Promise.reject(error);
-  }
-  console.log(data)
-  this.setState({users: data.data, all:data.data, loading:false });
-})
-.catch(error => {
-  if (error === "Unauthorized") {
-        this.props.logout()
-     }
-  this.setState({loading:false, err : "internet error" });
-  console.error('There was an error!', error);
-});
+componentDidMount() {
+  this.fetchUsers("");
 }
 
-  fetchUsers = () =>{
+fetchUsers = (search_term) =>{
     const requestOptions = {
-        method: 'GET',
-        headers: { ...authHeader(), 'Content-Type': 'application/json' },
+      method: 'POST',
+      headers: { ...authHeader(), 'Content-Type': 'application/json' },
+      body:JSON.stringify({search_term})
     };
     fetch(getConfig('getMarketCategoryName'), requestOptions)
     .then(async response => {
@@ -83,15 +62,17 @@ class MarketCategory extends Component {
         const error = (data && data.message) || response.statusText;
         return Promise.reject(error);
     }
-    console.log(data)
-    this.setState({users: data.data, all:data.data, loading:false });
-})
-.catch(error => {
+    if(data.success === false){
+      this.setState({users: [], all:[], loading:false });
+    }else{
+      this.setState({users: data.data, all:data, loading:false });
+    }
+  })
+  .catch(error => {
     if (error === "Unauthorized") {
-          this.props.logout()
-       }
+      this.props.logout()
+    }
     this.setState({loading:false, err : "internet error" });
-    console.error('There was an error!', error);
   });
 }
 
@@ -101,42 +82,90 @@ searchChange(event) {
   
   this.setState({ search: value, users: value == "" ? all : all.filter((q)=>
   q.category_name.toLowerCase().indexOf(value.toLowerCase())  !== -1
-   )});}
+   )});
+}
 
-  handleChange(event) {
+handleChange(event) {
     const { name, value } = event.target;
     const { data } = this.state;
-    
-        this.setState({
-            data: {
-                ...data,
-                [name]: value
-            }
-        });
-    
+    this.setState({
+        data: {
+            ...data,
+            [name]: value
+        }
+    });
 }
 
-  handleClose= () =>{
-    this.setState({open:false})
+handleClose= () =>{
+  this.setState({open:false})
 }
-  handleOpen= () =>{
-    this.setState({open:true})
- }
 
- handleSubmit(event) {
+handleOpen= () =>{
+  this.setState({open:true})
+}
+
+handleSubmit(event) {
   event.preventDefault();
-
   const { data } = this.state;
-    console.log(data);
     if ( data.category_name) {
       this.props.adminAddMarketCategory(data);
     }
 } 
 
+fetch_next_page = ()=>{
+  const {all} = this.state
+  this.setState({ loading: true});
+  const requestOptions = {
+    method: "POST",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+  };
+  fetch(all.next_page_url, requestOptions).then(async (response) =>{
+    const data =await response.json();
+    this.setState({ loading: false, users:data.data, all:data });
+  }).catch(error=>{
+    if (error === "Unauthorized") {
+      this.props.logout();
+    }
+  })
+}
+
+fetch_prev_page = ()=>{
+  const {all} = this.state
+  this.setState({ loading: true});
+  const requestOptions = {
+    method: "POST",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+  };
+  fetch(all.prev_page_url, requestOptions).then(async (response) =>{
+    const data =await response.json();
+    this.setState({ loading: false, users:data.data, all:data });
+  }).catch(error=>{
+    if (error === "Unauthorized") {
+      this.props.logout();
+    }
+  })
+}
+
+fetch_page = (index)=>{
+  const {all} = this.state
+  this.setState({ loading: true});
+  const requestOptions = {
+    method: "POST",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+  };
+  fetch(all.path+"?page="+index, requestOptions).then(async (response) =>{
+    const data =await response.json();
+    this.setState({ loading: false, users:data.data, all:data });
+  }).catch(error=>{
+    if (error === "Unauthorized") {
+      this.props.logout();
+    }
+  })
+}
 
 render(){
   const {theme, savings} = this.props
-  const {users, loading, data, datat, handleClose, handleOpen, search, open} = this.state
+  const {users, loading, data, all, datat, handleClose, handleOpen, search, open} = this.state
   
     return (
       <div style={{padding: theme.spacing(3)}}>
@@ -158,9 +187,8 @@ render(){
         />
          
        <div style={{float:'right'}}>
-          {/* Modal */}
-          
-       < Dialog
+        {/* Modal */}
+        < Dialog
         open={open}
         // TransitionComponent={Transition}
         fullWidth={true}
@@ -225,8 +253,7 @@ render(){
         </DialogActions>
         </DialogContent>
       </Dialog>
-      
-      {/* Modal */}
+        {/* Modal */}
       <div className="row">
         <span className="spacer" />
         {/* <Button className="exportButton">Export</Button> */}
@@ -243,7 +270,7 @@ render(){
        </div>
        
         <div style={{marginTop: theme.spacing(2)}}>
-          <UsersTable users={users} loading={loading} submit={this.props.adminUpdateMarketCategory} />
+          <UsersTable users={users} pagination={all} fetch_page={this.fetch_page} fetch_next_page={this.fetch_next_page} fetch_prev_page={this.fetch_prev_page} loading={loading} submit={this.props.adminUpdateMarketCategory} />
         </div>
       </div>
     );

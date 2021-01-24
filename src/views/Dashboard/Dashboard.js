@@ -9,10 +9,6 @@ import { getConfig, checkToken, numberFormat } from '../../redux/config/config'
 import { authHeader, history } from '../../redux/logic';
 import {
   Budget,
-  TotalUsers,
-  TasksProgress,
-  TotalProfit,
-  TotalInvestment,
   LatestSales,
   UsersByDevice,
   LatestProducts,
@@ -24,6 +20,8 @@ import {
 } from './components';
 import WalletBalance from './components/WalletBalance';
 import { TransactionTable } from 'views/pages/components/Table';
+import MoneyIcon from '@material-ui/icons/Money';
+import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
 // import TotalInvestment from './components/TotalRegular';
 
 class Dashboard extends Component{
@@ -158,7 +156,7 @@ fetchTransac = () =>{
       const error = (data && data.message) || response.statusText;
       return Promise.reject(error);
   }
-  this.setState({transactions: data, loading:false});
+  this.setState({transactions: data.data, loading:false});
 })
 .catch(error => {
   if (error === "Unauthorized") {
@@ -179,66 +177,80 @@ render(){
       >
         <Grid
           item
-          lg={3}
-          sm={4}
-          xl={3}
-          xs={12}
-        >
-          <Link to="/users"><Budget count_users={count_users}/></Link>
-        </Grid>
-        <Grid
-          item
-          lg={3}
-          sm={4}
-          xl={3}
-          xs={12}
-        >
-          <Link to="/investment_tab/halal_tab"><TotalInvestment halal_balance={halal_balance}/></Link>
-        </Grid>
-        <Grid
-          item
-          lg={3}
-          sm={4}
-          xl={3}
-          xs={12}
-        >
-          <Link to="/investment_tab"><TotalUsers market_balance={market_balance}/></Link>
-        </Grid>
-        <Grid
-          item
-          lg={3}
-          sm={4}
-          xl={3}
-          xs={12}
-        >
-          <Link to="/savings_tab"><Regular savings_balance={numberFormat(savings_balance)}/></Link>          
-        </Grid>
-        <Grid
-          item
-          lg={3}
-          sm={4}
-          xl={3}
-          xs={12}
-        >
-          <Link to="/targetsavings_tab"><Target target_balance={numberFormat(target_balance)}/></Link>
-        </Grid>
-        <Grid
-          item
           lg={4}
-          sm={4}
-          xl={3}
+          sm={6}
+          xl={4}
           xs={12}
         >
-          <Link to="/savetoloan_tab"><Savings save_loans={numberFormat(save_loans)}/></Link>
+          <Link to="/users">
+            <Budget colors={"#4fa647"} icons={<SupervisorAccountIcon />} name={"Total Active Users"} count_users={count_users}/>
+          </Link>
         </Grid>
         <Grid
           item
           lg={4}
           sm={6}
+          xl={4}
+          xs={12}
+        >
+          <Link to="/investment_tab/halal_tab">
+            <Budget colors={"#22591d"} icons={<SupervisorAccountIcon />} name={"Total Investments"} count_users={halal_balance}/>
+          </Link>
+        </Grid>
+        <Grid
+          item
+          lg={4}
+          sm={6}
+          xl={4}
+          xs={12}
+        >
+          <Link to="/investment_tab">
+            <Budget colors={"#7446f2"} icons={<SupervisorAccountIcon />} name={"Total Market Investment"} count_users={market_balance}/>
+          </Link>
+        </Grid>
+        <Grid
+          item
+          lg={3}
+          sm={6}
           xl={3}
           xs={12}
         >
-          <Link to="/wallet"><WalletBalance wallet_balance={numberFormat(wallet_balance)}/></Link>
+          <Link to="/savings_tab">
+            <Budget colors={"#59153f"} icons={<SupervisorAccountIcon />} name={"Total Regular Savings"} count_users={numberFormat(savings_balance)}/>
+          </Link>          
+        </Grid>
+        <Grid
+          item
+          lg={3}
+          sm={6}
+          xl={3}
+          xs={12}
+        >
+          <Link to="/targetsavings_tab">
+            <Budget colors={"#a64782"} icons={<SupervisorAccountIcon />} name={"Total Target Savings"} count_users={numberFormat(target_balance)}/>
+          </Link>
+        </Grid>
+        <Grid
+          item
+          lg={3}
+          sm={6}
+          xl={3}
+          xs={12}
+        >
+          <Link to="/savetoloan_tab">
+            <Budget colors={"#22591d"} icons={<MoneyIcon />} name={"Total Save to Loan"} count_users={numberFormat(save_loans)}/>
+          </Link>
+        </Grid>
+        <Grid
+          item
+          lg={3}
+          sm={6}
+          xl={3}
+          xs={12}
+        >
+          <Link to="/wallet">
+            <Budget colors={"#4fa647"} icons={<MoneyIcon />} name={"Total Wallet"} count_users={numberFormat(wallet_balance)}/>
+          </Link>
         </Grid>
          
          <Grid

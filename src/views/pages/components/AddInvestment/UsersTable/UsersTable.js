@@ -31,10 +31,12 @@ import {
   DialogActions,
   Slide,
   Icon,
-  Tooltip
+  Tooltip,
+  CircularProgress
 } from '@material-ui/core';
 import { Add, Edit, Visibility, VisibilityOff } from '@material-ui/icons';
 import {Link} from 'react-router-dom';
+import Paginate from '../../Users/UsersTable/paginate';
 
 
 const useStyles = makeStyles(theme => ({
@@ -121,7 +123,6 @@ const fetchSingleInvestment =(id)=>{
       const error = (data && data.message) || response.statusText;
       return Promise.reject(error);
   }
-  console.log(data)
   setData(data[0])
   setloader(false)
   })
@@ -165,13 +166,6 @@ const handleChange = (event) =>{
   event.persist();
   setData(data=>({ ...data, [name]:value, id:id}))
 }
-  const handlePageChange = (event, page) => {
-    setPage(page);
-  };
-
-  const handleRowsPerPageChange = event => {
-    setRowsPerPage(event.target.value);
-  };
  
   const handleOpen = (id) => {
     fetchSingleInvestment(id)
@@ -210,10 +204,7 @@ const handleChange = (event) =>{
   let currentDate = new Date();
   
   return (
-    <Card
-       
-      className={clsx(classes.root, className)}
-    >
+    <Card className={clsx(classes.root, className)}>
       <CardContent className={classes.content}>
         <PerfectScrollbar>
           <div className={classes.inner}>
@@ -234,15 +225,13 @@ const handleChange = (event) =>{
           <TableBody>
             <TableRow>
               <TableCell colSpan={8} style={{alignItems:"center"}}>
-                <img
-                className="loader"
-                src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
+                <CircularProgress />  
               </TableCell>
             </TableRow>
           </TableBody>: 
           <TableBody>
           {users.length != 0 ?
-          users.slice(page * rowsPerPage, page* rowsPerPage + rowsPerPage).map(user => (
+          users.map(user => (
           <TableRow
             className={classes.tableRow}
             hover
@@ -285,17 +274,7 @@ const handleChange = (event) =>{
         </div>
       </PerfectScrollbar>
     </CardContent>
-    <CardActions className={classes.actions}>
-      <TablePagination
-        component="div"
-        count={users.length}
-        onChangePage={handlePageChange}
-        onChangeRowsPerPage={handleRowsPerPageChange}
-        page={page}
-        rowsPerPage={rowsPerPage}
-        rowsPerPageOptions={[5, 10, 25]}
-      />
-    </CardActions>
+    <Paginate pagination={props.pagination} fetch_prev_page={props.fetch_prev_page} fetch_next_page={props.fetch_next_page} fetch_page={props.fetch_page}/>
     {/* Modal update investment start*/}
     <Dialog
         open={open}

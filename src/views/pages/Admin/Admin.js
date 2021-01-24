@@ -15,17 +15,13 @@ import { UsersTable } from '../components/Table';
 // import { UsersToolbar } from '../components/Savings';
 import { Grid, Card, Button, Typography, TextField,
   CardContent, DialogTitle, DialogContent,
-   DialogActions, Divider, Dialog, MenuItem, CardActions } from '@material-ui/core';
+   DialogActions, Divider, Dialog, MenuItem, CardActions, CircularProgress } from '@material-ui/core';
 import {Link } from "react-router-dom";
 
 
 class Admin extends Component {
   constructor(props){
     super(props)
-    var currentDate = new Date();
-    let month = currentDate.getMonth() + 1;
-    let day = currentDate.getDate();
-    let entry_date = currentDate.getFullYear() + "-" + month + "-" + day;
     this.state ={  
       data:{
         // invetment_type: '',
@@ -34,6 +30,7 @@ class Admin extends Component {
         password : ""
       },
       users: [],
+      all:[],
       investments:[],
       search: "",
       open:false,
@@ -62,18 +59,16 @@ class Admin extends Component {
         const error = (data && data.message) || response.statusText;
         return Promise.reject(error);
     }
-    console.log(data)
-    this.setState({users: data, all:data.data, loading:false });
-})
-.catch(error => {
-    if (error === "Unauthorized") {
-          this.props.logout()
-       }
-    this.setState({loading:false, err : "internet error" });
-    console.error('There was an error!', error);
-  });
-}
-
+    this.setState({users: data, all:data, loading:false });
+  })
+  .catch(error => {
+      if (error === "Unauthorized") {
+        this.props.logout()
+      }
+      this.setState({loading:false, err : "internet error" });
+      console.error('There was an error!', error);
+    });
+  }
 
 componentDidMount() {
   this.fetchUsers();
@@ -84,9 +79,8 @@ searchChange(event) {
   const { search, users, all } = this.state;
   
   this.setState({ search: value, users: value == "" ? all : all.filter((q)=>
-  q.last_name.toLowerCase().indexOf(value.toLowerCase())  !== -1 
-  || q.first_name.toLowerCase().indexOf(value.toLowerCase())  !== -1 
-  || q.frequency.toLowerCase().indexOf(value.toLowerCase())  !== -1 )});}
+  q.name.toLowerCase().indexOf(value.toLowerCase())  !== -1 
+  || q.email.toLowerCase().indexOf(value.toLowerCase())  !== -1)});}
 
 handleOpen= () =>{
     this.setState({open:true})
@@ -133,7 +127,7 @@ render(){
          
        <div style={{float:'right'}}>
       {/* Modal */}
-       < Dialog
+      <Dialog
         open={open}
         // TransitionComponent={Transition}
         fullWidth={true}
@@ -148,9 +142,9 @@ render(){
         <Divider />     
         <DialogContent>
           {/* <DialogContentText id="alert-dialog-slide-description" > */}
-          <CardContent className="content">
-            <form  noValidate autoComplete="off" onSubmit={this.handleSubmit}>
-              <Grid >
+            <form noValidate autoComplete="off" onSubmit={this.handleSubmit}>
+              <CardContent className="content">
+                <Grid >
                   <Grid>
                     <TextField
                     fullWidth
@@ -162,9 +156,9 @@ render(){
                     required
                     value={data.name}
                     variant="outlined"
-                  />
-                </Grid> 
-                <Grid>
+                    />
+                  </Grid> 
+                  <Grid>
                     <TextField
                     fullWidth
                     label="Email"
@@ -178,7 +172,7 @@ render(){
                   />
                 </Grid> 
                 <Grid>
-                    <TextField
+                  <TextField
                     fullWidth
                     label="Password"
                     placeholder="Password"
@@ -191,38 +185,29 @@ render(){
                     variant="outlined"
                   />
               </Grid>                    
-              </Grid>
-            
-            </form>
-            
-            </CardContent>              
-          {/* </DialogContentText> */}
+            </Grid>
+          </CardContent>
           <Divider /> 
-        <DialogActions>
-        <Grid item md={10} xs={10}>
-                {savings &&
-                    <div className="loader">   
-                        <img img alt=""  src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
-                    </div>
-                }
-                <Button
+          <DialogActions>
+            <Grid item md={10} xs={10}>
+              {savings &&<CircularProgress />}
+              <Button
                 type="submit"
-                  variant="contained"
-                  color="primary"
-                  style={{marginLeft:8}}
-                  onClick={this.handleSubmit}
-                >
-                  Submit
-                </Button>
-                </Grid> 
-              <Button onClick={this.handleClose} 
-                      variant="contained"
-                      style={{color:'white', marginRight:8, backgroundColor:'red'}}
+                variant="contained"
+                color="primary"
+                style={{marginLeft:8}}
               >
-            Cancel
-          </Button>
-        </DialogActions>
-       
+                Submit
+              </Button>
+            </Grid> 
+            <Button onClick={this.handleClose} 
+              variant="contained"
+              style={{color:'white', marginRight:8, backgroundColor:'red'}}
+            >
+              Cancel
+            </Button>
+          </DialogActions>
+        </form>
         </DialogContent>
       </Dialog>
       {/* Modal */}

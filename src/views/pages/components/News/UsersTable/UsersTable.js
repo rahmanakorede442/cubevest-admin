@@ -34,11 +34,13 @@ import {
   DialogTitle,
   DialogContentText,
   DialogActions,
-  Slide
+  Slide,
+  CircularProgress
 } from '@material-ui/core';
 import {Link} from 'react-router-dom';
 
 import { getInitials } from 'helpers';
+import Paginate from '../../Users/UsersTable/paginate';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -210,14 +212,9 @@ const handleSubmitEdit = (event) => {
  }
 
   return (
-    <Card
-       
-      className={clsx(classes.root, className)}
-    >
-
-       {/* Modal */}
-          
-       < Dialog
+    <Card className={clsx(classes.root, className)}>
+      {/* Modal */}
+      < Dialog
         open={open}
         // TransitionComponent={Transition}
         fullWidth={true}
@@ -241,33 +238,30 @@ const handleSubmitEdit = (event) => {
                 </Typography>
               </Grid>
               <Grid>
-                      <label>Select Investment Name</label>
+                    <label>Select Investment Name</label>
                     <TextField
-                        fullWidth
-                        select
-                        name="market_investment"                       
-                        variant="outlined"
-                        value={details.market_investment}
-                        onChange={handleChangeEdit}
-                        SelectProps={{
-                          native: true,
-                        }}
-                        helperText="Please select Investment Name"
-                      >
-                        {investments.map((option) => (
-                          <option key={option.id} 
-                          value={option.investment_type}
-                          >
-                            {option.investment_type}
-                          </option>
-                        ))}
-
+                      fullWidth
+                      select
+                      name="market_investment"                       
+                      variant="outlined"
+                      value={details.market_investment}
+                      onChange={handleChangeEdit}
+                      SelectProps={{
+                        native: true,
+                      }}
+                      helperText="Please select Investment Name"
+                    >
+                      {investments.map((option) => (
+                        <option key={option.id} 
+                        value={option.investment_type}
+                        >
+                          {option.investment_type}
+                        </option>
+                      ))}
                     </TextField>
-                    </Grid><br/>
-
-                    
-                    <Grid>
-                      <label>Market New</label>
+                  </Grid><br/>
+                  <Grid>
+                    <label>Market New</label>
                     <TextField
                       fullWidth
                       placeholder="Market New"
@@ -279,36 +273,21 @@ const handleSubmitEdit = (event) => {
                       onChange={handleChangeEdit}
                       variant="outlined"
                     />
-                  </Grid>                   
-             
-            
+                  </Grid>
               <Grid item md={10} xs={10}>
-                {savings &&
-                    <div className="loader">   
-                        <img img alt=""  src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
-                    </div>
-                }
-              <Button color="primary" onClick={handleSubmitEdit} variant="contained" >
-                Update 
-              </Button>
-            {/* </Grid> */}
-            {/* <Grid> */}
-              <Button onClick={handleClose} variant="contained" 
-              style={{marginLeft:10, color:'white', backgroundColor:'red'}}>
-               Cancel
-          </Button>
-          </Grid>
-        {/* </DialogActions> */}
-
-          </form>}
-            </CardContent>        
-            <Divider /> 
-          <DialogActions> 
-          </DialogActions>      
-          {/* </DialogContentText> */}        
+                {savings && <CircularProgress />}
+                <Button color="primary" onClick={handleSubmitEdit} variant="contained" >
+                  Update 
+                </Button>
+                <Button onClick={handleClose} variant="contained" 
+                style={{marginLeft:10, color:'white', backgroundColor:'red'}}>
+                Cancel
+                </Button>
+              </Grid>
+              </form>}
+            </CardContent>      
         </DialogContent>
       </Dialog>
-      
       {/* Modal */}
 
       <CardContent className={classes.content}>
@@ -323,46 +302,34 @@ const handleSubmitEdit = (event) => {
                   <TableCell>Action</TableCell>
                 </TableRow>
               </TableHead>
-              <TableCell></TableCell>
-              {loading?
-                <div style={{marginTop:15, textAlign:"center", alignItems:"center", flexDirection:"column", justifyItems:"center"}}>
-                    <img
-                        img
-                        alt=""
-                        className="loader"
-                        src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
-                      />
-                </div>: 
+              {loading?<CircularProgress />: 
               <TableBody>
                 {users.length != 0 ?
-                users.slice(page * rowsPerPage, page* rowsPerPage + rowsPerPage).map(user => (
+                users.map(user => (
                  <TableRow
                     className={classes.tableRow}
                     hover
                     key={user.id}
-                    selected={selectedUsers.indexOf(user.id) !== -1}
                   >
-                <TableCell>{user.investment_type}</TableCell>
+                    <TableCell>{user.investment_type}</TableCell>
                     <TableCell style={{width:480, textAlign:'justify'}}>{user.news}</TableCell>
                     <TableCell>
                       {moment(user.posted_date).format('DD/MM/YYYY')}
                     </TableCell>                    
                     <TableCell>
-                    <Grid style={{display:'flex'}}>
+                      <Grid style={{display:'flex'}}>
                         <Button color="primary" variant="contained" 
                         onClick={()=> handleOpen(user.id)}
                         > Edit</Button>
-                          <Button color="denger" style={{marginLeft:10, background:'red', color:'#fff'}} variant="contained" 
-                          onClick={()=> handleDelete(user.id)}
-                          > Delete</Button>
-                        </Grid>
+                        <Button color="denger" style={{marginLeft:10, background:'red', color:'#fff'}} variant="contained" 
+                        onClick={()=> handleDelete(user.id)}
+                        > Delete</Button>
+                      </Grid>
                     </TableCell>
                   </TableRow>
                 )):
                 <TableRow>
-                <TableCell></TableCell>
-                <TableCell></TableCell>
-                <TableCell style={{textAlign:"center"}}>
+                <TableCell colSpan="4" style={{textAlign:"center"}}>
                     No Record Found</TableCell>                
                 </TableRow>
                 }
@@ -372,17 +339,7 @@ const handleSubmitEdit = (event) => {
           </div>
         </PerfectScrollbar>
       </CardContent>
-      <CardActions className={classes.actions}>
-        <TablePagination
-          component="div"
-          count={users.length}
-          onChangePage={handlePageChange}
-          onChangeRowsPerPage={handleRowsPerPageChange}
-          page={page}
-          rowsPerPage={rowsPerPage}
-          rowsPerPageOptions={[5, 10, 25]}
-        />
-      </CardActions>
+      <Paginate pagination={props.pagination} fetch_prev_page={props.fetch_prev_page} fetch_next_page={props.fetch_next_page} fetch_page={props.fetch_page}/>
     </Card>
   );
 };

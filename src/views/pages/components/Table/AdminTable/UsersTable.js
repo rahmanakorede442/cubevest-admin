@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
-import PropTypes from 'prop-types';
-import moment from 'moment';
 import { withRouter } from "react-router-dom";
 import { adminActions } from "../../../../../redux/action";
 import { connect } from "react-redux";
@@ -34,7 +32,8 @@ import {
   DialogTitle,
   DialogContentText,
   DialogActions,
-  Slide
+  Slide,
+  CircularProgress
 } from '@material-ui/core';
 import {Link} from 'react-router-dom';
 
@@ -225,14 +224,9 @@ const handleSubmitEdit = (event) => {
 
 
   return (
-    <Card
-       
-      className={clsx(classes.root, className)}
-    >
-
+    <Card className={clsx(classes.root, className)}>
        {/* Modal */}
-          
-       < Dialog
+       <Dialog
         open={open}
         // TransitionComponent={Transition}
         fullWidth={true}
@@ -243,15 +237,15 @@ const handleSubmitEdit = (event) => {
         aria-labelledby="alert-dialog-slide-title"
         aria-describedby="alert-dialog-slide-description"
       >
-        <DialogTitle bold id="alert-dialog-slide-title">Add Admin</DialogTitle>  
+        <DialogTitle bold id="alert-dialog-slide-title">Edit Admin</DialogTitle>  
         <Divider />     
         <DialogContent>
           {/* <DialogContentText id="alert-dialog-slide-description" > */}
           <CardContent className="content">
           {isLoading? <Typography>Loading...</Typography>:
             <form  noValidate autoComplete="off" onSubmit={handleSubmitEdit}>
-            <Grid>
               <Grid>
+                <Grid>
                   <TextField
                     fullWidth
                     label="Admin Name"
@@ -261,6 +255,7 @@ const handleSubmitEdit = (event) => {
                     onChange={handleChange}
                     value={details.name}
                     variant="outlined"
+                    required
                   />
                 </Grid> 
                 <Grid>
@@ -273,43 +268,38 @@ const handleSubmitEdit = (event) => {
                     onChange={handleChange}
                     value={details.email}
                     variant="outlined"
+                    required
                   />
                 </Grid> 
               </Grid>
-            
             </form>
         }
             </CardContent>              
           {/* </DialogContentText> */}
           <Divider /> 
         <DialogActions>
-        <Grid item md={10} xs={10}>
-                {savings &&
-                    <div className="loader">   
-                        <img img alt=""  src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
-                    </div>
-                }
-                <Button
-                type="submit"
-                  variant="contained"
-                  color="primary"
-                  style={{marginLeft:8}}
-                  onClick={handleSubmitEdit}
-                >
-                  Submit
-                </Button>
-                </Grid> 
-              <Button onClick={handleClose} 
-                      variant="contained"
-                      style={{color:'white', marginRight:8, backgroundColor:'red'}}
-              >
-            Cancel
+          <Grid item md={10} xs={10}>
+            {savings && <CircularProgress /> }
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              style={{marginLeft:8}}
+              onClick={handleSubmitEdit}
+            >
+              Submit
+            </Button>
+          </Grid>
+          <Button onClick={handleClose} 
+            variant="contained"
+            style={{color:'white', marginRight:8, backgroundColor:'red'}}
+          >
+          Cancel
           </Button>
         </DialogActions>
        
         </DialogContent>
       </Dialog>
-      
       {/* Modal */}
 
       <CardContent className={classes.content}>
@@ -321,20 +311,10 @@ const handleSubmitEdit = (event) => {
                   <TableCell>Admin Name</TableCell>
                   <TableCell>Email</TableCell>
                   <TableCell>Status</TableCell>
-                  <TableCell>Entered By</TableCell>
                   <TableCell>Action</TableCell>
                 </TableRow>
               </TableHead>
-              <TableCell></TableCell>
-              {loading?
-                <div style={{marginTop:15, textAlign:"center", alignItems:"center", flexDirection:"column", justifyItems:"center"}}>
-                    <img
-                        img
-                        alt=""
-                        className="loader"
-                        src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
-                      />
-                </div>: 
+              {loading?<CircularProgress />: 
               <TableBody>
                 {users.length != 0 ?
                 users.slice(page * rowsPerPage, page* rowsPerPage + rowsPerPage).map(user => (
@@ -351,10 +331,6 @@ const handleSubmitEdit = (event) => {
                                 <span style={{color:'red',fontWeight:'bold'}}>Inactive</span>}                      
                     </TableCell>
                     <TableCell>
-                      {moment(user.entery_date).format('DD/MM/YYYY')}
-                    </TableCell>                    
-                    
-                    <TableCell>
                       <Grid style={{display:'flex'}}>
                         <Button color="primary" variant="contained" 
                         onClick={()=> handleOpen(user.id)}
@@ -368,9 +344,7 @@ const handleSubmitEdit = (event) => {
                   </TableRow>
                 )):
                 <TableRow>
-                <TableCell></TableCell>
-                <TableCell></TableCell>
-                <TableCell style={{textAlign:"center"}}>
+                <TableCell colSpan="4" style={{textAlign:"center"}}>
                     No Record Found
                 </TableCell>                
                 </TableRow>

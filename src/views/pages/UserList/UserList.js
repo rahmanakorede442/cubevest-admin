@@ -21,15 +21,22 @@ class UserList extends Component{
         open:false
     }
     this.fetchUsers = this.fetchUsers.bind(this);
-    this.fetchUsers();
     this.searchChange = this.searchChange.bind(this);
+    this.fetch_next_page = this.fetch_next_page.bind(this);
+    this.fetch_page = this.fetch_page.bind(this);
+    this.fetch_prev_page = this.fetch_prev_page.bind(this);
 
   }
 
-  fetchUsers = () =>{
+componentDidMount(){
+  this.fetchUsers()
+}
+
+fetchUsers = () =>{
     const requestOptions = {
-        method: 'GET',
+        method: 'POST',
         headers: { ...authHeader(), 'Content-Type': 'application/json' },
+        body:JSON.stringify({search_term:this.state.search})
     };
   fetch(getConfig('getAllUsers'), requestOptions)
     .then(async response => {
@@ -40,7 +47,7 @@ class UserList extends Component{
         return Promise.reject(error);
     }
     console.log(data);
-    this.setState({users: data, all:data, loading:false});
+    this.setState({users: data.data, all:data, loading:false});
 })
 .catch(error => {
  
@@ -54,17 +61,65 @@ class UserList extends Component{
 
 searchChange(event) {
   const { name, value } = event.target;
-  const { search, users, all } = this.state;
-  
-  this.setState({ search: value, users: value == "" ? all : all.filter((q)=>
-  q.last_name.toLowerCase().indexOf(value)  !== -1 
-  || q.first_name.toLowerCase().indexOf(value)  !== -1 
-  || q.email.toLowerCase().indexOf(value)  !== -1 )});
+    this.setState({ search:value, loading:true},()=>{
+    this.fetchUsers()
+  });
+}
+
+fetch_next_page = ()=>{
+  const {all} = this.state
+  this.setState({ loading: true});
+  const requestOptions = {
+    method: "POST",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+  };
+  fetch(all.next_page_url, requestOptions).then(async (response) =>{
+    const data =await response.json();
+    this.setState({ loading: false, users:data.data, all:data });
+  }).catch(error=>{
+    if (error === "Unauthorized") {
+      this.props.logout();
+    }
+  })
+}
+
+fetch_prev_page = ()=>{
+  const {all} = this.state
+  this.setState({ loading: true});
+  const requestOptions = {
+    method: "POST",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+  };
+  fetch(all.prev_page_url, requestOptions).then(async (response) =>{
+    const data =await response.json();
+    this.setState({ loading: false, users:data.data, all:data });
+  }).catch(error=>{
+    if (error === "Unauthorized") {
+      this.props.logout();
+    }
+  })
+}
+
+fetch_page = (index)=>{
+  const {all} = this.state
+  this.setState({ loading: true});
+  const requestOptions = {
+    method: "POST",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+  };
+  fetch(all.path+"?page="+index, requestOptions).then(async (response) =>{
+    const data =await response.json();
+    this.setState({ loading: false, users:data.data, all:data });
+  }).catch(error=>{
+    if (error === "Unauthorized") {
+      this.props.logout();
+    }
+  })
 }
 
 render(){
   let {theme} = this.props
-  const {users, loading, search, open} = this.state
+  const {users, loading, search, open, all} = this.state
   return (
     <div style={{padding: theme.spacing(3)}}>
     <div style={{height: '42px',display: 'flex',alignItems: 'center',marginTop: theme.spacing(1)}}>
@@ -74,9 +129,9 @@ render(){
           style={{marginRight: theme.spacing(1)}}
           placeholder="Search user"
         />
-        </div>     
+        </div>
         <div style={{marginTop: theme.spacing(2)}}>
-          <UsersTable users={users} loading={loading}/>
+          <UsersTable users={users} pagination={all} fetch_page={this.fetch_page} fetch_next_page={this.fetch_next_page} fetch_prev_page={this.fetch_prev_page} loading={loading} />
         </div>
       </div>
     );

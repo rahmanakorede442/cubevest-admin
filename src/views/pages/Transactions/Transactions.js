@@ -61,7 +61,7 @@ fetchUsers = () =>{
         return Promise.reject(error);
     }
     console.log(data)
-    this.setState({users: data, all:data.data, loading:false });
+    this.setState({users: data.data, all:data, loading:false });
 })
 .catch(error => {
     if (error === "Unauthorized") {

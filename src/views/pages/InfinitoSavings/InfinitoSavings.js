@@ -27,8 +27,14 @@ class InfinitoSavings extends Component {
     }
     this.fetchUsers = this.fetchUsers.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.fetchUsers();
+    this.fetch_next_page = this.fetch_next_page.bind(this);
+    this.fetch_page = this.fetch_page.bind(this);
+    this.fetch_prev_page = this.fetch_prev_page.bind(this);
   }
+
+componentDidMount(){
+  this.fetchUsers();
+}
 
 handleChange(event) {
   const { name, value } = event.target;
@@ -52,11 +58,10 @@ fetchUsers = () =>{
         const error = (data && data.message) || response.statusText;
         return Promise.reject(error);
     }
-    console.log(data)
     if(data.success == false){
       this.setState({users: [], loading:false });
     }else{
-      this.setState({users: data, loading:false });
+      this.setState({users: data.data, all:data, loading:false });
     }
 })
 .catch(error => {
@@ -68,9 +73,61 @@ fetchUsers = () =>{
   });
 }
 
+fetch_next_page = ()=>{
+  const {all} = this.state
+  this.setState({ loading: true});
+  const requestOptions = {
+    method: "POST",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+  };
+  fetch(all.next_page_url, requestOptions).then(async (response) =>{
+    const data =await response.json();
+    this.setState({ loading: false, users:data.data, all:data });
+  }).catch(error=>{
+    if (error === "Unauthorized") {
+      this.props.logout();
+    }
+  })
+}
+
+fetch_prev_page = ()=>{
+  const {all} = this.state
+  this.setState({ loading: true});
+  const requestOptions = {
+    method: "POST",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+  };
+  fetch(all.prev_page_url, requestOptions).then(async (response) =>{
+    const data =await response.json();
+    this.setState({ loading: false, users:data.data, all:data });
+  }).catch(error=>{
+    if (error === "Unauthorized") {
+      this.props.logout();
+    }
+  })
+}
+
+fetch_page = (index)=>{
+  const {all} = this.state
+  this.setState({ loading: true});
+  const requestOptions = {
+    method: "POST",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+  };
+  fetch(all.path+"?page="+index, requestOptions).then(async (response) =>{
+    const data =await response.json();
+    this.setState({ loading: false, users:data.data, all:data });
+  }).catch(error=>{
+    if (error === "Unauthorized") {
+      this.props.logout();
+    }
+  })
+}
+
+
 render(){
   const {theme} = this.props
-  const {users, loading, search, open, data} = this.state
+  const {users, loading, search, all, data} = this.state
   
     return (
       <div >
@@ -94,7 +151,7 @@ render(){
           </Grid>
         </Grid>
         <div style={{marginTop: theme.spacing(2)}}>
-          <UsersTable users={users} loading={loading} link={"regular"}/>
+          <UsersTable users={users} pagination={all} fetch_page={this.fetch_page} fetch_next_page={this.fetch_next_page} fetch_prev_page={this.fetch_prev_page} loading={loading} link={"regular"}/>
         </div>
       </div>
     );

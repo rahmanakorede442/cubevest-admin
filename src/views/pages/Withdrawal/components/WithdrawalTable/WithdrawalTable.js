@@ -22,10 +22,11 @@ import {
   Divider,
   Dialog,
   DialogContent,
-  DialogTitle, CardActions, Checkbox
+  DialogTitle, CardActions, Checkbox, CircularProgress
 } from '@material-ui/core';
 import { red } from '@material-ui/core/colors';
 import WithdrawalToolbar from '../WithdrawalToolbar';
+import Paginate from 'views/pages/components/Users/UsersTable/paginate';
 
 const useStyles = makeStyles(theme => ({
   content: {
@@ -177,15 +178,7 @@ const WithdrawalTable = (props) => {
                   <TableCell>Action</TableCell>
                 </TableRow>
               </TableHead>
-              {loading?
-                <div style={{marginTop:15, textAlign:"center", alignItems:"center", flexDirection:"column", justifyItems:"center"}}>
-                    <img
-                        img
-                        alt=""
-                        className="loader"
-                        src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
-                      />
-                </div>: 
+              {loading?<CircularProgress />: 
               <TableBody>
                 {data.length !== 0 ?
                 data.map((user, i) => (
@@ -227,6 +220,7 @@ const WithdrawalTable = (props) => {
         </PerfectScrollbar>
       </CardContent>
       <CardActions className={classes.actions}>
+        <Paginate pagination={props.pagination} fetch_prev_page={props.fetch_prev_page} fetch_next_page={props.fetch_next_page} fetch_page={props.fetch_page}/>
         {table == "pending" && data.length !== 0 &&<Button variant="contained" color="primary" onClick={handleWithdraw}>Make Withdraw</Button>}
       </CardActions>
 

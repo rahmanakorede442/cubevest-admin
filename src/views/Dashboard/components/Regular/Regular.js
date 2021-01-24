@@ -49,53 +49,29 @@ const Regular = props => {
   const classes = useStyles();
 
   return (
-    <Card
-       
-      className={clsx(classes.root, className)}
-      // style={{backgroundColor:"#59153f"}}
-       elevation={6}
-    >
+    <Card className={clsx(classes.root, className)} elevation={6} >
       <CardContent>
-        <Grid
-          container
-          // justify="space-between"
-        >
-          <Grid item>
-            <Avatar className={classes.avatar}>
+        <Grid container>
+          <Grid item lg={4} md={4} sm={4} xs={4}>
+            <Avatar style={{ backgroundColor:"#22591d", height: 40, width: 40}}>
               <MoneyIcon className={classes.icon}/>
             </Avatar>
           </Grid>
-          <Grid item>
-            <Typography
+          <Grid item lg={8} md={8} sm={8} xs={8}>
+           <Typography
               className={classes.title}
               color="textSecondary"
               gutterBottom
-              variant="body2"
-            >
-              Total Regular Savings
+              variant="body2">
+                Total Regular Savings
             </Typography>
-            <Typography variant="h2" 
-            // style={{color:'#fff'}}
-            >{savings_balance}
+          </Grid>
+          <Grid item lg={12} md={12} sm={12} xs={12}>
+            <Typography variant="h5" >
+              {savings_balance}
             </Typography>
-          </Grid>          
+          </Grid>
         </Grid>
-        {/* <div className={classes.difference}>
-          <ArrowDownwardIcon className={classes.differenceIcon} />
-          <Typography
-            className={classes.differenceValue}
-            variant="body2"
-          >
-            12%
-          </Typography>
-          <Typography
-            className={classes.caption}
-            variant="caption"
-          >
-            Since last month
-          </Typography>
-        </div>
-      */}
       </CardContent>
     </Card>
   );

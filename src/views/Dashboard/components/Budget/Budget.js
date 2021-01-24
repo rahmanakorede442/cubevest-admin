@@ -2,9 +2,8 @@ import React from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
-import { Card, CardContent, Grid, Typography, Avatar } from '@material-ui/core';
-import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
-import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
+import { Card, CardContent, Grid, Typography, Avatar, Icon } from '@material-ui/core';
+
 const useStyles = makeStyles(theme => ({
   root: {
     backgroundColor: theme.palette.default,
@@ -18,11 +17,6 @@ const useStyles = makeStyles(theme => ({
     fontWeight: 700,
     fontSize:15,
     // color: '#fff'
-  },
-  avatar: {
-    backgroundColor:"#4fa647",
-    height: 58,
-    width: 58
   },
   icon: {
     height: 34,
@@ -43,62 +37,26 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Budget = props => {
-  const { className, loading, count_users, ...rest } = props;
+  const { className, loading, icons, name, colors, count_users, ...rest } = props;
 
   const classes = useStyles();
 
   return (
-    <Card
-       
-      className={clsx(classes.root, className)}
-      // style={{backgroundColor:"#4fa647"}} 
-      elevation={6}
-    >
+    <Card className={clsx(classes.root, className)} elevation={6}>
       <CardContent>
-        <Grid
-          container
-          // justify="space-between"
-        >
-          <Grid item>
-            <Avatar className={classes.avatar}>
-              <SupervisorAccountIcon className={classes.icon} />
-            </Avatar>
-          </Grid>
-          <Grid item>
-            <Typography
-              className={classes.title}
-              color="textSecondary"
-              gutterBottom
-              variant="body2"
-            >
-              Total Active Users 
-            </Typography>
-            <Typography variant="h2" 
-            // style={{color:'#fff'}}
-            >{count_users}</Typography>
-          </Grid>
-          {/* <Grid item>
-            <Avatar className={classes.avatar}>
-              <SupervisorAccountIcon className={classes.icon} />
-            </Avatar>
-          </Grid> */}
-        </Grid>
-        {/* <div className={classes.difference}>
-          <ArrowDownwardIcon className={classes.differenceIcon} />
-          <Typography
-            className={classes.differenceValue}
-            variant="body2"
-          >
-            12%
-          </Typography>
-          <Typography
-            className={classes.caption}
-            variant="caption"
-          >
-            Since last month
-          </Typography>
-        </div>
-      */}
+        <Avatar style={{ backgroundColor:colors, height: 40, width: 40}}>
+            {icons}
+        </Avatar>
+        <Typography variant="h5" style={{marginTop:10}} >
+          {name}
+        </Typography>
+        <Typography
+          className={classes.title}
+          color="textSecondary"
+          gutterBottom
+          variant="body2">
+          {count_users}
+        </Typography>
       </CardContent>
     </Card>
   );

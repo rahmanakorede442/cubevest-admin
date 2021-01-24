@@ -4,18 +4,14 @@ import { withRouter } from "react-router-dom";
 import { adminActions } from "../../../redux/action";
 import { connect } from "react-redux";
 import { withStyles } from "@material-ui/styles";
-import { getConfig, checkToken, numberFormat } from '../../../redux/config/config'
+import { getConfig} from '../../../redux/config/config'
 import { authHeader, history } from '../../../redux/logic';
 import { SearchInput } from 'components';
-
-import { userConstants } from 'redux/_constants';
-import { users } from 'redux/_reducers/users.reducer';
-import CategoryTable from 'redux/components/CategoryTable';
-import { UsersTable, UsersToolbar } from 'views/pages/components/News';
+import { UsersTable } from 'views/pages/components/News';
 // import { UsersToolbar } from '../components/Savings';
-import { Grid, Card, Button, Typography, TextField,
+import { Grid, Button, TextField,
   CardContent, DialogTitle, DialogContent,
-   DialogActions, Divider, Dialog, MenuItem, CardActions } from '@material-ui/core';
+   DialogActions, Divider, Dialog, CardActions } from '@material-ui/core';
 import {Link } from "react-router-dom";
 
 
@@ -34,6 +30,7 @@ class MarketNews extends Component {
         posted_date : entry_date
       },
       users: [],
+      all:[],
       investments:[],
       search: "",
       open:false,
@@ -45,61 +42,64 @@ class MarketNews extends Component {
     this.searchChange = this.searchChange.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.fetch_next_page = this.fetch_next_page.bind(this);
+    this.fetch_page = this.fetch_page.bind(this);
+    this.fetch_prev_page = this.fetch_prev_page.bind(this);
 
   }
 
-fetchUsers = () =>{
-    const requestOptions = {
-        method: 'GET',
-        headers: { ...authHeader(), 'Content-Type': 'application/json' },
-    };
-    fetch(getConfig('getMarketNews'), requestOptions)
+fetchUsers = (search_term) =>{
+  const requestOptions = {
+    method: 'POST',
+    headers: { ...authHeader(), 'Content-Type': 'application/json' },
+    body:JSON.stringify({search_term})
+  };
+  fetch(getConfig('getMarketNews'), requestOptions)
     .then(async response => {
     const data = await response.json();
     if (!response.ok) {
         const error = (data && data.message) || response.statusText;
         return Promise.reject(error);
     }
-    console.log(data)
-    this.setState({users: data.data, all:data.data, loading:false });
-})
-.catch(error => {
+    if(data.success === false){
+      this.setState({users: [], all:[], loading:false });
+    }else{
+      this.setState({users: data.data, all:data, loading:false });
+    }
+  })
+  .catch(error => {
     if (error === "Unauthorized") {
-          this.props.logout()
-       }
+      this.props.logout()
+    }
     this.setState({loading:false, err : "internet error" });
-    console.error('There was an error!', error);
   });
 }
 
-
 componentDidMount() {
-  this.fetchUsers();
+  this.fetchUsers("");
   const requestOptions = {
     method: 'GET',
     headers: { ...authHeader(), 'Content-Type': 'application/json' },
-};
-fetch(getConfig('getMarketNewsType'), requestOptions)
-.then(async response => {
-const data = await response.json();
-if (!response.ok) {
-    const error = (data && data.message) || response.statusText;
-    return Promise.reject(error);
-}
-this.setState({investments: data, loading:false})
-console.log(data)
-})
-.catch(error => {
-  if (error === "Unauthorized") {
-    this.props.logout()
+  };
+  fetch(getConfig('getMarketNewsType'), requestOptions)
+  .then(async response => {
+  const data = await response.json();
+  if (!response.ok) {
+      const error = (data && data.message) || response.statusText;
+      return Promise.reject(error);
+  }
+  this.setState({investments: data, loading:false})
+  })
+  .catch(error => {
+    if (error === "Unauthorized") {
+      this.props.logout()
     }
-});
+  });
 }
 
 searchChange(event) {
   const { name, value } = event.target;
   const { search, users, all } = this.state;
-  
   this.setState({ search: value, users: value == "" ? all : all.filter((q)=>
   q.posted_date.toLowerCase().indexOf(value.toLowerCase())  !== -1)});
 }
@@ -112,10 +112,9 @@ handleClose= () =>{
   this.setState({open:false})
  }
 
- handleChange(event) {
+handleChange(event) {
   const { name, value } = event.target;
   const { data } = this.state;
-  
     this.setState({
         data: {
             ...data,
@@ -133,138 +132,168 @@ handleSubmit(event) {
     }
 }
 
-//  handleSubmitEdit (event){
-//   event.preventDefault();
-//   const { details } = this.state;
-//   if (details.market_investment , details.news) {
-//     console.log(details)
-//    this.props.adminUpdateMarketCategory(details);
-//     // props.submit(details);
-//     }
-// }
+fetch_next_page = ()=>{
+  const {all} = this.state
+  this.setState({ loading: true});
+  const requestOptions = {
+    method: "POST",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+  };
+  fetch(all.next_page_url, requestOptions).then(async (response) =>{
+    const data =await response.json();
+    this.setState({ loading: false, users:data.data, all:data });
+  }).catch(error=>{
+    if (error === "Unauthorized") {
+      this.props.logout();
+    }
+  })
+}
+
+fetch_prev_page = ()=>{
+  const {all} = this.state
+  this.setState({ loading: true});
+  const requestOptions = {
+    method: "POST",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+  };
+  fetch(all.prev_page_url, requestOptions).then(async (response) =>{
+    const data =await response.json();
+    this.setState({ loading: false, users:data.data, all:data });
+  }).catch(error=>{
+    if (error === "Unauthorized") {
+      this.props.logout();
+    }
+  })
+}
+
+fetch_page = (index)=>{
+  const {all} = this.state
+  this.setState({ loading: true});
+  const requestOptions = {
+    method: "POST",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+  };
+  fetch(all.path+"?page="+index, requestOptions).then(async (response) =>{
+    const data =await response.json();
+    this.setState({ loading: false, users:data.data, all:data });
+  }).catch(error=>{
+    if (error === "Unauthorized") {
+      this.props.logout();
+    }
+  })
+}
 
 render(){
   const {theme, savings} = this.props
-  const {users, loading, data, datat, handleClose, handleOpen, search, open, investments} = this.state
+  const {users, loading, data, all, search, open, investments} = this.state
     return (
       <div style={{padding: theme.spacing(3)}}>
         <CardActions>
-              <Link to="/investment_tab">
-                <Button
-                color="secondary"
-                variant="contained"
-              >
-                Back
-              </Button> 
-              </Link>
-          </CardActions>
-          <div style={{height: '42px',alignItems: 'center',marginTop: theme.spacing(1)}}>
-        <SearchInput
-          value={search}
-          onChange={this.searchChange}
-          style={{marginRight: theme.spacing(1), width:300, float:'left'}}
-          placeholder="Search user"
-        />
-      <div style={{float:'right'}}>
-      {/* Modal */}
-       < Dialog
-        open={open}
-        fullWidth={true}
-        maxWidth = {'xs'}
-        keepMounted
-        onClose={this.handleClose}
-        aria-labelledby="alert-dialog-slide-title"
-        aria-describedby="alert-dialog-slide-description">
-        <DialogTitle bold id="alert-dialog-slide-title">Add Market News</DialogTitle>  
-        <Divider />     
-        <DialogContent>
-          <CardContent className="content">
-            <form  noValidate autoComplete="off" onSubmit={this.handleSubmit}>
-              <Grid >
-                    <Grid>
-                      <label>Select Investment Name</label>
-                    <TextField
-                        fullWidth
-                        select
-                        variant="outlined"
-                        value={data.market_investment} 
-                        onChange={this.handleChange}
-                        SelectProps={{
-                          native: true,
-                        }}
-                        helperText="Please select Investment Name"
-                        name="market_investment"                       
-                      >
-                        {this.state.investments.map((option) => (
-                          <option key={option.market_investment} 
-                          value={option.market_investment}>
-                            {option.investment_type}
-                          </option>
-                        ))}
+          <Link to="/investment_tab">
+            <Button
+            color="secondary"
+            variant="contained"
+            >
+              Back
+            </Button> 
+          </Link>
+        </CardActions>
+        <div style={{height: '42px',alignItems: 'center',marginTop: theme.spacing(1)}}>
+          <SearchInput
+            value={search}
+            onChange={this.searchChange}
+            style={{marginRight: theme.spacing(1), width:300, float:'left'}}
+            placeholder="Search user"
+          />
+          <div style={{float:'right'}}>
+            {/* Modal */}
+            < Dialog
+              open={open}
+              fullWidth={true}
+              maxWidth = {'xs'}
+              keepMounted
+              onClose={this.handleClose}
+              aria-labelledby="alert-dialog-slide-title"
+              aria-describedby="alert-dialog-slide-description">
+              <DialogTitle bold id="alert-dialog-slide-title">Add Market News</DialogTitle>  
+              <Divider />     
+              <DialogContent>
+                <CardContent className="content">
+                  <form  noValidate autoComplete="off" onSubmit={this.handleSubmit}>
+                    <Grid >
+                          <Grid>
+                            <label>Select Investment Name</label>
+                          <TextField
+                              fullWidth
+                              select
+                              variant="outlined"
+                              value={data.market_investment} 
+                              onChange={this.handleChange}
+                              SelectProps={{
+                                native: true,
+                              }}
+                              helperText="Please select Investment Name"
+                              name="market_investment"                       
+                            >
+                              {this.state.investments.map((option) => (
+                                <option key={option.market_investment} 
+                                value={option.market_investment}>
+                                  {option.investment_type}
+                                </option>
+                              ))}
 
-                    </TextField>
-                    </Grid><br/>
-                    <Grid>
-                      <label>Market New</label>
-                    <TextField
-                      fullWidth
-                      placeholder="Category Name"
-                      name="news"
-                      multiline 
-                      margin="dense"
-                      rows={4}
-                      value={data.news} 
-                      onChange={this.handleChange}
-                      variant="outlined"
-                    />
-                  </Grid>                   
-              </Grid>
-            </form>
-            </CardContent>              
-          {/* </DialogContentText> */}
-          <Divider /> 
-        <DialogActions>
-        <Grid item md={10} xs={10}>
-                {savings &&
-                    <div className="loader">   
-                        <img img alt=""  src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
-                    </div>
-                }
-                <Button
-                type="submit"
-                  variant="contained"
-                  color="primary"
-                  style={{marginLeft:8}}
-                  onClick={this.handleSubmit}
-                >
-                  Add News
+                          </TextField>
+                          </Grid><br/>
+                          <Grid>
+                            <label>Market New</label>
+                          <TextField
+                            fullWidth
+                            placeholder="Category Name"
+                            name="news"
+                            multiline 
+                            margin="dense"
+                            rows={4}
+                            value={data.news} 
+                            onChange={this.handleChange}
+                            variant="outlined"
+                          />
+                        </Grid>                   
+                    </Grid>
+                  </form>
+                  </CardContent>              
+                {/* </DialogContentText> */}
+                <Divider /> 
+              <DialogActions>
+              <Grid item md={10} xs={10}>
+                      {savings &&
+                          <div className="loader">   
+                              <img img alt=""  src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+                          </div>
+                      }
+                      <Button
+                      type="submit"
+                        variant="contained"
+                        color="primary"
+                        style={{marginLeft:8}}
+                        onClick={this.handleSubmit}
+                      >
+                        Add News
+                      </Button>
+                      </Grid> 
+                    <Button onClick={this.handleClose} 
+                            variant="contained"
+                            style={{color:'white', marginRight:8, backgroundColor:'red'}}
+                    >
+                  Cancel
                 </Button>
-                </Grid> 
-              <Button onClick={this.handleClose} 
-                      variant="contained"
-                      style={{color:'white', marginRight:8, backgroundColor:'red'}}
-              >
-            Cancel
-          </Button>
-        </DialogActions>
-        </DialogContent>
-      </Dialog>
-      {/* Modal */}
-      {/* <div className="row">
-        <span className="spacer" />
-        <Button
-          color="primary"
-          variant="contained"
-          onClick={()=>this.handleOpen()}
-        >
-          Add Market News
-        </Button>
-      </div> */}
-       </div>
-       
-       </div>
+              </DialogActions>
+              </DialogContent>
+            </Dialog>
+            {/* Modal */}
+          </div>
+        </div>
         <div style={{marginTop: theme.spacing(2)}}>
-          <UsersTable users={users} loading={loading} investments={investments} />
+          <UsersTable users={users} pagination={all} fetch_page={this.fetch_page} fetch_next_page={this.fetch_next_page} fetch_prev_page={this.fetch_prev_page} loading={loading} investments={investments} />
         </div>
       </div>
     );

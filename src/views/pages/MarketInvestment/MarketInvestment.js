@@ -13,7 +13,7 @@ import { users } from 'redux/_reducers/users.reducer';
 import CategoryTable from 'redux/components/CategoryTable';
 import { UsersTable, UsersToolbar } from 'views/pages/components/AddInvestment';
 // import { UsersToolbar } from '../components/Savings';
-import { Grid, Card, Button, CardActions, TextField, Divider, DialogActions, DialogContent, DialogTitle, Dialog, CardContent } from '@material-ui/core';
+import { Grid, Card, Button, CardActions, TextField, Divider, DialogActions, DialogContent, DialogTitle, Dialog, CardContent, CircularProgress } from '@material-ui/core';
 import {Link } from "react-router-dom";
 
 
@@ -44,12 +44,15 @@ class MarketInvestment extends Component {
     this.handleOpen = this.handleOpen.bind(this);
     this.handleClose = this.handleClose.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.fetch_next_page = this.fetch_next_page.bind(this);
+    this.fetch_page = this.fetch_page.bind(this);
+    this.fetch_prev_page = this.fetch_prev_page.bind(this);
 
   }
 componentDidMount() {
-    this.fetchUsers();
+    this.fetchUsers("");
     const requestOptions = {
-      method: 'GET',
+      method: 'POST',
       headers: { ...authHeader(), 'Content-Type': 'application/json' },
   };
   fetch(getConfig('getMarketNewsType'), requestOptions)
@@ -68,10 +71,11 @@ componentDidMount() {
   });
 }
 
-fetchUsers = () =>{
+fetchUsers = (search_term) =>{
     const requestOptions = {
-        method: 'GET',
-        headers: { ...authHeader(), 'Content-Type': 'application/json' },
+      method: 'POST',
+      headers: { ...authHeader(), 'Content-Type': 'application/json' },
+      body:JSON.stringify({search_term})
     };
     fetch(getConfig('showMarketInvestments'), requestOptions)
     .then(async response => {
@@ -80,13 +84,16 @@ fetchUsers = () =>{
         const error = (data && data.message) || response.statusText;
         return Promise.reject(error);
     }
-    console.log(data)
-    this.setState({users: data, all:data, loading:false });
-})
-.catch(error => {
+    if(data.success === false){
+      this.setState({users: [], all:[], loading:false });
+    }else{
+      this.setState({users: data.data, all:data, loading:false });
+    }
+  })
+  .catch(error => {
     if (error === "Unauthorized") {
-          this.props.logout()
-       }
+      this.props.logout()
+    }
     this.setState({loading:false});
     console.error('There was an error!', error);
   });
@@ -124,9 +131,60 @@ handleSubmit(event) {
     }
 }
 
+fetch_next_page = ()=>{
+  const {all} = this.state
+  this.setState({ loading: true});
+  const requestOptions = {
+    method: "POST",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+  };
+  fetch(all.next_page_url, requestOptions).then(async (response) =>{
+    const data =await response.json();
+    this.setState({ loading: false, users:data.data, all:data });
+  }).catch(error=>{
+    if (error === "Unauthorized") {
+      this.props.logout();
+    }
+  })
+}
+
+fetch_prev_page = ()=>{
+  const {all} = this.state
+  this.setState({ loading: true});
+  const requestOptions = {
+    method: "POST",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+  };
+  fetch(all.prev_page_url, requestOptions).then(async (response) =>{
+    const data =await response.json();
+    this.setState({ loading: false, users:data.data, all:data });
+  }).catch(error=>{
+    if (error === "Unauthorized") {
+      this.props.logout();
+    }
+  })
+}
+
+fetch_page = (index)=>{
+  const {all} = this.state
+  this.setState({ loading: true});
+  const requestOptions = {
+    method: "POST",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+  };
+  fetch(all.path+"?page="+index, requestOptions).then(async (response) =>{
+    const data =await response.json();
+    this.setState({ loading: false, users:data.data, all:data });
+  }).catch(error=>{
+    if (error === "Unauthorized") {
+      this.props.logout();
+    }
+  })
+}
+
 render(){
   const {theme, savings} = this.props
-  const {users, loading, search, open, open_news, data, investments} = this.state
+  const {users, loading, search, all, open_news, data, investments} = this.state
   
     return (
       <div style={{padding: theme.spacing(3)}}>
@@ -151,8 +209,9 @@ render(){
         </Grid>
           
         <div style={{marginTop: theme.spacing(2)}}>
-          <UsersTable users={users} loading={loading} data={"singleMarketInvestment"} category={"getMarketCategoryType"} loader={this.props.savings} adminUpdateInvestment={this.props.adminUpdateMarket} handleOpen={this.handleOpen} hideOrShow={this.props.hideOrShowMarketInvestment} />
+          <UsersTable users={users} pagination={all} fetch_page={this.fetch_page} fetch_next_page={this.fetch_next_page} fetch_prev_page={this.fetch_prev_page} loading={loading} data={"singleMarketInvestment"} category={"getMarketCategoryType"} loader={this.props.savings} adminUpdateInvestment={this.props.adminUpdateMarket} handleOpen={this.handleOpen} hideOrShow={this.props.hideOrShowMarketInvestment} />
         </div>
+
         <Dialog
             open={open_news}
             fullWidth={true}
@@ -210,11 +269,7 @@ render(){
           <Divider /> 
         <DialogActions>
           <Grid item md={10} xs={10}>
-            {savings &&
-                <div className="loader">   
-                    <img img alt=""  src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
-                </div>
-            }
+            {savings &&<CircularProgress />}
                 <Button
                 type="submit"
                   variant="contained"
