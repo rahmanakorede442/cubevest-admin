@@ -4,13 +4,9 @@ import { withRouter } from "react-router-dom";
 import { adminActions } from "../../../redux/action";
 import { connect } from "react-redux";
 import { withStyles } from "@material-ui/styles";
-import { getConfig, checkToken, numberFormat } from '../../../redux/config/config'
-import { authHeader, history } from '../../../redux/logic';
+import { getConfig } from '../../../redux/config/config'
+import { authHeader } from '../../../redux/logic';
 import { SearchInput } from 'components';
-
-import { userConstants } from 'redux/_constants';
-import { users } from 'redux/_reducers/users.reducer';
-import CategoryTable from 'redux/components/CategoryTable';
 import { UsersTable, UsersToolbar } from 'views/pages/components/AddInvestment';
 // import { UsersToolbar } from '../components/Savings';
 import { Grid, Card, Button, CardActions, TextField, Divider, DialogActions, DialogContent, DialogTitle, Dialog, CardContent } from '@material-ui/core';
@@ -73,11 +69,11 @@ componentDidMount() {
   });
 }
 
-fetchUsers = (search_term) =>{
+fetchUsers = () =>{
     const requestOptions = {
       method: 'POST',
       headers: { ...authHeader(), 'Content-Type': 'application/json' },
-      body:JSON.stringify({search_term})
+      body:JSON.stringify({search_term: this.state.search})
     };
     fetch(getConfig('showHalaiInvestments'), requestOptions)
     .then(async response => {
@@ -102,13 +98,10 @@ fetchUsers = (search_term) =>{
 }
 
 searchChange(event) {
-  const { name, value } = event.target;
-  const { search, users, all } = this.state;
-  this.setState({ search: value, users: value == "" ? all : all.filter((q)=>
-  q.category_name.toLowerCase().indexOf(value.toLowerCase())  !== -1  
-  || q.insurance_partner.toLowerCase().indexOf(value.toLowerCase())  !== -1
-  || q.investment_type.toLowerCase().indexOf(value.toLowerCase())  !== -1
-  )});
+	const { name, value } = event.target;
+	  this.setState({ search:value, loading:true},()=>{
+	  this.fetchUsers()
+	});
 }
 
 handleChange(event) {
@@ -202,7 +195,7 @@ render(){
               </Link>
           </CardActions>
           <Grid  container justify="space-between" >
-            <TextField
+            <SearchInput
               name="search"
               value={search}
               onChange={this.searchChange}

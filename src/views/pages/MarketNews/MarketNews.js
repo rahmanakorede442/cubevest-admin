@@ -48,11 +48,11 @@ class MarketNews extends Component {
 
   }
 
-fetchUsers = (search_term) =>{
+fetchUsers = () =>{
   const requestOptions = {
     method: 'POST',
     headers: { ...authHeader(), 'Content-Type': 'application/json' },
-    body:JSON.stringify({search_term})
+    body:JSON.stringify({search_term:  this.state.search})
   };
   fetch(getConfig('getMarketNews'), requestOptions)
     .then(async response => {
@@ -98,10 +98,10 @@ componentDidMount() {
 }
 
 searchChange(event) {
-  const { name, value } = event.target;
-  const { search, users, all } = this.state;
-  this.setState({ search: value, users: value == "" ? all : all.filter((q)=>
-  q.posted_date.toLowerCase().indexOf(value.toLowerCase())  !== -1)});
+	const { name, value } = event.target;
+	  this.setState({ search:value, loading:true},()=>{
+	  this.fetchUsers()
+	});
 }
 
 handleOpen= () =>{

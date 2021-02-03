@@ -55,9 +55,7 @@ const UsersToolbar = props => {
   const classes = useStyles();
   const [details, setDetails] = useState();  
   return (
-    <div
-       
-      className={clsx(classes.root, className)}>     
+    <div className={clsx(classes.root, className)}>     
       <div className={classes.row}>
         <form autoComplete="off" noValidate  
           onSubmit={handleSubmit} >
@@ -69,9 +67,7 @@ const UsersToolbar = props => {
                 <TextField
                     id="outlined-margin-dense"
                     defaultValue="Default Value"
-                    // value={details.from_date}
                     name='from_date'
-                    // className={classes.textField}
                     onChange={handleChange}
                     margin="dense"
                     type="date"
@@ -85,8 +81,6 @@ const UsersToolbar = props => {
                 <TextField
                     id="outlined-margin-dense"
                     defaultValue="Default Value"
-                    // className={classes.textField}
-                    // value={details.to_date}
                     onChange={handleChange}
                     name='to_date'
                     margin="dense"
@@ -102,7 +96,7 @@ const UsersToolbar = props => {
                   type="submit"
                 >
                   Search
-              </Button>
+                </Button>
             </Grid>  
           </Grid>
       </form>

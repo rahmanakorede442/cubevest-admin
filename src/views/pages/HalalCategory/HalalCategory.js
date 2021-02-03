@@ -46,14 +46,14 @@ class HalalCategory extends Component {
   }
 
 componentDidMount() {
-  this.fetchUsers("");
+  this.fetchUsers();
 }
 
-fetchUsers = (search_term) =>{
+fetchUsers = () =>{
     const requestOptions = {
       method: 'POST',
       headers: { ...authHeader(), 'Content-Type': 'application/json' },
-      body:JSON.stringify({search_term})
+      body:JSON.stringify({search_term: this.state.search})
     };
     fetch(getConfig('getHalalCategory'), requestOptions)
     .then(async response => {
@@ -78,12 +78,10 @@ fetchUsers = (search_term) =>{
 }
 
 searchChange(event) {
-  const { name, value } = event.target;
-  const { search, users, all } = this.state;
-  
-  this.setState({ search: value, users: value == "" ? all : all.filter((q)=>
-  q.category_name.toLowerCase().indexOf(value.toLowerCase())  !== -1
-   )});
+	const { name, value } = event.target;
+	  this.setState({ search:value, loading:true},()=>{
+	  this.fetchUsers()
+	});
 }
 
 handleChange(event) {

@@ -19,10 +19,6 @@ class RegularTranscationDetails extends Component {
   constructor(props){
     super(props)
     const id = this.props.match.params.id;
-    var currentDate = new Date();
-    let month = currentDate.getMonth() + 1;
-    let day = currentDate.getDate();
-    let entry_date = currentDate.getFullYear() + "-" + month + "-" + day;
     this.state ={
       data:{
         id:id,

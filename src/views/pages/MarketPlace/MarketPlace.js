@@ -30,14 +30,14 @@ class MarketPlace extends Component {
   }
 
 componentDidMount(){
-  this.fetchUsers("");
+  this.fetchUsers();
 }
 
-fetchUsers = (search_term) =>{
+fetchUsers = () =>{
     const requestOptions = {
       method: 'POST',
       headers: { ...authHeader(), 'Content-Type': 'application/json' },
-      body:JSON.stringify({search_term})
+      body:JSON.stringify({search_term: this.state.search})
     };
     fetch(getConfig('getAllMarketInvestor'), requestOptions)
     .then(async response => {
@@ -49,7 +49,7 @@ fetchUsers = (search_term) =>{
     if(data.success === false){
       this.setState({users: [], all:[], loading:false });
     }else{
-      this.setState({users: data.data, all:data.data, loading:false });
+      this.setState({users: data.data, all:data, loading:false });
     }
   })
 .catch(error => {
@@ -114,12 +114,10 @@ fetch_page = (index)=>{
 }
 
 searchChange(event) {
-  const { name, value } = event.target;
-  const { search, users, all } = this.state;
-  this.setState({ search: value, users: value == "" ? all : all.filter((q)=>
-  q.first_name.toLowerCase().indexOf(value.toLowerCase())  !== -1  
-  || q.last_name.toLowerCase().indexOf(value.toLowerCase())  !== -1
-  )});
+	const { name, value } = event.target;
+	  this.setState({ search:value, loading:true},()=>{
+	  this.fetchUsers()
+	});
 }
 render(){
   const {theme} = this.props
@@ -127,7 +125,7 @@ render(){
     return (
       <div style={{padding: theme.spacing(3)}}>
         <div style={{height: '42px',alignItems: 'center',marginTop: theme.spacing(1)}}>
-        <TextField
+        <SearchInput
           name="search"
           value={search}
           onChange={this.searchChange}

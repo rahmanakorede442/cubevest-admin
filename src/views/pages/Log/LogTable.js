@@ -43,6 +43,7 @@ import {Link} from 'react-router-dom';
 
 import { getInitials } from 'helpers';
 import { single } from 'validate.js';
+import Paginate from '../components/Users/UsersTable/paginate';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -78,32 +79,25 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'right'
   },
   actions: {
-    justifyContent: 'flex-end'
+    justifyContent: 'space-between'
   }
 }));
 
 const LogTable = props => {
   const { className, loading, users,  investments, banks, status, ...rest} = props;
   const classes = useStyles();
-
   const [selectedUsers, setSelectedUsers] = useState([]);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [page, setPage] = useState(0);
 
   const handleSelectAll = event => {
     const { users } = props;
-
     let selectedUsers;
-
     if (event.target.checked) {
       selectedUsers = users.map(user => user.id);
     } else {
       selectedUsers = [];
     }
-
     setSelectedUsers(selectedUsers);
   };
-
 
   const handleSelectOne = (event, id) => {
     const selectedIndex = selectedUsers.indexOf(id);
@@ -125,14 +119,6 @@ const LogTable = props => {
     setSelectedUsers(newSelectedUsers);
   };
 
-  const handlePageChange = (event, page) => {
-    setPage(page);
-  };
-
-  const handleRowsPerPageChange = event => {
-    setRowsPerPage(event.target.value);
-  };
-
   const handleSubmit = () =>{
     swal({
       title: "Are you sure you want to delete this log?",
@@ -150,11 +136,8 @@ const LogTable = props => {
     });
   }
 
-  
  return (
-  <Card
-     
-    className={clsx(classes.root, className)}>
+  <Card className={clsx(classes.root, className)}>
     <CardContent className={classes.content}>
       <PerfectScrollbar>
         <div className={classes.inner}>
@@ -177,11 +160,15 @@ const LogTable = props => {
                 <TableCell> Created Date</TableCell>
               </TableRow>
             </TableHead>
-            
             <TableBody>
-            {loading? <CircularProgress />: 
+            {loading?
+			<TableRow>
+				<TableCell>
+					<CircularProgress />
+				</TableCell>
+			</TableRow>: 
             users.length !== 0 ?
-            users.slice(page * rowsPerPage, page* rowsPerPage + rowsPerPage).map(user => (
+            users.map(user => (
               <TableRow
                 className={classes.tableRow}
                 hover
@@ -196,17 +183,16 @@ const LogTable = props => {
                     value="true"
                   />
                 </TableCell>
-                 <TableCell>{user.first_name + " " + user.last_name}</TableCell>
-                 <TableCell>{user.description}</TableCell>
+				<TableCell>{user.first_name + " " + user.last_name}</TableCell>
+				<TableCell>{user.description}</TableCell>
                 <TableCell>{user.created_at}</TableCell>
               </TableRow>
             )):
             <TableRow>
-              <TableCell colSpan={8} >
+              <TableCell style={{textAlign:"center"}} colSpan={4} >
                 No Record Found
               </TableCell> 
-            </TableRow>
-            }
+            </TableRow>}
           </TableBody>
          </Table>
         </div>
@@ -215,15 +201,7 @@ const LogTable = props => {
     <CardActions className={classes.actions}>
       <Button variant="contained" color="primary" onClick={handleSubmit}>Delete</Button>
         {props.savings && <CircularProgress />}
-      <TablePagination
-        component="div"
-        count={users.length}
-        onChangePage={handlePageChange}
-        onChangeRowsPerPage={handleRowsPerPageChange}
-        page={page}
-        rowsPerPage={rowsPerPage}
-        rowsPerPageOptions={[5, 10, 25]}
-      />
+	  <Paginate pagination={props.pagination} fetch_prev_page={props.fetch_prev_page} fetch_next_page={props.fetch_next_page} fetch_page={props.fetch_page}/>
     </CardActions>
   </Card>
 );

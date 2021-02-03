@@ -10,14 +10,12 @@ import swal from 'sweetalert'
 import moment from 'moment';
 import {
   Card,
-  CardActions,
   CardContent,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableRow,
-  TablePagination,
   Button,
   CircularProgress,
   CardHeader,
@@ -27,6 +25,7 @@ import {
   Dialog,
   Typography,
 } from '@material-ui/core';
+import Paginate from '../components/Users/UsersTable/paginate';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -89,7 +88,6 @@ const LogTable = props => {
 
     setSelectedUsers(selectedUsers);
   };
-
 
   const handleSelectOne = (event, id) => {
     const selectedIndex = selectedUsers.indexOf(id);
@@ -156,7 +154,7 @@ const LogTable = props => {
             <TableHead>
               <TableRow>
                 <TableCell>Id</TableCell>
-                <TableCell>Username </TableCell>
+                <TableCell>Account Name </TableCell>
                 <TableCell>Bank Name</TableCell>
                 <TableCell>Status</TableCell>
                 <TableCell>Date</TableCell>
@@ -165,9 +163,14 @@ const LogTable = props => {
             </TableHead>
             
             <TableBody>
-            {loading? <CircularProgress />: 
+			{loading?
+			<TableRow>
+				<TableCell>
+					<CircularProgress />
+				</TableCell>
+			</TableRow>:
             logs.length !== 0 ?
-            logs.slice(page * rowsPerPage, page* rowsPerPage + rowsPerPage).map((log, index) => (
+            logs.map((log, index) => (
               <TableRow
                 className={classes.tableRow}
                 hover
@@ -175,7 +178,7 @@ const LogTable = props => {
                 selected={selectedUsers.indexOf(log.id) !== -1}
               >
                  <TableCell>{index+1 }</TableCell>
-                 <TableCell>{log.first_name + " " + log.last_name }</TableCell>
+                 <TableCell>{log.account_name}</TableCell>
                  <TableCell>{log.bank }</TableCell>
                  <TableCell>{log.status }</TableCell>
                  <TableCell>{moment(log.created_at).format('DD/MM/YYYY')}</TableCell>
@@ -183,7 +186,7 @@ const LogTable = props => {
               </TableRow>
             )):
             <TableRow>
-              <TableCell colSpan={8} >
+              <TableCell style={{textAlign:"center"}} colSpan={6} >
                 No Record Found
               </TableCell> 
             </TableRow>
@@ -193,17 +196,7 @@ const LogTable = props => {
         </div>
       </PerfectScrollbar>
     </CardContent>
-    <CardActions className={classes.actions}>
-      <TablePagination
-        component="div"
-        count={logs.length}
-        onChangePage={handlePageChange}
-        onChangeRowsPerPage={handleRowsPerPageChange}
-        page={page}
-        rowsPerPage={rowsPerPage}
-        rowsPerPageOptions={[5, 10, 25]}
-      />
-    </CardActions>
+	<Paginate pagination={props.pagination} fetch_prev_page={props.fetch_prev_page} fetch_next_page={props.fetch_next_page} fetch_page={props.fetch_page}/>
     {/* Modal */}
     < Dialog
         open={open}
@@ -229,7 +222,7 @@ const LogTable = props => {
           </CardContent>
         </DialogContent>
       </Dialog>
-      {/* Modal */}
+    {/* Modal */}
   </Card>
 );
 };

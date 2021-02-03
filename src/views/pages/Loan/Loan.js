@@ -49,14 +49,14 @@ class Loan extends Component {
   }
 
 componentDidMount(){
-  this.fetchUsers("");
+  this.fetchUsers();
 }
 
-fetchUsers = (search_term) =>{
+fetchUsers = () =>{
   const requestOptions = {
     method: 'POST',
     headers: { ...authHeader(), 'Content-Type': 'application/json' },
-    body:JSON.stringify({search_term})
+    body:JSON.stringify({search_term:this.state.search})
   };
   fetch(getConfig('getLoansForApproval'), requestOptions)
   .then(async response => {
@@ -82,13 +82,11 @@ fetchUsers = (search_term) =>{
 }
 
 searchChange(event) {
-  const { name, value } = event.target;
-  const { search, users, all } = this.state;
-  
-  this.setState({ search: value, users: value == "" ? all : all.filter((q)=>
-  q.package_name.toLowerCase().indexOf(value.toLowerCase())  !== -1
-   )});
-  }
+	const { name, value } = event.target;
+	  this.setState({ search:value, loading:true},()=>{
+	  this.fetchUsers()
+	});
+}
 
  handleChange(event) {
   const { name, value } = event.target;
@@ -171,7 +169,7 @@ fetch_page = (index)=>{
 
 render(){
   const {theme, savings} = this.props
-  const {search,data,users, all, loading} = this.state
+  const {search, users, all, loading} = this.state
     return (
       <div style={{padding: theme.spacing(4)}}>
       <Grid

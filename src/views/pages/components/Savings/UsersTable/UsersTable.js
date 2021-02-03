@@ -121,7 +121,7 @@ const UsersTable = props => {
                       <Typography variant="body1">{user.first_name}{' '}{user.last_name}</Typography>
                     </div>
                   </TableCell>
-                  <TableCell>{numberFormat(user.balance+user.balance1)}</TableCell>
+                  <TableCell>{props.link ==="savetoloan"?numberFormat(user.balance+user.balance1):numberFormat(user.balance)}</TableCell>
                   <TableCell>{user.frequency}</TableCell>
                   <TableCell>{numberFormat(user.amount)}</TableCell>
                   <TableCell>{user.payment_method}</TableCell>

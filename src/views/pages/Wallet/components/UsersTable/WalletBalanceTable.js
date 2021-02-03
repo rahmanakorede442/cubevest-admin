@@ -1,48 +1,21 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
-import PropTypes from 'prop-types';
-import moment from 'moment';
-import { withRouter } from "react-router-dom";
-import { adminActions } from "../../../../../redux/action";
-import { connect } from "react-redux";
-import { withStyles } from "@material-ui/styles";
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import { makeStyles } from '@material-ui/styles';
-import swal from 'sweetalert'
-import { getConfig, numberFormat, checkToken } from '../../../../../redux/config/config';
-import { authHeader, history } from '../../../../../redux/logic';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
+import { numberFormat } from '../../../../../redux/config/config';
 import {
   Card,
-  CardActions,
   CardContent,
-  Avatar,
-  Checkbox,
   Table,
-  TextField,
   TableBody,
   TableCell,
   TableHead,
   TableRow,
-  Typography,
-  TablePagination,
   Button,
-  Divider,
-  Dialog,
-  Grid,
-  DialogContent,
-  DialogTitle,
-  DialogContentText,
-  DialogActions,
-  List,
-  ListItem,
-  ListItemText,
-  Slide
+  CircularProgress
 } from '@material-ui/core';
 import {Link} from 'react-router-dom';
-
-import { getInitials } from 'helpers';
+import Paginate from 'views/pages/components/Users/UsersTable/paginate';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -93,10 +66,7 @@ const WalletBalanceTable = props => {
   const [page, setPage] = useState(0);
 
  return (
-  <Card
-     
-    className={clsx(classes.root, className)}
-  >
+  <Card className={clsx(classes.root, className)}>
     <CardContent className={classes.content}>
       <PerfectScrollbar>
         <div className={classes.inner}>
@@ -113,11 +83,7 @@ const WalletBalanceTable = props => {
             {loading?
               <TableRow>
                 <TableCell>
-                  <img
-                    alt=""
-                    className="loader"
-                    src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
-                    />
+					<CircularProgress />
                 </TableCell>
               </TableRow>: 
               users.length != 0 ?
@@ -148,6 +114,7 @@ const WalletBalanceTable = props => {
         </div>
       </PerfectScrollbar>
     </CardContent>
+	<Paginate pagination={props.pagination} fetch_prev_page={props.fetch_prev_page} fetch_next_page={props.fetch_next_page} fetch_page={props.fetch_page}/>
   </Card>
   );
 };

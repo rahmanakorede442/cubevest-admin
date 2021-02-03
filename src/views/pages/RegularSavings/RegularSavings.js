@@ -17,7 +17,7 @@ class RegularSavings extends Component {
     super(props)
     this.state ={
       data:{
-        new_search:"",
+        search_term:"",
       },
       users: [],
       all: [],
@@ -132,21 +132,13 @@ render(){
       <div >
         <Grid container spacing={4} justify="center" >
           <Grid item lg={12} md={12} sm={12} xs={12}>
-            <TextField
+            <SearchInput
               style={{width:"30%"}}
-              select
               label="search"
-              name="new_search"
+              name="search_term"
               margin="dense"
-              value={data.new_search}
-              onChange={this.handleChange}>
-                <MenuItem value={""}>Select an option</MenuItem>
-                <MenuItem value={"Daily"}>Daily</MenuItem>
-                <MenuItem value={"Weekly"}> Weekly</MenuItem>
-                <MenuItem value={"Monthly"}>Monthly</MenuItem>
-                <MenuItem value={"Wallet"}> Wallet</MenuItem>
-                <MenuItem value={"Bank Account"}> Bank Account </MenuItem>
-            </TextField>
+              value={data.search_term}
+              onChange={this.handleChange}/>
           </Grid>
         </Grid>
         <div style={{marginTop: theme.spacing(2)}}>

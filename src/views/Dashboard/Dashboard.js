@@ -57,9 +57,9 @@ componentDidMount(){
   const requestOptions = {
     method: 'GET',
     headers: { ...authHeader(), 'Content-Type': 'application/json' },
-};
+  };
   this.fetchUsers(requestOptions);
-  this.fetchLoanApproved(requestOptions)
+  this.fetchLoanApproved()
   this.fetchTransac();
 }
 
@@ -120,7 +120,11 @@ fetch(getConfig('savingsData'), requestOptions)
 
 }
 
-fetchLoanApproved = (requestOptions)=>{
+fetchLoanApproved = ()=>{
+	const requestOptions = {
+		method: 'POST',
+		headers: { ...authHeader(), 'Content-Type': 'application/json' },
+	};
   fetch(getConfig('getAllApprovedLoan'), requestOptions)
   .then(async response => {
   const data = await response.json();
@@ -128,11 +132,10 @@ fetchLoanApproved = (requestOptions)=>{
       const error = (data && data.message) || response.statusText;
       return Promise.reject(error);
   }
-  console.log(data)
   if (data.success == false){
     this.setState({loans:[]});
   }else{
-    this.setState({loans:data});
+    this.setState({loans:data.data});
   }
 
 })

@@ -2,7 +2,6 @@ import React from 'react'
 import {Button, Icon} from "@material-ui/core"
 
 export default function Paginate({pagination, fetch_prev_page, fetch_next_page, fetch_page}) {
-console.log(pagination)
     const pages = page(pagination);
     return (
       <div >

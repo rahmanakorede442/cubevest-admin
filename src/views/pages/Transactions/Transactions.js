@@ -7,29 +7,20 @@ import { withStyles } from "@material-ui/styles";
 import { getConfig, checkToken, numberFormat } from '../../../redux/config/config'
 import { authHeader, history } from '../../../redux/logic';
 import { SearchInput } from 'components';
-import { Grid, MenuItem, TextField} from '@material-ui/core';
-import {Link } from "react-router-dom";
+import { Grid} from '@material-ui/core';
 
-import { UsersToolbar, SaveLoanTable } from '../components/TranscationTable';
-import { userConstants } from 'redux/_constants';
-import { users } from 'redux/_reducers/users.reducer';
+import { UsersToolbar } from '../components/TranscationTable';
 import TransactionTable from '../components/Table/TransactionTable';
 
 
 class Transactions extends Component {
   constructor(props){
     super(props)
-    const id = this.props.match.params.id;
-    var currentDate = new Date();
-    let month = currentDate.getMonth() + 1;
-    let day = currentDate.getDate();
-    let entry_date = currentDate.getFullYear() + "-" + month + "-" + day;
     this.state ={
       data:{
-        id:id,
         from_date : "",
-        to_date:"",
-        new_search:"",
+		to_date:"",
+		search_term:""
       },
       users: [],
       all: [],
@@ -38,57 +29,53 @@ class Transactions extends Component {
       open:false
     }
     this.fetchUsers = this.fetchUsers.bind(this);
-    this.fetchUsers();
-    this.searchChange = this.searchChange.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.fetch_next_page = this.fetch_next_page.bind(this);
+    this.fetch_page = this.fetch_page.bind(this);
+    this.fetch_prev_page = this.fetch_prev_page.bind(this);
 
   }
 
+componentDidMount(){
+	this.fetchUsers()
+}
+
 fetchUsers = () =>{
-    const {data} = this.state
-    let user = JSON.parse(localStorage.getItem('admin'));
     const requestOptions = {
         method: 'POST',
         headers: { ...authHeader(), 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
+        body: JSON.stringify(this.state.data),
     };
     fetch(getConfig('transactions'), requestOptions)
     .then(async response => {
-    const data = await response.json();
-    if (!response.ok) {
-        const error = (data && data.message) || response.statusText;
-        return Promise.reject(error);
-    }
-    console.log(data)
-    this.setState({users: data.data, all:data, loading:false });
-})
-.catch(error => {
+		const data = await response.json();
+		if (!response.ok) {
+			const error = (data && data.message) || response.statusText;
+			return Promise.reject(error);
+		}
+		if (data.success == false){
+			this.setState({users:[], loading:false });
+		}else{
+			this.setState({users:data.data, all:data, loading:false });
+		}
+	})
+	.catch(error => {
     if (error === "Unauthorized") {
-          this.props.logout()
-       }
+        this.props.logout()
+    }
     this.setState({loading:false, err : "internet error" });
     console.error('There was an error!', error);
   });
 }
 
-searchChange(event) {
-  const { name, value } = event.target;
-  const { search, users, all } = this.state;
-  
-  this.setState({ search: value, users: value == "" ? all : all.filter((q)=>
-  q.from_date.toLowerCase().indexOf(value.toLowerCase())  !== -1 
-  || q.to_date.toLowerCase().indexOf(value.toLowerCase())  !== -1 
-  // || q.frequency.toLowerCase().indexOf(value.toLowerCase())  !== -1 
-  )});}
-
-  handleChange(event) {
+handleChange(event) {
     const { name, value } = event.target;
     const { data } = this.state;
     if(name == "from_date"||name == "to_date"){
       this.setState({ data: { ...data, [name]: value } });
     }else{
-      this.setState({ data: { ...data, [name]: value }, loading:true},()=>{
+      this.setState({ data: { ...data, search_term: value }, loading:true},()=>{
         this.fetchUsers()
       });
     }
@@ -96,14 +83,65 @@ searchChange(event) {
 
 handleSubmit(event) {
   event.preventDefault();
+  this.setState({loading:true });
   this.fetchUsers()
 } 
 
+fetch_next_page = ()=>{
+	const {all} = this.state
+	this.setState({ loading: true});
+	const requestOptions = {
+	  method: "POST",
+	  headers: { ...authHeader(), "Content-Type": "application/json" },
+	};
+	fetch(all.next_page_url, requestOptions).then(async (response) =>{
+	  const data =await response.json();
+	  this.setState({ loading: false, users:data.data, all:data });
+	}).catch(error=>{
+	  if (error === "Unauthorized") {
+		this.props.logout();
+	  }
+	})
+}
+
+fetch_prev_page = ()=>{
+const {all} = this.state
+this.setState({ loading: true});
+	const requestOptions = {
+		method: "POST",
+		headers: { ...authHeader(), "Content-Type": "application/json" },
+	};
+    fetch(all.prev_page_url, requestOptions).then(async (response) =>{
+	const data =await response.json();
+	this.setState({ loading: false, users:data.data, all:data });
+	}).catch(error=>{
+		if (error === "Unauthorized") {
+			this.props.logout();
+		}
+	})
+}
+
+fetch_page = (index)=>{
+	const {all} = this.state
+	this.setState({ loading: true});
+	const requestOptions = {
+		method: "POST",
+		headers: { ...authHeader(), "Content-Type": "application/json" },
+	};
+	fetch(all.path+"?page="+index, requestOptions).then(async (response) =>{
+		const data =await response.json();
+		this.setState({ loading: false, users:data.data, all:data });
+	}).catch(error=>{
+		if (error === "Unauthorized") {
+		this.props.logout();
+		}
+	})
+}
 
 
 render(){
   const {theme} = this.props
-  const {users, loading, search, handleSubmit, handleChange, data, open, searchChange} = this.state
+  const {users, loading, all, data} = this.state
   
     return (
       <div style={{padding: theme.spacing(3)}}>
@@ -112,29 +150,17 @@ render(){
               <UsersToolbar handleSubmit={this.handleSubmit} handleChange={this.handleChange}/>
           </Grid>
           <Grid item lg={4} md={4} sm={12} xs={12}>
-            <TextField
+            <SearchInput
               style={{width:"100%"}}
               select
               label="search"
-              name="new_search"
+              name="search_term"
               margin="dense"
-              value={data.new_search}
-              onChange={this.handleChange}>
-                <MenuItem value={""}>Select an option</MenuItem>
-                <MenuItem value={"Bank Account"}>Bank Account</MenuItem>
-                <MenuItem value={"Wallet"}> Wallet</MenuItem>
-                <MenuItem value={"Regular Savings"}>Regular Savings</MenuItem>
-                <MenuItem value={"Target Savings"}> Target Savings</MenuItem>
-                <MenuItem value={"Save To Loan"}> Save To Loan</MenuItem>
-                <MenuItem value={"Loan"}> Loan</MenuItem>
-                <MenuItem value={"Market Investment"}> Market Investment</MenuItem>
-                <MenuItem value={"Halal Financing"}> Halal Financing</MenuItem>
-                <MenuItem value={"Credit"}>Credit</MenuItem>
-                <MenuItem value={"Debit"}> Debit</MenuItem>
-            </TextField>
-            </Grid>
+              value={data.search_term}
+              onChange={this.handleChange}/>
+          </Grid>
           <Grid item lg={12} md={12} sm={12} xs={12}>
-            <TransactionTable users={users} loading={loading}/>
+            <TransactionTable users={users} pagination={all} fetch_page={this.fetch_page} fetch_next_page={this.fetch_next_page} fetch_prev_page={this.fetch_prev_page} loading={loading}/>
           </Grid>
         </Grid>
       </div>
