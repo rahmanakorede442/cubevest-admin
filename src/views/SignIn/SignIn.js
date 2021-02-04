@@ -311,9 +311,10 @@ const SignIn = props => {
         aria-labelledby="alert-dialog-slide-title"
         aria-describedby="alert-dialog-slide-description"
       >
-        <DialogTitle bold id="alert-dialog-slide-title">Input OTP </DialogTitle>  
+        <DialogTitle bold id="alert-dialog-slide-title" style={{textAlign:"center"}}>Enter OTP</DialogTitle>  
         <Divider />
         <DialogContent>
+		  <Typography variant="h6">A one-time pin has been sent to your mail, copy and paste in the input box below </Typography>
           <form onSubmit={handleSubmitValidate}>
             <CardContent className="content">
               <TextField

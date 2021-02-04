@@ -67,7 +67,7 @@ fetchUsers = () =>{
 handleChange(event) {
   const { name, value } = event.target;
   const { data } = this.state;
-    this.setState({ data: { ...data, [name]: value }, loading:true},()=>{
+    this.setState({ data: { ...data, search_term: value }, loading:true},()=>{
       this.fetchUsers()
     });
 }
