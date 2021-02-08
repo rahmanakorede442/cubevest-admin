@@ -184,7 +184,7 @@ render(){
           <Typography
             style={style.title}
             variant="h4">
-            Multiple Payment Transaction 
+            Post Transaction 
           </Typography>
           {data.map((dat, index) =>(
           <Grid container spacing={2} key={index}>
@@ -216,7 +216,8 @@ render(){
                   variant="outlined"
                   value={dat.product_name}
                   onChange={(e)=>this.handleChange(e, index)}
-                  select>
+                  select
+				>
                     {dat.packages.map((option, index) => (
                       <MenuItem key={index} value={option}>
                         {option}
