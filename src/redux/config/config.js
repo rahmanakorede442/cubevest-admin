@@ -1,7 +1,7 @@
 
 import { history } from '../logic';
 const serverVars = {
-//   baseUrl:"http://142.93.152.229/test/api/",
+  // baseUrl:"http://142.93.152.229/test/api/",
   baseUrl: "https://api.cubevest.com/api/",
   validateLogin:"admin/validate_login",
   adminlogin:"admin/login",
