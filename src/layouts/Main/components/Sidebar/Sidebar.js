@@ -3,8 +3,8 @@ import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import { Divider, Drawer, Button } from '@material-ui/core';
-import DashboardIcon from '@material-ui/icons/Dashboard';
 import PeopleIcon from '@material-ui/icons/People';
+import DashboardIcon from '@material-ui/icons/Dashboard';
 import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
 import TextFieldsIcon from '@material-ui/icons/TextFields';
 import ImageIcon from '@material-ui/icons/Image';
@@ -89,7 +89,7 @@ const Sidebar = props => {
       icon: <MoneyIcon />
     },
     {
-      title: 'Make Payment',
+      title: 'Post Payment',
       href: '/payment',
       icon: <PaymentIcon />
     },

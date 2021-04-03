@@ -27,7 +27,7 @@ function TabPanel(props) {
     >
       {value === index && (
         <Box p={3}>
-          <Typography>{children}</Typography>
+          {children}
         </Box>
       )}
     </div>
@@ -74,7 +74,7 @@ export default function SimpleTab(props) {
         {/* <Sidebar isOpened={opened}/> */}
         <div class="main_content">
         <AppBar position="static" style={{background:"#ffffff"}}>
-          <Tabs value={value} onChange={handleChange} center aria-label="simple tabs example" 
+          <Tabs value={value} onChange={handleChange} aria-label="simple tabs example" 
             color="black" indicatorColor="primary" textColor="primary">
             <Tab label="Regular Savings" {...a11yProps(0)} />
             <Tab label="Target Savings" {...a11yProps(1)} />

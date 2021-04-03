@@ -20,6 +20,7 @@ import {
   ResetPassword as ResetPasswordView,
   NotFound as NotFoundView,
   SavingsTab as SavingsTabView,
+  InfinitoTab as InfinitoTabView,
   TargetTab as TargetTabView,
   LoanTab as LoanTabView,
   MarketTab as MarketTabView,
@@ -33,6 +34,7 @@ import {
   UserLists as UserListsView,
   UserDetails as UserDetailsView,
   RegularTranscationDetails as RegularTranscationDetailsView,
+  InfinitoTranscationDetails as InfinitoTranscationDetailsView,
   SaveToLoanDetails as SaveToLoanDetailsView,
   TargetDetails as TargetDetailsView,
   MarketCategory as MarketCategoryView,
@@ -88,6 +90,12 @@ const Routes = () => {
         exact
         layout={MainLayout}
         path="/savings_tab"
+      />
+      <RouteWithLayout
+        component={InfinitoTabView}
+        exact
+        layout={MainLayout}
+        path="/infinito_tab"
       />
       <RouteWithLayout
         component={HalalTabView}
@@ -226,6 +234,12 @@ const Routes = () => {
         exact
         layout={MainLayout}
         path="/regulardetails/:id"
+      />
+      <RouteWithLayout
+        component={InfinitoTranscationDetailsView}
+        exact
+        layout={MainLayout}
+        path="/infinito_details/:id"
       />
       <RouteWithLayout
         component={SaveToLoanDetailsView}

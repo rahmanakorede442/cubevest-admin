@@ -46,7 +46,6 @@ fetchUsers = () =>{
         const error = (data && data.message) || response.statusText;
         return Promise.reject(error);
     }
-    console.log(data);
     this.setState({users: data.data, all:data, loading:false});
 })
 .catch(error => {

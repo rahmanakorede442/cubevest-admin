@@ -165,6 +165,7 @@ const SignIn = props => {
     errors: {}
   });
 
+
   useEffect(() => {
     const errors = validate(formState.values, schema);
 
@@ -173,7 +174,8 @@ const SignIn = props => {
       isValid: errors ? false : true,
       errors: errors || {}
     }));
-  }, [formState.values]);
+    setModal(props.isValidUser)
+  }, [formState.values, props.isValidUser]);
 
 
   const handleChange = event => {
@@ -202,7 +204,6 @@ const SignIn = props => {
     if(email && password ){
       props.validateLogin(email, password)
     }
-    setModal(true)
   };
 
   const handleSubmitValidate =(event)=>{
@@ -311,7 +312,7 @@ const SignIn = props => {
         aria-labelledby="alert-dialog-slide-title"
         aria-describedby="alert-dialog-slide-description"
       >
-        <DialogTitle bold id="alert-dialog-slide-title" style={{textAlign:"center"}}>Enter OTP</DialogTitle>  
+        <DialogTitle id="alert-dialog-slide-title" style={{textAlign:"center"}}>Enter OTP</DialogTitle>  
         <Divider />
         <DialogContent>
 		  <Typography variant="h6">A one-time pin has been sent to your mail, copy and paste in the input box below </Typography>
@@ -354,8 +355,8 @@ const SignIn = props => {
 };
 
 function mapState(state) {
-  const { loggingIn, user } = state.authentication;
-  return { loggingIn, user };
+  const { loggingIn, user, isValidUser } = state.authentication;
+  return { loggingIn, user, isValidUser };
 }
 
 const actionCreators = {

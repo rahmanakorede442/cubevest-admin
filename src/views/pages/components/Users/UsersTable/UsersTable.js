@@ -118,11 +118,9 @@ const UsersTable = props => {
                   <TableCell>Action</TableCell>
                 </TableRow>
               </TableHead>
-              <TableCell></TableCell>
-              <TableCell></TableCell>
-              {loading?<TableRow><TableCell><CircularProgress /></TableCell></TableRow>: 
               <TableBody>
-              {users.length != 0 ?
+              {loading?<TableRow><TableCell><CircularProgress /></TableCell></TableRow>: 
+              users.length != 0 ?
                users.map(user => (
                  <TableRow
                     className={classes.tableRow}
@@ -168,7 +166,6 @@ const UsersTable = props => {
                 </TableRow>
                 }
               </TableBody>
-              } 
             </Table>
           </div>
         </PerfectScrollbar>

@@ -121,21 +121,21 @@ const UsersTable = props => {
                       <Typography variant="body1">{user.first_name}{' '}{user.last_name}</Typography>
                     </div>
                   </TableCell>
-                  <TableCell>{props.link ==="savetoloan"?numberFormat(user.balance+user.balance1):numberFormat(user.balance)}</TableCell>
+                  <TableCell>{props.link ==="savetoloan_details"?numberFormat(user.balance+user.balance1):numberFormat(user.balance)}</TableCell>
                   <TableCell>{user.frequency}</TableCell>
                   <TableCell>{numberFormat(user.amount)}</TableCell>
                   <TableCell>{user.payment_method}</TableCell>
                   <TableCell>{moment(user.created_at).format('DD/MM/YYYY')} </TableCell>
                   <TableCell>{user.transaction_time}</TableCell>
                   <TableCell>
-                    <Link to ={props.link =="regular"?`/regulardetails/${user.user_id}`:props.link =="target"?`/target_details/${user.id}`:`/savetoloan_details/${user.user_id}`}>
+                    <Link to ={props.link =="target_details"?`/${props.link}/${user.id}`:`/${props.link}/${user.user_id}`}>
                       <Button color="primary" variant="contained" > Details</Button>
                     </Link>
                   </TableCell>
                 </TableRow>
               )):
               <TableRow>
-              <TableCell colSpan="8" style={{textAlign:"center"}}>
+                <TableCell colSpan="8" style={{textAlign:"center"}}>
                   No Record Found
                 </TableCell>                
               </TableRow>}

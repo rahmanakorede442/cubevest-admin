@@ -23,7 +23,7 @@ function WalletHistoryTabPanel(props) {
     >
       {value === index && (
         <Box p={3}>
-          <Typography>{children}</Typography>
+          {children}
         </Box>
       )}
     </div>
@@ -66,7 +66,7 @@ export default function SimpleTabs(props) {
     return (
       <div className={classes.root} style={{alignItems:"center"}}>
         <AppBar position="static" style={{background:"#ffffff"}}>
-          <Tabs value={value} onChange={handleChange} center aria-label="simple tabs example" 
+          <Tabs value={value} onChange={handleChange} aria-label="simple tabs example" 
             color="black" indicatorColor="primary" textColor="primary">
             <Tab label="Wallet Balance" {...a11yProps(0)} />
             <Tab label="Wallet History" {...a11yProps(1)} />

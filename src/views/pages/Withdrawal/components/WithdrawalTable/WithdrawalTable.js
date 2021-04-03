@@ -238,9 +238,10 @@ const WithdrawalTable = (props) => {
         <DialogContent>
           <CardContent className="content">
             <Typography variant="h6">User Name: {details.last_name + " " + details.first_name}</Typography><br/>
+            <Typography variant="h6">Bank Name: {details.bank_name}</Typography><br/>
             <Typography variant="h6">Account Name: {details.account_name}</Typography><br/>
-            <Typography variant="h6">Account Number: {details.last_name + " " + details.first_name}</Typography><br/>
-            <Typography variant="h6">Total Amount: {Number(details.amount)}</Typography>
+            <Typography variant="h6">Account Number: {details.account_no}</Typography><br/>
+            <Typography variant="h6">Requested Amount: {numberFormat(details.amount)}</Typography>
             
           </CardContent>
         </DialogContent>

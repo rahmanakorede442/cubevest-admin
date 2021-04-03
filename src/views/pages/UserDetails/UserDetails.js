@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { withStyles } from "@material-ui/styles";
 import { getConfig} from '../../../redux/config/config'
 import { authHeader } from '../../../redux/logic';
-import { Grid, Dialog, Button, TextField, DialogContent, CardContent, DialogTitle, Divider, DialogActions, CardActions, Typography } from '@material-ui/core';
+import { Grid, Dialog, Button, TextField, DialogContent, CardContent, DialogTitle, Divider, DialogActions, CardActions, Typography, CircularProgress } from '@material-ui/core';
 import UserAccount from './compnent/UserAccount/UserAccount';
 import swal from 'sweetalert'
 
@@ -152,12 +152,7 @@ render(){
     
     {loading?
       <div style={{marginTop:150, display:"flex", alignItems:"center", flexDirection:"column", justifyItems:"center"}}>
-          <img
-              img
-              alt=""
-              className="loader"
-              src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
-            />
+          <CircularProgress />
       </div>:    
         <div style={{marginTop: theme.spacing(2)}}>
         <Grid
@@ -208,9 +203,9 @@ render(){
                   <Typography variant="h6">Savings Account</Typography>
                   <div className="py-5" />
                   <Link to={`/regulardetails/${id}`}><Button style={{width:"100%"}} variant="outlined">Regular Savings</Button></Link>
-                  <Link to={`/target_details/${users.id}`}><Button style={{width:"100%"}} variant="outlined">Target Savings</Button></Link>
+                  {/* <Link to={`/target_details/${users.id}`}><Button style={{width:"100%"}} variant="outlined">Target Savings</Button></Link> */}
                   <Link to={`/savetoloan_details/${id}`}><Button style={{width:"100%"}} variant="outlined">Save To Loan</Button></Link>
-                  <Link><Button style={{width:"100%"}} variant="outlined">Infinito Savings</Button></Link>
+                  <Link to={`/regulardetails/${id}`}><Button style={{width:"100%"}} variant="outlined">Infinito Savings</Button></Link>
                   <Typography variant="h6">Investments Account</Typography>
                   <Link to="/"><Button style={{width:"100%"}} variant="outlined">Market Investment</Button></Link>
                   <Link to="/"><Button style={{width:"100%"}} variant="outlined">Halal Investment</Button></Link>
@@ -242,7 +237,7 @@ render(){
         aria-labelledby="alert-dialog-slide-title"
         aria-describedby="alert-dialog-slide-description"
       >
-        <DialogTitle bold id="alert-dialog-slide-title">Add User Port</DialogTitle>  
+        <DialogTitle id="alert-dialog-slide-title">Add User Port</DialogTitle>  
         <Divider />     
         <DialogContent>
           <CardContent className="content">
@@ -260,7 +255,8 @@ render(){
                         SelectProps={{
                           native: true,
                         }}
-                        helperText="Please select Investment Name">
+                    >
+                        <option >select port</option>
                         {ports.map((option, index) => (
                           <option key={index} value={option}>
                             {option}
@@ -278,6 +274,7 @@ render(){
                       value={data.member_id} 
                       onChange={this.handleChange}
                       variant="outlined"
+                      helperText="Enter Member Id"
                     />
                   </Grid>                   
               </Grid>

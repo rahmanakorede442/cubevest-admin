@@ -58,7 +58,7 @@ function validateLogin(username, password) {
         if(user.status){
           dispatch(success(user));
         }else{
-          dispatch(success(user));
+          // dispatch(success(user));
           dispatch(alertActions.error(user.message));
         }
       },
@@ -136,7 +136,7 @@ function multipleTransaction(user) {
     adminService.multipleTransaction(user).then(
       (user) => {
         dispatch(success());
-        if(success.status === false){
+        if(user.success){
           dispatch( alertActions.success(user.message) );
         }else{
           dispatch( alertActions.error(user.message) );
