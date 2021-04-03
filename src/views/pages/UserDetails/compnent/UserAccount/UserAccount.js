@@ -44,10 +44,7 @@ const UserAccount = props => {
  
   return (
     <div>
-    <Card
-       
-      className={clsx(classes.root, className)}
-    >
+    <Card  className={clsx(classes.root, className)} >
     <Grid>
       <CardContent>
         <div className={classes.details}>
@@ -64,6 +61,20 @@ const UserAccount = props => {
               variant="body1"
             >
               {users.address}
+            </Typography>
+            <Typography
+              className={classes.locationText}
+              color="textSecondary"
+              variant="body1"
+            >
+              Member Id: {users.member_id}
+            </Typography>
+            <Typography
+              className={classes.locationText}
+              color="textSecondary"
+              variant="body1"
+            >
+              Port No: {users.port}
             </Typography>
           </div>
           <Avatar

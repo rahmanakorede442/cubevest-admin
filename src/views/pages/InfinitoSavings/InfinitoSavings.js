@@ -143,7 +143,7 @@ render(){
           </Grid>
         </Grid>
         <div style={{marginTop: theme.spacing(2)}}>
-          <UsersTable users={users} pagination={all} fetch_page={this.fetch_page} fetch_next_page={this.fetch_next_page} fetch_prev_page={this.fetch_prev_page} loading={loading} link={"regular"}/>
+          <UsersTable users={users} pagination={all} fetch_page={this.fetch_page} fetch_next_page={this.fetch_next_page} fetch_prev_page={this.fetch_prev_page} loading={loading} link={"infinito_details"}/>
         </div>
       </div>
     );

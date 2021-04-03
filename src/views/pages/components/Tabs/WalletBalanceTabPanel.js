@@ -22,7 +22,7 @@ function WalletBalanceTabPanel(props) {
     >
       {value === index && (
         <Box p={3}>
-          <div>{children}</div>
+          {children}
         </Box>
       )}
     </div>

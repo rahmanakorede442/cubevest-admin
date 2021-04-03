@@ -22,7 +22,8 @@ class Application extends Component {
         amount:0,
         product_type:"",
         packages:[],
-        product_name:""
+        product_name:"",
+        entry_date:""
       },],
       banks:[],
       users: [],
@@ -188,7 +189,7 @@ render(){
           </Typography>
           {data.map((dat, index) =>(
           <Grid container spacing={2} key={index}>
-            <Grid item lg={4} md={4} sm={4} xs={4}>
+            <Grid item lg={3} md={3} sm={6} xs={6}>
               <Autocomplete
                 freeSolo
                 id="free-solo-2-demo"
@@ -200,6 +201,7 @@ render(){
                     {...params}
                     onChange={(event, value) => this.handleChangeUser(event, value, index)}
                     label="Search users"
+                    helperText="select user"
                     margin="normal"
                     variant="outlined"
                     InputProps={{ ...params.InputProps, type: 'search' }}
@@ -207,10 +209,11 @@ render(){
                 )}
               />
             </Grid>
-            <Grid item lg={4} md={4} sm={4} xs={4}>
+            <Grid item lg={3} md={3} sm={6} xs={6}>
                 <TextValidator
-                  label="Search input"
+                  label="Search products"
                   fullWidth
+                  helperText="select product type"
                   name="products"
                   margin="normal"
                   variant="outlined"
@@ -225,7 +228,7 @@ render(){
                     ))}
                   </TextValidator>
             </Grid>
-            <Grid item lg={3} md={3} sm={3} xs={3}>
+            <Grid item lg={3} md={3} sm={5} xs={5}>
                 <TextValidator
                   fullWidth
                   margin="normal"
@@ -241,9 +244,25 @@ render(){
                     ]}
                 />
             </Grid>
-            <Grid item lg={1} md={1} sm={1} xs={1}>
+            <Grid item lg={2} md={2} sm={5} xs={5}>
+                <TextValidator
+                  fullWidth
+                  size="sm"
+                  margin="normal"
+                  helperText="select entry date"
+                  name="entry_date"
+                  onChange={(e)=>this.handleChange(e, index)}
+                  value={dat.entry_date}
+                  type="date"
+                  variant="outlined"
+                  validators={[
+                      "required"
+                    ]}
+                />
+            </Grid>
+            <Grid item lg={1} md={1} sm={2} xs={2}>
               {index !== 0 &&
-              <Tooltip title="Add News">
+              <Tooltip title="Delete entry">
                 <IconButton aria-label="Remove" onClick={()=>this.handleRemove(index)}>
                   <DeleteIcon />
                 </IconButton>

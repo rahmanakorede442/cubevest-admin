@@ -4,7 +4,8 @@ import swal from 'sweetalert'
 export const alertActions = {
     success,
     error,
-    clear
+    clear,
+    alert
 };
 
 function success(message) {

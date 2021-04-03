@@ -1,8 +1,8 @@
 
 import { history } from '../logic';
 const serverVars = {
-  // baseUrl:"http://142.93.152.229/test/api/",
-  baseUrl: "https://api.cubevest.com/api/",
+  baseUrl:"http://142.93.152.229/test/api/",
+  // baseUrl: "https://api.cubevest.com/api/",
   validateLogin:"admin/validate_login",
   adminlogin:"admin/login",
   adminsignup: "admin/signup",
@@ -20,11 +20,12 @@ const serverVars = {
   getAllTargetSavings:"allTargetsAdmin?token=",
   adminShowAllCommission:"adminShowAllCommission?token=",
 
-   // all regular savings
-   getSingleUserDetails:"singleUserDetails/",
-   regularSavingsTransactionsAdmin:"regularSavingsTransactionsAdmin/",
-   saveLoanTransactionsAdmin:"saveLoanTransactionsAdmin/",
-   targetTransactionsAdmin:"targetTransactionsAdmin/",
+  // all regular savings
+  getSingleUserDetails:"singleUserDetails/",
+  regularSavingsTransactionsAdmin:"regularSavingsTransactionsAdmin/",
+  infinitoSavingsTransactionsAdmin:"infinitoSavingsTransactionsAdmin/",
+  saveLoanTransactionsAdmin:"saveLoanTransactionsAdmin/",
+  targetTransactionsAdmin:"targetTransactionsAdmin/",
 
   // all save to loan savings
   getAllSaveToLoanSavings:"saveLoanAdmin?token=",
@@ -163,6 +164,8 @@ export function getConfig(apiName) {
       return serverVars.baseUrl + serverVars.getSingleUserDetails;
     case "regularSavingsTransactionsAdmin":
       return serverVars.baseUrl + serverVars.regularSavingsTransactionsAdmin;
+    case "infinitoSavingsTransactionsAdmin":
+      return serverVars.baseUrl + serverVars.infinitoSavingsTransactionsAdmin;
     case "saveLoanTransactionsAdmin":
       return serverVars.baseUrl + serverVars.saveLoanTransactionsAdmin;
     case "targetTransactionsAdmin":
