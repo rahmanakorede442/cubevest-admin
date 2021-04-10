@@ -34,24 +34,24 @@ const Main = props => {
     defaultMatches: true
   });
 
-  // useEffect(() => {
-  //   const timer = new IdleTimer({
-  //     timeout: 500000, //expire after 10 seconds
-  //     onTimeout: () => {
-  //       console.log("time out")
-  //       props.logout()
-  //     },
-  //     onExpired: () => {
-  //       //do something if expired on load
-  //       console.log("time expired")
-  //       props.logout()
-  //     }
-  //   });
+  useEffect(() => {
+    const timer = new IdleTimer({
+      timeout: 500, //expire after 10 seconds
+      onTimeout: () => {
+        console.log("time out")
+        props.logout()
+      },
+      onExpired: () => {
+        //do something if expired on load
+        console.log("time expired")
+        props.logout()
+      }
+    });
 
-  //   return () => {
-  //     timer.cleanUp();
-  //   };
-  // }, []);
+    return () => {
+      timer.cleanUp();
+    };
+  }, []);
 
   const [openSidebar, setOpenSidebar] = useState(false);
 
