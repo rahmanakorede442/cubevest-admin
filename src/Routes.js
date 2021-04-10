@@ -251,7 +251,7 @@ const Routes = () => {
         component={TargetDetailsView}
         exact
         layout={MainLayout}
-        path="/target_details/:id"
+        path="/target_details/:id/:user_id"
       />
       <RouteWithLayout
         component={MarketNewsView}

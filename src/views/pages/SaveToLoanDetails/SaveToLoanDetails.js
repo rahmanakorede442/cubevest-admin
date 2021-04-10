@@ -1,28 +1,19 @@
-import React, { useState, Component } from 'react';
-import { makeStyles } from '@material-ui/styles';
+import React, { Component } from 'react';
 import { withRouter } from "react-router-dom";
 import { adminActions } from "../../../redux/action";
 import { connect } from "react-redux";
 import { withStyles } from "@material-ui/styles";
-import { getConfig, checkToken, numberFormat } from '../../../redux/config/config'
-import { authHeader, history } from '../../../redux/logic';
-import { SearchInput } from 'components';
-import { Grid, Button,} from '@material-ui/core';
+import { getConfig} from '../../../redux/config/config'
+import { authHeader } from '../../../redux/logic';
+import { Grid, Button, Typography, CardContent, Card,} from '@material-ui/core';
 import {Link } from "react-router-dom";
 
 import { UsersToolbar, UsersTable } from '../components/TranscationTable';
-import { userConstants } from 'redux/_constants';
-import { users } from 'redux/_reducers/users.reducer';
-
 
 class SaveToLoanDetails extends Component {
   constructor(props){
     super(props)
     const id = this.props.match.params.id;
-    var currentDate = new Date();
-    let month = currentDate.getMonth() + 1;
-    let day = currentDate.getDate();
-    let entry_date = currentDate.getFullYear() + "-" + month + "-" + day;
     this.state ={
       data:{
         id:id,
@@ -30,22 +21,27 @@ class SaveToLoanDetails extends Component {
         to_date:"",
       },
       users: [],
+      details:null,
       all: [],
       search: "",
       loading: true,
       open:false
     }
     this.fetchUsers = this.fetchUsers.bind(this);
-    this.fetchUsers();
+    this.fetchUserDetails = this.fetchUserDetails.bind(this);
     this.searchChange = this.searchChange.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);;
-
+    
   }
+  
+componentDidMount(){
+  this.fetchUsers();
+  this.fetchUserDetails();
+}
 
-  fetchUsers = () =>{
+fetchUsers = () =>{
     const {data} = this.state
-    console.log(data)
     let user = JSON.parse(localStorage.getItem('admin'));
     const requestOptions = {
         method: 'POST',
@@ -59,7 +55,6 @@ class SaveToLoanDetails extends Component {
         const error = (data && data.message) || response.statusText;
         return Promise.reject(error);
     }
-    console.log(data)
     this.setState({users: data, all:data.data, loading:false });
 })
 .catch(error => {
@@ -71,16 +66,42 @@ class SaveToLoanDetails extends Component {
   });
 }
 
+fetchUserDetails = () =>{
+  const {data} = this.state
+  this.setState({loading:false });
+  const requestOptions = {
+      method: 'GET',
+      headers: { ...authHeader(), 'Content-Type': 'application/json' },
+  };
+  fetch(getConfig('getSingleUserDetails')+ data.id, requestOptions)
+    .then(async response => {
+      const data = await response.json();
+      if (!response.ok) {
+          const error = (data && data.message) || response.statusText;
+          return Promise.reject(error);
+      }
+      this.setState({details: data[0][0], loading:false });
+    })
+    .catch(error => {
+      if (error === "Unauthorized") {
+            this.props.logout()
+        }
+      this.setState({loading:false, err : "internet error" });
+      console.error('There was an error!', error);
+    });
+}
+
 searchChange(event) {
-  const { name, value } = event.target;
-  const { search, users, all } = this.state;
+  const {value } = event.target;
+  const {all } = this.state;
   
   this.setState({ search: value, users: value == "" ? all : all.filter((q)=>
   q.from_date.toLowerCase().indexOf(value.toLowerCase())  !== -1 
   || q.to_date.toLowerCase().indexOf(value.toLowerCase())  !== -1 
-  )});}
+  )});
+}
 
-  handleChange(event) {
+handleChange(event) {
     const { name, value } = event.target;
     const { data } = this.state;
     
@@ -98,39 +119,44 @@ handleSubmit(event) {
   this.fetchUsers()
 } 
 
-
-
 render(){
   const {theme} = this.props
-  const {users, loading, search, handleSubmit, handleChange, data, open, searchChange} = this.state
+  const {users, loading, details} = this.state
   
     return (
       <div style={{padding: theme.spacing(3)}}>
-      <Grid container lg={12} md={12} sm={12} xs={12}>
-      <Grid item lg={12} md={12} sm={12} xs={12}>
-      <Grid style={{float:'left'}}>
-          <UsersToolbar handleSubmit={this.handleSubmit} handleChange={this.handleChange}/>
+        <Grid container>
+          <Grid item lg={12} md={12} sm={12} xs={12}>
+            <Grid style={{float:'left'}}>
+              <UsersToolbar handleSubmit={this.handleSubmit} handleChange={this.handleChange}/>
+            </Grid>
+            <Grid style={{float:'right'}}>
+              <Link to="/savetoloan_tab">
+                <Button
+                  color="primary"
+                  variant="contained"
+                >
+                  Back
+                </Button>
+              </Link>
+            </Grid>
+          </Grid>
+          <Grid item lg={12} md={12} sm={12} xs={12}>
+            <Typography variant="h4">User Account Details</Typography>
+            <Card elevation={3} style={{marginBottom:5}}>
+              <CardContent>
+                <Typography variant="h5" style={{marginTop:10, textAlign:"center"}} >
+                  User Name: {details == null ?"": `${details.first_name} ${details.last_name}`} 	&nbsp;	&nbsp;
+                  Email: {details !== null && details.email}	&nbsp;	&nbsp;
+                  Phone Number :{ details !== null && details.phone_no}
+                </Typography>
+              </CardContent>
+            </Card>
+            <Typography variant="h4">Save To Loan Account Transactions</Typography>
+            <UsersTable users={users} loading={loading}/>
+          </Grid>
         </Grid>
-        <Grid style={{float:'right'}}>
-        <Link to="/savetoloan_tab">
-          <Button
-            color="primary"
-            variant="contained"
-          >
-           Back
-        </Button>
-      </Link>
-      </Grid>
-        </Grid>
-       
-        {/* </div> */}
-        {/* <div style={{marginTop: theme.spacing(2)}}> */}
-        <Grid item lg={12} md={12} sm={12} xs={12}>
-        <UsersTable users={users} loading={loading}/>
-        </Grid>
-      </Grid>
-      {/* </div> */}
-    </div>
+      </div>
   
     );
   };

@@ -29,7 +29,8 @@ import {
   DialogContentText,
   DialogActions,
   Slide,
-  CircularProgress
+  CircularProgress,
+  Chip
 } from '@material-ui/core';
 import {Link} from 'react-router-dom';
 
@@ -93,10 +94,11 @@ const UsersTable = props => {
                 <TableRow>
                   <TableCell></TableCell>
                   <TableCell></TableCell>
+                  {props.link =="target_details"&& <TableCell>Status</TableCell>}
                   <TableCell>Frequency</TableCell>
                   <TableCell>Amount</TableCell>
                   <TableCell>Payment Method</TableCell>
-                  <TableCell>Date</TableCell>
+                  <TableCell>Created Date</TableCell>
                   <TableCell>Time</TableCell>
                   <TableCell>Action</TableCell>
                 </TableRow>
@@ -122,13 +124,16 @@ const UsersTable = props => {
                     </div>
                   </TableCell>
                   <TableCell>{props.link ==="savetoloan_details"?numberFormat(user.balance+user.balance1):numberFormat(user.balance)}</TableCell>
+                  {props.link =="target_details"&& <TableCell>
+                    <Chip label={user.status === 1 ?"Closed":"Active"} style={{background:user.status === 1 ? "red":"green", color:"white"}}/>
+                  </TableCell>}
                   <TableCell>{user.frequency}</TableCell>
                   <TableCell>{numberFormat(user.amount)}</TableCell>
                   <TableCell>{user.payment_method}</TableCell>
                   <TableCell>{moment(user.created_at).format('DD/MM/YYYY')} </TableCell>
                   <TableCell>{user.transaction_time}</TableCell>
                   <TableCell>
-                    <Link to ={props.link =="target_details"?`/${props.link}/${user.id}`:`/${props.link}/${user.user_id}`}>
+                    <Link to ={props.link =="target_details"?`/${props.link}/${user.id}/${user.user_id}`:`/${props.link}/${user.user_id}`}>
                       <Button color="primary" variant="contained" > Details</Button>
                     </Link>
                   </TableCell>

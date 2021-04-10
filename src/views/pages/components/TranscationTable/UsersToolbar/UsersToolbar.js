@@ -1,12 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles';
-import { Button, Grid, Typography, TextField, MenuItem } from '@material-ui/core';
+import { Button, Grid, Typography, TextField } from '@material-ui/core';
 import { adminActions } from "../../../../../redux/action";
-
-import { SearchInput } from 'components';
-
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -53,13 +50,12 @@ const UsersToolbar = props => {
   const { className, handleChange, handleSubmit, ...rest } = props;
 
   const classes = useStyles();
-  const [details, setDetails] = useState();  
   return (
     <div className={clsx(classes.root, className)}>     
       <div className={classes.row}>
         <form autoComplete="off" noValidate  
           onSubmit={handleSubmit} >
-        <Grid container lg={12} md={12} sm={12} xs={12}>
+          <Grid container>
             <Grid item lg={1} md={1} sm={1} xs={2}>
                 <Typography className={classes.formLabel}>From :</Typography>          
             </Grid>
@@ -75,7 +71,7 @@ const UsersToolbar = props => {
                 />
             </Grid>
             <Grid item lg={1} md={1} sm={1} xs={2}> 
-                <Typography className={classes.formLabe}>To :</Typography>          
+              <Typography className={classes.formLabe}>To :</Typography>        
             </Grid>          
             <Grid item lg={4} md={4} sm={4} xs={10}> 
                 <TextField

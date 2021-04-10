@@ -1,8 +1,8 @@
 
 import { history } from '../logic';
 const serverVars = {
-  // baseUrl:"http://142.93.152.229/test/api/",
-  baseUrl: "https://api.cubevest.com/api/",
+  baseUrl:"http://142.93.152.229/test/api/",
+  // baseUrl: "https://api.cubevest.com/api/",
   validateLogin:"admin/validate_login",
   adminlogin:"admin/login",
   adminsignup: "admin/signup",
@@ -102,7 +102,11 @@ const serverVars = {
   activitiesLog:"show_activity?token=",
   deleteActivities:"delete_activity_logs?token=",
   transactionLogs:"display_paystack_transactions",
-  multipleTransaction:"admin/post_transactions?token="
+  multipleTransaction:"admin/post_transactions?token=",
+
+  // export api's
+  exportUser:"fetchAllUsers",
+  exportTransactions:"fetchAllTransaction"
 };
 
 export const numberFormat = (value) =>
@@ -327,8 +331,12 @@ export function getConfig(apiName) {
       return serverVars.baseUrl + serverVars.autoSearchUsers+ user.token
     case "allUserPackages":
       return serverVars.baseUrl + serverVars.allUserPackages+ user.token
-      case "multipleTransaction":
-        return serverVars.baseUrl + serverVars.multipleTransaction+ user.token
+    case "multipleTransaction":
+      return serverVars.baseUrl + serverVars.multipleTransaction+ user.token
+    case "exportUser":
+      return serverVars.baseUrl + serverVars.exportUser
+    case "exportTransactions":
+      return serverVars.baseUrl + serverVars.exportTransactions
     default:
       return null;
   }

@@ -1,13 +1,14 @@
-import React, { useState, Component } from 'react';
+import React, { Component } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import { withRouter } from "react-router-dom";
 import { adminActions } from "../../../redux/action";
 import { connect } from "react-redux";
 import { withStyles } from "@material-ui/styles";
-import { getConfig, checkToken, numberFormat } from '../../../redux/config/config'
-import { authHeader, history } from '../../../redux/logic';
-import { UsersToolbar, UsersTable } from '../components/Users';
+import { getConfig} from '../../../redux/config/config'
+import { authHeader } from '../../../redux/logic';
+import { UsersTable } from '../components/Users';
 import { SearchInput } from 'components';
+import ExportCSV from 'helpers/export';
 
 
 class UserList extends Component{
@@ -119,15 +120,17 @@ fetch_page = (index)=>{
 render(){
   let {theme} = this.props
   const {users, loading, search, open, all} = this.state
+  const filename = `user-${new Date().getTime()}`
   return (
-    <div style={{padding: theme.spacing(3)}}>
-    <div style={{height: '42px',display: 'flex',alignItems: 'center',marginTop: theme.spacing(1)}}>
-        <SearchInput
-          value={search}
-          onChange={this.searchChange}
-          style={{marginRight: theme.spacing(1)}}
-          placeholder="Search user"
-        />
+      <div style={{padding: theme.spacing(3)}}>
+        <div style={{height: '42px',display: 'flex',alignItems: 'center',marginTop: theme.spacing(1)}}>
+          <SearchInput
+            value={search}
+            onChange={this.searchChange}
+            style={{marginRight: theme.spacing(1)}}
+            placeholder="Search user"
+          />
+          <ExportCSV url="exportUser" fileName={filename} />
         </div>
         <div style={{marginTop: theme.spacing(2)}}>
           <UsersTable users={users} pagination={all} fetch_page={this.fetch_page} fetch_next_page={this.fetch_next_page} fetch_prev_page={this.fetch_prev_page} loading={loading} />

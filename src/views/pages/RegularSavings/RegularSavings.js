@@ -1,15 +1,14 @@
-import React, { useState, Component } from 'react';
-import { makeStyles } from '@material-ui/styles';
+import React, { Component } from 'react';
 import { withRouter } from "react-router-dom";
 import { adminActions } from "../../../redux/action";
 import { connect } from "react-redux";
 import { withStyles } from "@material-ui/styles";
-import { getConfig, checkToken, numberFormat } from '../../../redux/config/config'
-import { authHeader, history } from '../../../redux/logic';
+import { getConfig } from '../../../redux/config/config'
+import { authHeader } from '../../../redux/logic';
 import { SearchInput } from 'components';
-import { Button, Grid, TextField, MenuItem } from '@material-ui/core';
+import { Grid} from '@material-ui/core';
 
-import { UsersToolbar, UsersTable } from '../components/Savings';
+import { UsersTable } from '../components/Savings';
 
 
 class RegularSavings extends Component {
@@ -126,7 +125,7 @@ fetch_page = (index)=>{
 
 render(){
   const {theme} = this.props
-  const {users, loading, search, all, data} = this.state
+  const {users, loading, all, data} = this.state
   
     return (
       <div >

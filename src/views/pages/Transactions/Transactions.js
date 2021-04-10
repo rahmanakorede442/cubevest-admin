@@ -11,6 +11,7 @@ import { Grid} from '@material-ui/core';
 
 import { UsersToolbar } from '../components/TranscationTable';
 import TransactionTable from '../components/Table/TransactionTable';
+import ExportCSV from 'helpers/export';
 
 
 class Transactions extends Component {
@@ -142,6 +143,7 @@ fetch_page = (index)=>{
 render(){
   const {theme} = this.props
   const {users, loading, all, data} = this.state
+  const filename = `transactions-${new Date().getTime()}`
   
     return (
       <div style={{padding: theme.spacing(3)}}>
@@ -150,14 +152,17 @@ render(){
               <UsersToolbar handleSubmit={this.handleSubmit} handleChange={this.handleChange}/>
           </Grid>
           <Grid item lg={4} md={4} sm={12} xs={12}>
-            <SearchInput
-              style={{width:"100%"}}
-              select
-              label="search"
-              name="search_term"
-              margin="dense"
-              value={data.search_term}
-              onChange={this.handleChange}/>
+            <div style={{height: '42px', display: 'flex'}}>
+              <SearchInput
+                style={{width:"50%", marginRight: theme.spacing(1)}}
+                select
+                label="search"
+                name="search_term"
+                margin="dense"
+                value={data.search_term}
+                onChange={this.handleChange}/>
+              <ExportCSV url="exportTransactions" fileName={filename} />
+            </div>
           </Grid>
           <Grid item lg={12} md={12} sm={12} xs={12}>
             <TransactionTable users={users} pagination={all} fetch_page={this.fetch_page} fetch_next_page={this.fetch_next_page} fetch_prev_page={this.fetch_prev_page} loading={loading}/>

@@ -24,8 +24,6 @@ function error(message) {
         icon: "warning",
         text: `${message}`,
         // timer: 8000,
-    }).then(()=>{
-        window.location.reload()
     })
     return { type: alertConstants.ERROR, message };
 }

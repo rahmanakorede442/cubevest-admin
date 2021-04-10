@@ -58,7 +58,7 @@ function validateLogin(username, password) {
         if(user.status){
           dispatch(success(user));
         }else{
-          // dispatch(success(user));
+          dispatch(failure(user));
           dispatch(alertActions.error(user.message));
         }
       },
