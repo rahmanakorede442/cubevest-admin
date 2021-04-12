@@ -36,7 +36,7 @@ const Main = props => {
 
   useEffect(() => {
     const timer = new IdleTimer({
-      timeout: 500, //expire after 10 seconds
+      timeout: 300, //expire after 10 seconds
       onTimeout: () => {
         console.log("time out")
         props.logout()
