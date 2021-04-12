@@ -144,7 +144,7 @@ render(){
             </Grid>
           </Grid>
           <Grid item lg={12} md={12} sm={12} xs={12}>
-            <Typography variant="h4">User Account Details</Typography>
+            <Typography style={{marginTop:20}} variant="h4">User Account Details</Typography>
             <Card elevation={3} style={{marginBottom:5}}>
               <CardContent>
                 <Typography variant="h5" style={{marginTop:10, textAlign:"center"}} >
@@ -154,7 +154,7 @@ render(){
                 </Typography>
               </CardContent>
             </Card>
-            <Typography variant="h6">Infito Savings Account Transactions</Typography>
+            <Typography style={{marginTop:20}} variant="h6">Infinito Savings Account Transactions</Typography>
             <UsersTable users={users} loading={loading}/>
           </Grid>
         </Grid>

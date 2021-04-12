@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import SimpleTabs from '../components/Tabs/RegularTabsPanel'
+import SimpleTabs from '../components/Tabs/InfinitoTabsPanel'
 
 class InfinitoTab extends Component {
     render() {

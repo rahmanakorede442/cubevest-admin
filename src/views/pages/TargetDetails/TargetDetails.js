@@ -34,7 +34,8 @@ class TargetDetails extends Component {
     this.fetchUserDetails = this.fetchUserDetails.bind(this);
     this.searchChange = this.searchChange.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);;
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.target_name = this.props.match.params.target_name
   }
   
 componentDidMount(){
@@ -144,7 +145,7 @@ render(){
             </div>
           </Grid>
           <Grid item lg={12} md={12} sm={12} xs={12}>
-            <Typography variant="h4">User Account Details</Typography>
+            <Typography style={{marginTop:20}} variant="h4">User Account Details</Typography>
             <Card elevation={3} style={{marginBottom:5}}>
               <CardContent>
                 <Typography variant="h5" style={{marginTop:10, textAlign:"center"}} >
@@ -154,7 +155,7 @@ render(){
                 </Typography>
               </CardContent>
             </Card>
-            <Typography variant="h4">Target Savings Account Transactions</Typography>
+            <Typography style={{marginTop:20}} variant="h6">{this.target_name.toUpperCase()} Target Savings Account Transactions</Typography>
             <UsersTable users={users} loading={loading}/>
           </Grid>
         </Grid>

@@ -125,7 +125,7 @@ const UsersTable = props => {
                   </TableCell>
                   <TableCell>{props.link ==="savetoloan_details"?numberFormat(user.balance+user.balance1):numberFormat(user.balance)}</TableCell>
                   {props.link =="target_details"&& <TableCell>
-                    <Chip label={user.status === 1 ?"Closed":"Active"} style={{background:user.status === 1 ? "red":"green", color:"white"}}/>
+                    <Chip label={user.status === 0 ?"Closed":"Active"} style={{background:user.status === 0 ? "red":"green", color:"white"}}/>
                   </TableCell>}
                   <TableCell>{user.frequency}</TableCell>
                   <TableCell>{numberFormat(user.amount)}</TableCell>
@@ -133,7 +133,7 @@ const UsersTable = props => {
                   <TableCell>{moment(user.created_at).format('DD/MM/YYYY')} </TableCell>
                   <TableCell>{user.transaction_time}</TableCell>
                   <TableCell>
-                    <Link to ={props.link =="target_details"?`/${props.link}/${user.id}/${user.user_id}`:`/${props.link}/${user.user_id}`}>
+                    <Link to ={props.link =="target_details"?`/${props.link}/${user.id}/${user.user_id}/${user.target_name}`:`/${props.link}/${user.user_id}`}>
                       <Button color="primary" variant="contained" > Details</Button>
                     </Link>
                   </TableCell>
