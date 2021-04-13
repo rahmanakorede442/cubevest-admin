@@ -105,7 +105,7 @@ const UsersTable = props => {
                     <TableCell>{user.payment_method}</TableCell>
                     <TableCell>{user.transaction_type}</TableCell>
                     <TableCell>
-                      {moment(user.created_at).format('DD/MM/YYYY')}
+                      {moment(user.date_time).format('DD/MM/YYYY')}
                     </TableCell>
                   </TableRow>
                 )):

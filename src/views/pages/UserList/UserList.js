@@ -123,7 +123,7 @@ render(){
   const filename = `user-${new Date().getTime()}`
   return (
       <div style={{padding: theme.spacing(3)}}>
-        <div style={{height: '42px',display: 'flex',alignItems: 'center',marginTop: theme.spacing(1)}}>
+        <div style={{height: '42px',display: 'flex', justifyContent:"space-between", alignItems: 'center',marginTop: theme.spacing(1)}}>
           <SearchInput
             value={search}
             onChange={this.searchChange}
