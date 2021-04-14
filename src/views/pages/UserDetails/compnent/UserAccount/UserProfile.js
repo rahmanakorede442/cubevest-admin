@@ -24,10 +24,7 @@ const UserProfile = props => {
 
   return (
     <div>
-      <Card
-         
-        className={clsx(classes.root, className)}
-      >
+      <Card  className={clsx(classes.root, className)}>
         <CardHeader  title="Profile"/>
         <Divider />
         <CardContent>
