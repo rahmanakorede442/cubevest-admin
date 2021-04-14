@@ -205,7 +205,7 @@ render(){
                   <Link to={`/regulardetails/${id}`}><Button style={{width:"100%"}} variant="outlined">Regular Savings</Button></Link>
                   {/* <Link to={`/target_details/${users.id}`}><Button style={{width:"100%"}} variant="outlined">Target Savings</Button></Link> */}
                   <Link to={`/savetoloan_details/${id}`}><Button style={{width:"100%"}} variant="outlined">Save To Loan</Button></Link>
-                  <Link to={`/regulardetails/${id}`}><Button style={{width:"100%"}} variant="outlined">Infinito Savings</Button></Link>
+                  <Link to={`/infinito_details/${id}`}><Button style={{width:"100%"}} variant="outlined">Infinito Savings</Button></Link>
                   <Typography variant="h6">Investments Account</Typography>
                   <Link to="/"><Button style={{width:"100%"}} variant="outlined">Market Investment</Button></Link>
                   <Link to="/"><Button style={{width:"100%"}} variant="outlined">Halal Investment</Button></Link>
