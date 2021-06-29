@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link as RouterLink, withRouter } from 'react-router-dom';
+import { Link as RouterLink, useParams, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { adminActions } from "../../redux/action";
 import { connect } from "react-redux";
@@ -7,13 +7,9 @@ import validate from 'validate.js';
 import log_banner from '../../assets/log_banner.png';
 import { makeStyles } from '@material-ui/styles';
 import swal from 'sweetalert';
-import { getConfig, checkToken, numberFormat } from '../../redux/config/config'
-import { authHeader, history } from '../../redux/logic';
-// import theme from '../../../../theme';
 import {
   Grid,
   Button,
-  IconButton,
   TextField,
   Card,
   Link,
@@ -143,10 +139,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ResetPassword = props => {
-  const { history } = props;
+
+  const {id} = useParams()
 
   const classes = useStyles();
-
+  const [details, setDetails] = useState({token:id});
   const [formState, setFormState] = useState({
     isValid: false,
     values: {},
@@ -156,7 +153,6 @@ const ResetPassword = props => {
 
   useEffect(() => {
     const errors = validate(formState.values, schema);
-
     setFormState(formState => ({
       ...formState,
       isValid: errors ? false : true,
@@ -164,79 +160,16 @@ const ResetPassword = props => {
     }));
   }, [formState.values]);
 
-  const [name,setName] = useState("");
-  const [open, setOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const [details, setDetails] = useState([]);
-
-  const handleOpen = () => {
-    setIsLoading(true)
-    setOpen(true);
-    let user = JSON.parse(localStorage.getItem('admin'));
-    const id = this.props.match.params.id;
-    const requestOptions = {
-      method: 'GET',
-      headers: { ...authHeader(), 'Content-Type': 'application/json' },
-    };
-    fetch(getConfig('') + id + `?token=`+user.token, requestOptions)
-    .then(async response => {
-    const data = await response.json();
-    if (!response.ok) {
-        const error = (data && data.message) || response.statusText;
-        return Promise.reject(error);
-    }
-    console.log(data)
-    setDetails(data[0])
-    setIsLoading(false)
-    setName(data[0])
-    })
-    .catch(error => {
-    if (error === "Unauthorized") {
-        history.push('/login');
-        }
-        setIsLoading(false)
-    console.error('There was an error!', error);
-  });
-};
-
   const handleChanges = (e) => {
     e.persist();
      setDetails(details=>({ ...details, [e.target.name]:e.target.value}))
    }
 
-  const handleChange = event => {
-    event.persist();
-
-    setFormState(formState => ({
-      ...formState,
-      values: {
-        ...formState.values,
-        [event.target.name]:
-          event.target.type === 'checkbox'
-            ? event.target.checked
-            : event.target.value
-      },
-      touched: {
-        ...formState.touched,
-        [event.target.name]: true
-      }
-    }));
-  };
-
-  const handleForgetPassword = event => {
-    event.preventDefault();
-    var email = formState.values.email;
-    if(email){
-    props.resetpassword(email)
-    }
-  };
-  
   const handleSubmits = (event) => {
     event.preventDefault();
     if (details.email && details.password && details.password_confirmation) {
-      if(details.new_password == details.password_confirmation){
-        this.props.adminChangePassword(details);
-      //   console.log(details);
+      if(details.password == details.password_confirmation){
+        props.resetpassword(details);
       }else{
         swal(
           `Password Not Match`
@@ -321,7 +254,7 @@ const ResetPassword = props => {
                   label="Confirm Password"
                   name="password_confirmation"
                   onChange={handleChanges}
-                  type="text"
+                  type="password"
                   value={details.password_confirmation}
                   variant="outlined"
                 />

@@ -498,8 +498,10 @@ function adminAddHalalCategory(data) {
 }
 
 function logout() {
-  localStorage.removeItem("user");
   localStorage.removeItem("name");
+  localStorage.removeItem("admin");
+  localStorage.removeItem("email");
+  localStorage.removeItem("profile_pic");
   history.push('/sign-in')
 }
 
@@ -515,7 +517,6 @@ function relogin(email) {
     .then((user) => {
       // store user details and jwt token in local storage to keep user logged in between page refreshes
       localStorage.setItem("user", JSON.stringify(user));
-
       return user;
     });
 }
@@ -526,7 +527,6 @@ function register(user) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(user),
   };
-
   return fetch(getConfig("signup"), requestOptions).then(handleResponse);
 }
 
@@ -536,7 +536,6 @@ function lostpassword(email) {
     headers: { "Content-Type": "application/json" },
     body: email,
   };
-
   return fetch(getConfig("recoverpass"), requestOptions).then(handleResponse);
 }
 
@@ -546,17 +545,16 @@ function resetpassword(user) {
     headers: {...authHeader, "Content-Type": "application/json" },
     body: JSON.stringify(user),
   };
-
   return fetch(getConfig("resetPass"), requestOptions).then(handleResponse);
 }
 
 function recoverPassword(user) {
+  console.log(getConfig("resetPass"))
   const requestOptions = {
     method: "POST",
     headers: {...authHeader, "Content-Type": "application/json" },
     body: JSON.stringify(user),
   };
-
   return fetch(getConfig("recoverPassword"), requestOptions).then(handleResponse);
 }
 
@@ -566,7 +564,6 @@ function adminChangePassword(user) {
     headers: {...authHeader, "Content-Type": "application/json" },
     body: JSON.stringify(user),
   };
-
   return fetch(getConfig("adminChangePassword"), requestOptions).then(handleResponse);
 }
 
@@ -576,7 +573,6 @@ function update(user) {
     headers: { ...authHeader(), "Content-Type": "application/json" },
     body: JSON.stringify(user),
   };
-
   return fetch(`{config.apiUrl}/users/${user.id}`, requestOptions).then(
     handleResponse
   );

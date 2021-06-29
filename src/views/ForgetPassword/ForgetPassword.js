@@ -10,13 +10,11 @@ import { makeStyles } from '@material-ui/styles';
 import {
   Grid,
   Button,
-  IconButton,
   TextField,
   Card,
   Link,
   Typography
 } from '@material-ui/core';
-import { Facebook as FacebookIcon, Google as GoogleIcon } from 'icons';
 
 const schema = {
   email: {
@@ -162,9 +160,6 @@ const ForgetPassword = props => {
     }));
   }, [formState.values]);
 
-  const [name,setName] = useState("");
-  const [open, setOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
   const [details, setDetails] = useState([]);
 
   const handleChanges = (e) => {
@@ -172,38 +167,11 @@ const ForgetPassword = props => {
      setDetails(details=>({ ...details, [e.target.name]:e.target.value}))
    }
 
-  const handleChange = event => {
-    event.persist();
-
-    setFormState(formState => ({
-      ...formState,
-      values: {
-        ...formState.values,
-        [event.target.name]:
-          event.target.type === 'checkbox'
-            ? event.target.checked
-            : event.target.value
-      },
-      touched: {
-        ...formState.touched,
-        [event.target.name]: true
-      }
-    }));
-  };
-
-  const handleForgetPassword = event => {
-    event.preventDefault();
-    var email = formState.values.email;
-    if(email){
-    props.recoverPassword(email)
-    }
-  };
-  
   const handleSubmits = (event) => {
     event.preventDefault();
     if (details.email) {
       props.recoverPassword(details);
-      }
+    }
   }
   const hasError = field =>
     formState.touched[field] && formState.errors[field] ? true : false;
