@@ -121,7 +121,6 @@ export const payID = () => {
 
 export const checkToken = ()=>{
   let token =  JSON.parse(localStorage.getItem('admin'));
-  console.log(token)
     if (token == null) {
         history.push('sign-in');
       }
@@ -132,9 +131,11 @@ export function getConfig(apiName) {
   if ((apiName != 'adminlogin') && user == null) {
     if(apiName !== 'validateLogin'){
       if(apiName != "adminsignup"){
-        if(apiName != "recoverpass"){
-          history.push('/sign-in');
-          return
+        if(apiName != "recoverPassword"){
+          if(apiName != "resetPass"){
+            history.push('/sign-in');
+            return
+          }
         }
       }
     }
@@ -148,11 +149,11 @@ export function getConfig(apiName) {
     case "recoverpass":
       return serverVars.baseUrl + serverVars.recoverpass;
     case "resetPass":
-      return serverVars.baseUrl + serverVars.resetPass +user.token;      
+      return serverVars.baseUrl + serverVars.resetPass;
     case "recoverPassword":
       return serverVars.baseUrl + serverVars.recoverPassword;
     case "adminChangePassword":
-      return serverVars.baseUrl + serverVars.adminChangePassword +user.token;
+      return serverVars.baseUrl + serverVars.adminChangePassword;
     case "adminsignup":
       return serverVars.baseUrl + serverVars.adminsignup;
       // all users

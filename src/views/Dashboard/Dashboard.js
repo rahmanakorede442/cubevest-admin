@@ -90,7 +90,6 @@ fetch(getConfig('histogramData'), requestOptions)
         const error = (data && data.message) || response.statusText;
         return Promise.reject(error);
     }
-    console.log(data)
     this.setState({histogramSavings: Object.values(data.month.savings), histogramLoans: Object.values(data.month.loan), histogramMarkets: Object.values(data.month.market) })
   })
 .catch(error => {
@@ -108,7 +107,6 @@ fetch(getConfig('savingsData'), requestOptions)
         const error = (data && data.message) || response.statusText;
         return Promise.reject(error);
     }
-    console.log(data)
     this.setState({savingsData: data});
 })
 .catch(error => {

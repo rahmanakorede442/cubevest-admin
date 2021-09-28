@@ -878,7 +878,7 @@ function resetpassword(user) {
     adminService.resetpassword(user).then(
       (user) => {
         dispatch(success());
-        history.push("/");
+        history.push("/sign-in");
         dispatch(alertActions.success("Password reset successful"));
       },
       (error) => {
@@ -897,7 +897,7 @@ function recoverPassword(user) {
     adminService.recoverPassword(user).then(
       (user) => {
         dispatch(success());
-        history.push("/");
+        // history.push("/sign-in");
         dispatch(alertActions.success(user.message));
       },
       (error) => {
@@ -915,7 +915,7 @@ function adminChangePassword(user) {
     adminService.adminChangePassword(user).then(
       (user) => {
         dispatch(success());
-        history.push("/account");
+        // history.push("/account");
         dispatch(alertActions.success(user.message)
         );
         window.location.reload();
