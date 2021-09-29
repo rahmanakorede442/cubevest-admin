@@ -105,8 +105,8 @@ const serverVars = {
   multipleTransaction:"admin/post_transactions?token=",
 
   // export api's
-  exportUser:"fetchAllUsers",
-  exportTransactions:"fetchAllTransaction"
+  exportUser:"admin/fetchAllUsers",
+  exportTransactions:"admin/fetchAllTransaction"
 };
 
 export const numberFormat = (value) =>

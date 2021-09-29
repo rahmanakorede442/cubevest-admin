@@ -20,8 +20,8 @@ class Transactions extends Component {
     this.state ={
       data:{
         from_date : "",
-		to_date:"",
-		search_term:""
+        to_date:"",
+        search_term:""
       },
       users: [],
       all: [],
