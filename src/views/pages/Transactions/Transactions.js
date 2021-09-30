@@ -60,7 +60,7 @@ fetchUsers = () =>{
 			this.setState({users:[], loading:false });
 		}else{
 			this.setState({users:data.data, all:data, loading:false });
-		}console.log(data)
+		}
 	})
 	.catch(error => {
     if (error === "Unauthorized") {
@@ -180,15 +180,15 @@ render(){
           </Grid>
           <Grid item lg={3} md={3} sm={6} xs={6}>
             <TextField
-              label="Search Account Type"
+              label="Search by Account Type"
               fullWidth
-              helperText="select Account type"
               name="account_type"
               margin="normal"
               variant="outlined"
               value={data.account_type}
               onChange={this.handleChangeFilter}
               select
+              id="outlined-basic"
     >
               <MenuItem value="1">
                 Regular Savings
