@@ -21,20 +21,20 @@ class ExportCSV extends Component {
   }
 
   exportToCSV = () => {
-    const {url, fileName} = this.props
+    const {url, fileName, data} = this.props
     const token = JSON.parse(localStorage.getItem('admin'));
-    const fileType =
-    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
-  const fileExtension = ".xlsx";
-      this.setState({loading:true}, ()=>{
+    const fileType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
+    const fileExtension = ".xlsx";
+    this.setState({loading:true}, ()=>{
       const requestOptions = {
-        method: "GET",
-        headers: { 'authorization': `Bearer ${token.token}` }
+        method: "POST",
+        headers: { 'authorization': `Bearer ${token.token}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
       };
       fetch(getConfig(url), requestOptions)
         .then(async(response) => {
           const dat = await response.json();
-          const ws = XLSX.utils.json_to_sheet(dat.data);
+          const ws = XLSX.utils.json_to_sheet(dat);
           const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
           const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
           const data = new Blob([excelBuffer], { type: fileType });

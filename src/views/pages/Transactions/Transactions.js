@@ -7,8 +7,7 @@ import { withStyles } from "@material-ui/styles";
 import { getConfig, checkToken, numberFormat } from '../../../redux/config/config'
 import { authHeader, history } from '../../../redux/logic';
 import { SearchInput } from 'components';
-import { Grid} from '@material-ui/core';
-
+import { Grid,TextField,MenuItem} from '@material-ui/core';
 import { UsersToolbar } from '../components/TranscationTable';
 import TransactionTable from '../components/Table/TransactionTable';
 import ExportCSV from 'helpers/export';
@@ -21,7 +20,8 @@ class Transactions extends Component {
       data:{
         from_date : "",
         to_date:"",
-        search_term:""
+        search_term:"",
+        account_type:""
       },
       users: [],
       all: [],
@@ -31,6 +31,7 @@ class Transactions extends Component {
     }
     this.fetchUsers = this.fetchUsers.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleChangeFilter = this.handleChangeFilter.bind(this);    
     this.handleSubmit = this.handleSubmit.bind(this);
     this.fetch_next_page = this.fetch_next_page.bind(this);
     this.fetch_page = this.fetch_page.bind(this);
@@ -59,7 +60,7 @@ fetchUsers = () =>{
 			this.setState({users:[], loading:false });
 		}else{
 			this.setState({users:data.data, all:data, loading:false });
-		}
+		}console.log(data)
 	})
 	.catch(error => {
     if (error === "Unauthorized") {
@@ -68,6 +69,19 @@ fetchUsers = () =>{
     this.setState({loading:false, err : "internet error" });
     console.error('There was an error!', error);
   });
+}
+
+
+handleChangeFilter(event) {
+  const { name, value } = event.target;
+  const { data } = this.state;
+  if(name == "account_type"){
+    this.setState({data: { ...data, account_type: value}, loading:true},()=>{
+      this.fetchUsers()
+    });
+  }else{
+    this.setState({data: { ...data,  [name]: value } });
+  }
 }
 
 handleChange(event) {
@@ -161,9 +175,35 @@ render(){
                 margin="dense"
                 value={data.search_term}
                 onChange={this.handleChange}/>
-              <ExportCSV url="exportTransactions" fileName={filename} />
+              <ExportCSV url="exportTransactions" fileName={filename} data={data} />
             </div>
           </Grid>
+          <Grid item lg={3} md={3} sm={6} xs={6}>
+            <TextField
+              label="Search Account Type"
+              fullWidth
+              helperText="select Account type"
+              name="account_type"
+              margin="normal"
+              variant="outlined"
+              value={data.account_type}
+              onChange={this.handleChangeFilter}
+              select
+    >
+              <MenuItem value="1">
+                Regular Savings
+              </MenuItem>
+              <MenuItem value="2">
+                Target Savings
+              </MenuItem>
+              <MenuItem value="3">
+                Save to Loan 
+              </MenuItem>
+              <MenuItem value="11">
+                Infinto
+              </MenuItem>
+              </TextField>
+            </Grid>
           <Grid item lg={12} md={12} sm={12} xs={12}>
             <TransactionTable users={users} pagination={all} fetch_page={this.fetch_page} fetch_next_page={this.fetch_next_page} fetch_prev_page={this.fetch_prev_page} loading={loading}/>
           </Grid>
