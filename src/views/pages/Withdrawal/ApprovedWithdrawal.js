@@ -46,7 +46,7 @@ fetchWithdrawal = (search_term) =>{
     if(data.success == false){
       this.setState({data: [], loading:false});
     }else{
-      this.getData(data)
+      this.getData(data.withdrawal_lists)
     }
   })
   .catch(error => {

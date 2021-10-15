@@ -114,6 +114,12 @@ const Sidebar = props => {
       href: '/transaction-logs',
       icon: <AssignmentIcon />
     },
+    
+    {
+      title: 'Report',
+      href: '/report',
+      icon: <AssignmentIcon />
+    },
     {
       title: 'Settings',
       href: '/settings',

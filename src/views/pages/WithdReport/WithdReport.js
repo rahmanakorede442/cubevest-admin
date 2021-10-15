@@ -94,8 +94,8 @@ render(){
       <div style={{padding: theme.spacing(1)}}>
         <div>
           <ValidatorForm onSubmit={this.handleSubmit}>
-            <Grid container spacing={1} >
-              <Grid item lg={4} md={4} sm={4} xs={6}>
+            <Grid container spacing={1}>
+              <Grid item lg={3} md={3} sm={4} xs={6}>
                 <TextValidator
                   fullWidth
                   margin="normal"
@@ -110,7 +110,7 @@ render(){
                     ]}
                 />
               </Grid>
-              <Grid item lg={4} md={4} sm={4} xs={6}>
+              <Grid item lg={3} md={3} sm={4} xs={6}>
                 <TextValidator
                   fullWidth
                   margin="normal"
@@ -125,7 +125,7 @@ render(){
                     ]}
                 />
               </Grid>
-              <Grid item lg={4} md={4} sm={4} xs={6}>
+              <Grid item lg={3} md={3} sm={4} xs={6}>
                 <TextValidator
                   fullWidth
                   margin="normal"
@@ -139,16 +139,22 @@ render(){
                     ]}
                 />
               </Grid>
+              <Grid item lg={3} md={3} sm={4} xs={6} style={{marginTop:30}}>
+                <Grid  container direction="row" justify="space-between" alignItems="center">
+                  <Grid item lg={6} md={6} sm={6} xs={12}>
+                    <Button variant="contained" onClick={this.handleSubmit} color="secondary">Search</Button>
+                  </Grid>
+                  <Grid item lg={6} md={6} sm={6} xs={12}>                    
+                    <ExportCSV url="withdrawalReport" fileName={filename} data={data}  name='report' />
+                  </Grid>
+                </Grid>
+              </Grid>
             </Grid>
           </ValidatorForm>
-            <Grid container direction="row" justify="space-between" alignItems="center">
-              <Button variant="contained" onClick={this.handleSubmit} color="secondary">Search</Button>
-              <ExportCSV url="withdrawalReport" fileName={filename} data={data} />
-            </Grid>
         </div>
          
         <div style={{marginTop: theme.spacing(2)}}>
-          <UsersWithdTable users={users} loading={loading} />
+          <UsersWithdTable users={users.withdrawal_record} total={users.total} loading={loading} />
         </div>
       </div>
     );

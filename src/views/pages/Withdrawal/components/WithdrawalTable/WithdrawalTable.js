@@ -83,7 +83,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const WithdrawalTable = (props) => {
-  const { className, loading, data, table, handleChange, ...rest} = props;
+  const { className, loading, total, data, table, handleChange, ...rest} = props;
 
   const classes = useStyles();
   const [open, setOpen] = useState(false);
@@ -170,11 +170,16 @@ const WithdrawalTable = (props) => {
                   </TableCell>}
                   <TableCell>ID</TableCell>
                   <TableCell>User Name</TableCell>
-                  <TableCell>Account Name</TableCell>
                   <TableCell>Amount</TableCell>
-                  <TableCell>Approved By</TableCell>
+                  <TableCell>Account Name</TableCell>
+                  {table === "pending" ?
+                    <TableCell>Bank Name</TableCell>:
+                    <TableCell>Approved By</TableCell>
+                    }
                   <TableCell>Requested Date</TableCell>
-                  <TableCell>Transfer Date</TableCell>
+                  {table === "approved" &&
+                    <TableCell>Transfer Date</TableCell>
+                  }
                   <TableCell>Action</TableCell>
                 </TableRow>
               </TableHead>
@@ -194,11 +199,16 @@ const WithdrawalTable = (props) => {
                     </TableCell>}
                     <TableCell>{i+1}</TableCell>
                     <TableCell>{user.last_name + " " + user.first_name}</TableCell>
-                    <TableCell>{user.account_name}</TableCell>
                     <TableCell>{user.amount == 0 || user.amount == null ? 0 : numberFormat(user.amount)}</TableCell> 
-                    <TableCell>{user.approved_by}</TableCell> 
+                    <TableCell>{user.account_name}</TableCell>
+                    {table === "pending" ?
+                      <TableCell>{user.bank_name}</TableCell>:
+                      <TableCell>{user.approved_by}</TableCell>
+                    }
                     <TableCell>{user.request_date}</TableCell>
-                    <TableCell>{user.transfered_date}</TableCell>
+                    {table === "approved" &&
+                      <TableCell>{user.transfered_date}</TableCell>
+                    }
                     <TableCell>
                         <Button size="small" variant="contained" color="primary"
                         onClick={ ()=>handleOpen(user.id)}>
@@ -212,6 +222,12 @@ const WithdrawalTable = (props) => {
                     No Record Found
                 </TableCell>                
                 </TableRow>
+                }
+               {table === "pending" &&
+                  <TableCell colSpan={4} style={{fontSize:16, fontWeight:'bold', paddingLeft:20}}>Total Amount:</TableCell>
+                }
+                {table === "pending" &&
+                  <TableCell style={{fontSize:18, fontWeight:'bold'}}>{numberFormat(total)}</TableCell>
                 }
               </TableBody>
             }

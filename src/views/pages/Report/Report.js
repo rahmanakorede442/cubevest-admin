@@ -91,12 +91,13 @@ render(){
   const {theme} = this.props
   const {users, loading, data, open} = this.state
   const filename = `Deposited Report-${new Date().getTime()}`
-    return (
+  return (
       <div style={{padding: theme.spacing(1)}}>
-        <UsersToolbar data={data} handleSubmit={this.handleSubmit} handleChange={this.handleChange} url="depisitReport" fileName={filename} />
+        <UsersToolbar data={data} handleSubmit={this.handleSubmit} handleChange={this.handleChange} />
+        {/* <ExportCSV url='depisitReport' data={data} fileName={filename}  name='deport' /> */}
 
         <div style={{marginTop: theme.spacing(2)}}>
-          <UsersTable users={users} loading={loading} />
+          <UsersTable users={users.transaction_record} total={users.total} loading={loading} />
         </div>
       </div>
     );

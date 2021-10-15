@@ -30,7 +30,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const UsersToolbar = props => {
-  const { data, handleSubmit, handleChange, url, fileName, className, ...rest } = props;
+  const { data, handleSubmit, handleChange, className, ...rest } = props;
+  const filename = `Deposited Report-${new Date().getTime()}`
 
   const classes = useStyles();
 
@@ -90,7 +91,7 @@ const UsersToolbar = props => {
           </Grid>
           <Grid item lg={3} md={3} sm={4} xs={6}>
             <TextValidator
-              label="Search Account Type"
+              label="Search Type"
               fullWidth
               name="deposit_type"
               margin="normal"
@@ -101,7 +102,7 @@ const UsersToolbar = props => {
                 ]}
               onChange={handleChange}
               select>
-                <MenuItem>Select Package</MenuItem>
+                <MenuItem>Select Type</MenuItem>
                 <MenuItem value="credit">Credit</MenuItem>
                 <MenuItem value="debit">Debit</MenuItem>
             </TextValidator>
@@ -110,7 +111,8 @@ const UsersToolbar = props => {
             <TextValidator
               fullWidth
               margin="normal"
-              label="Enter User Name"
+              helperText="Enter Customer/Eamil"
+              // label="Enter User Name"
               name="search_term"
               onChange={handleChange}
               value={data.search_term}
@@ -124,7 +126,7 @@ const UsersToolbar = props => {
       </ValidatorForm>
         <Grid container direction="row" justify="space-between" alignItems="center">
           <Button variant="contained" onClick={handleSubmit} color="secondary">Search</Button>
-          <ExportCSV url={url} data={data} fileName={fileName} />
+          <ExportCSV url='depisitReport' data={data} fileName={filename}  name='deport' />
         </Grid>
     </div>
   );

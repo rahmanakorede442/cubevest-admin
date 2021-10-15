@@ -105,7 +105,9 @@ const serverVars = {
   multipleTransaction:"admin/post_transactions?token=",
   depisitReport:"admin/deposit_report?token=",
   withdrawalReport:"admin/withdrawal_report?token=",
-  
+  exportDeposit:"admin/deposit_report",
+  exportwithdrawal:"admin/withdrawal_report",
+
   // export api's
   exportUser:"admin/fetchAllUsers",
   exportTransactions:"admin/fetchAllTransaction"
@@ -342,6 +344,10 @@ export function getConfig(apiName) {
       return serverVars.baseUrl + serverVars.multipleTransaction+ user.token
     case "exportUser":
       return serverVars.baseUrl + serverVars.exportUser
+    case "exportDeposit":
+      return serverVars.baseUrl + serverVars.exportDeposit + user.token;
+    case "exportwithdrawal":
+      return serverVars.baseUrl + serverVars.exportwithdrawal + user.token;
     case "exportTransactions":
       return serverVars.baseUrl + serverVars.exportTransactions
     default:

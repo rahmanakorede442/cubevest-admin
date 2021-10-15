@@ -15,13 +15,14 @@ class ExportCSV extends Component {
     super(props)
     this.state ={
       filter:"user",
+      was:[],
       loading:false
     }
     this.exportToCSV = this.exportToCSV.bind(this)
   }
 
   exportToCSV = () => {
-    const {url, fileName, data} = this.props
+    const {url, name, fileName, data} = this.props
     const token = JSON.parse(localStorage.getItem('admin'));
     const fileType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
     const fileExtension = ".xlsx";
@@ -34,12 +35,28 @@ class ExportCSV extends Component {
       fetch(getConfig(url), requestOptions)
         .then(async(response) => {
           const dat = await response.json();
-          const ws = XLSX.utils.json_to_sheet(dat);
-          const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
-          const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
-          const data = new Blob([excelBuffer], { type: fileType });
-          FileSaver.saveAs(data, fileName + ".csv");
-          this.setState({loading:false})
+          if(name === 'report'){
+            const ws = XLSX.utils.json_to_sheet(dat.withdrawal_record);
+            const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
+            const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+            const data = new Blob([excelBuffer], { type: fileType });
+            FileSaver.saveAs(data, fileName + ".csv");
+            this.setState({loading:false})
+          }else if(name === 'deport'){
+            const ws = XLSX.utils.json_to_sheet(dat.transaction_record);
+            const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
+            const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+            const data = new Blob([excelBuffer], { type: fileType });
+            FileSaver.saveAs(data, fileName + ".csv");
+            this.setState({loading:false})
+          }else{            
+            const ws = XLSX.utils.json_to_sheet(dat);
+            const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
+            const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+            const data = new Blob([excelBuffer], { type: fileType });
+            FileSaver.saveAs(data, fileName + ".csv");
+            this.setState({loading:false})
+          }
       })
         .catch((error) => {
           console.log(error)

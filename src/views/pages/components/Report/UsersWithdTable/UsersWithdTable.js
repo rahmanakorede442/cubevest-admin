@@ -47,7 +47,8 @@ const useStyles = makeStyles(theme => ({
 
 const UsersWithdTable = props => {
   
-  const { className, loading, users, ...rest } = props;
+  const { className, total, loading, users, ...rest } = props;
+  // console.log(total)
   const classes = useStyles();
   return (
     <Card className={clsx(classes.root, className)}>
@@ -108,6 +109,8 @@ const UsersWithdTable = props => {
                   </TableCell>                
                 </TableRow>
                 }
+                <TableCell style={{fontSize:16, fontWeight:'bold', paddingLeft:20}}>Total Amount:</TableCell>
+                <TableCell style={{fontSize:18, fontWeight:'bold'}}>{numberFormat(total)}</TableCell>
               </TableBody>
             </Table>
           </div>

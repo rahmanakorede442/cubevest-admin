@@ -13,6 +13,7 @@ class PendingWithdrawal extends Component{
     super(props)
     this.state={
         data: [],
+        users:[],
         loading:true,
         all:[]
     }
@@ -46,6 +47,7 @@ fetchWithdrawal = (search_term) =>{
     if(data.success == false){
       this.setState({data: [], loading:false});
     }else{
+      this.setState({users:data, loading:false });
       this.getData(data)
     }
 })
@@ -65,9 +67,9 @@ handleChange = (e) =>{
 getData =(data)=>{
   let newArray = []
   if(data.success === false){
-    this.setState({users: [], all:[], loading:false });
+    this.setState({data: [], all:[], loading:false });
   }else{
-    data.data.forEach(d => {
+    data.withdrawal_lists.data.forEach(d => {
       if(d.withdrawal_status === 0){
         newArray.push(d)
       }
@@ -129,11 +131,11 @@ fetch_page = (index)=>{
 
 render(){
   let {theme} = this.props
-  const {loading, data, all} = this.state
+  const {loading, users, data, all} = this.state
   return (
     <div>
       <div style={{marginTop: theme.spacing(3)}}>
-        <WithdrawalTable table={'pending'} pagination={all} fetch_page={this.fetch_page} fetch_next_page={this.fetch_next_page} fetch_prev_page={this.fetch_prev_page} data={data} handleChange={this.handleChange} loading={loading} />
+        <WithdrawalTable table={'pending'} pagination={all} fetch_page={this.fetch_page} fetch_next_page={this.fetch_next_page} fetch_prev_page={this.fetch_prev_page} data={data} total={users.total} handleChange={this.handleChange} loading={loading} />
       </div>
     </div>
     );
