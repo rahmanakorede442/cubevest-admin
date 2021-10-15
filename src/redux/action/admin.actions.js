@@ -393,7 +393,6 @@ function adminAddMarketCategory(user) {
 }
 
 function adminUpdateMarketCategory(user) {
-  console.log(user)
   return (dispatch) => {
     dispatch(request(user));
 
@@ -415,7 +414,6 @@ function adminUpdateMarketCategory(user) {
 }
 
 function adminUpdateMarketNews(user) {
-  console.log(user)
   return (dispatch) => {
     dispatch(request(user));
 
@@ -437,7 +435,6 @@ function adminUpdateMarketNews(user) {
 }
 
 function updateAdmin(user) {
-  console.log(user)
   return (dispatch) => {
     dispatch(request(user));
 
@@ -459,7 +456,6 @@ function updateAdmin(user) {
 }
 
 function disableAdmin(user) {
-  console.log(user)
   return (dispatch) => {
     dispatch(request(user));
 
@@ -481,7 +477,6 @@ function disableAdmin(user) {
 }
 
 function enableAdmin(user) {
-  console.log(user)
   return (dispatch) => {
     dispatch(request(user));
 
@@ -524,7 +519,6 @@ function modifyTargetCommission(user) {
 }
 
 function adminUpdateHalalNews(user) {
-  console.log(user)
   return (dispatch) => {
     dispatch(request(user));
 
@@ -546,7 +540,6 @@ function adminUpdateHalalNews(user) {
 }
 
 function regularSavingsTransactionsAdmin(user) {
-  console.log(user)
   return (dispatch) => {
     dispatch(request(user));
 
@@ -557,7 +550,7 @@ function regularSavingsTransactionsAdmin(user) {
         if(user.length == 0){
           dispatch(alertActions.success("No records found"));
         }else{
-          console.log(user)
+      
           return user
         }
         // window.location.reload();
@@ -571,7 +564,6 @@ function regularSavingsTransactionsAdmin(user) {
 }
 
 function saveLoanTransactionsAdmin(user) {
-  console.log(user)
   return (dispatch) => {
     dispatch(request(user));
 
@@ -582,7 +574,7 @@ function saveLoanTransactionsAdmin(user) {
         if(user.length == 0){
           dispatch(alertActions.success("No records found"));
         }else{
-          console.log(user)
+      
           return user
         }
         // window.location.reload();
@@ -596,7 +588,6 @@ function saveLoanTransactionsAdmin(user) {
 }
 
 function targetTransactionsAdmin(user) {
-  console.log(user)
   return (dispatch) => {
     dispatch(request(user));
 
@@ -607,7 +598,7 @@ function targetTransactionsAdmin(user) {
         if(user.length == 0){
           dispatch(alertActions.success("No records found"));
         }else{
-          console.log(user)
+      
           return user
         }
         // window.location.reload();
@@ -621,7 +612,6 @@ function targetTransactionsAdmin(user) {
 }
 
 function adminUpdateHalalCategory(user) {
-  console.log(user)
   return (dispatch) => {
     dispatch(request(user));
 

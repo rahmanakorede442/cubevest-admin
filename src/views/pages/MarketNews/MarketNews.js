@@ -126,7 +126,7 @@ handleChange(event) {
 handleSubmit(event) {
   event.preventDefault();
   const { data } = this.state;
-  console.log(data);
+  // console.log(data);
     if ( data.market_investment && data.news) {
       this.props.adminAddMarketNews(data);
     }

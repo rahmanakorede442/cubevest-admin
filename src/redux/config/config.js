@@ -103,7 +103,9 @@ const serverVars = {
   deleteActivities:"admin/delete_activity_logs?token=",
   transactionLogs:"display_paystack_transactions",
   multipleTransaction:"admin/post_transactions?token=",
-
+  depisitReport:"admin/deposit_report?token=",
+  withdrawalReport:"admin/withdrawal_report?token=",
+  
   // export api's
   exportUser:"admin/fetchAllUsers",
   exportTransactions:"admin/fetchAllTransaction"
@@ -264,6 +266,10 @@ export function getConfig(apiName) {
       return serverVars.baseUrl + serverVars.enableAdmin;
     case "transactions":
       return serverVars.baseUrl + serverVars.transactions + user.token;
+    case "withdrawalReport":
+      return serverVars.baseUrl + serverVars.withdrawalReport;
+    case "depisitReport":
+      return serverVars.baseUrl + serverVars.depisitReport;
     case "savingsData":
       return serverVars.baseUrl + serverVars.savingsData + user.token;
     case "histogramData":

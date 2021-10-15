@@ -67,7 +67,7 @@ class Password extends Component {
 handleSubmit = event => {
     event.preventDefault();
       const { data} = this.state;
-    console.log(data)
+    // console.log(data)
       if (data.old_password && data.new_password && data.password_confirmation) {
         if(data.new_password == data.password_confirmation){
           this.props.adminChangePassword(data);

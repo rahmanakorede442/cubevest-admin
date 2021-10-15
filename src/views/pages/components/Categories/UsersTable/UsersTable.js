@@ -95,7 +95,7 @@ const handleOpen = (id) => {
         const error = (data && data.message) || response.statusText;
         return Promise.reject(error);
     }
-    console.log(data)
+    // console.log(data)
     setDetails(data[0])
     setIsLoading(false)
     setName(data[0].category_name)

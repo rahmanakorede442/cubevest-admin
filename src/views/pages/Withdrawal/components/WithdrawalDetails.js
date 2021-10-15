@@ -44,7 +44,7 @@ fetchOrders = () =>{
             const error = (data && data.message) || response.statusText;
             return Promise.reject(error);
         }
-        console.log(data);
+        // console.log(data);
         if(data.success == false){
             this.setState({data: [], loading:false});
         }else{

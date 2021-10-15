@@ -29,7 +29,7 @@ import {
   TargetSavings as TargetSavingsView,
   SaveToLoanSavings as SaveToLoanSavingsView,
   MarketPlace as MarketPlaceView,
-  Report as ReportView,
+  ReportTab as ReportView,
   Investment as InvestmentView,
   UserLists as UserListsView,
   UserDetails as UserDetailsView,

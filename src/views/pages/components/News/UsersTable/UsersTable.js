@@ -163,7 +163,7 @@ const UsersTable = props => {
         const error = (data && data.message) || response.statusText;
         return Promise.reject(error);
     }
-    console.log(data)
+    // console.log(data)
     setDetails(data[0])
     setIsLoading(false)
     setName(data[0].market_investment && data[1].news)
@@ -198,7 +198,7 @@ swal({
 const handleSubmitEdit = (event) => {
   event.preventDefault();
   if (details.market_investment, details.news) {
-    console.log(details)
+    // console.log(details)
     props.adminUpdateMarketNews(details);
     }
 }

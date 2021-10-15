@@ -62,7 +62,7 @@ componentDidMount(){
     }else{
       this.setState({bank: data[1][0], loading:false });
     }
-    console.log(data)
+    // console.log(data)
   })
 .catch(error => {
     if (error === "Unauthorized") {

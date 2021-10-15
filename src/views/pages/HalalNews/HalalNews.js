@@ -129,7 +129,7 @@ handleChange(event) {
 handleSubmit(event) {
   event.preventDefault();
   const { data } = this.state;
-  console.log(data);
+  // console.log(data);
     if ( data.halai_investment && data.news) {
       this.props.adminAddHalalNews(data);
     }

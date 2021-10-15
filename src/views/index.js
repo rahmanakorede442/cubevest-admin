@@ -36,7 +36,7 @@ export { default as RegularTranscationDetails } from './pages/RegularTranscation
 export { default as InfinitoTranscationDetails } from './pages/InfinitoTranscationDetails';
 export { default as TargetDetails } from './pages/TargetDetails';
 export { default as SaveToLoanDetails } from './pages/SaveToLoanDetails';
-export { default as Report } from './pages/Report';
+export { default as ReportTab } from './pages/ReportTab';
 export {default as SavingsTab} from './pages/Savings';
 export {default as InfinitoTab} from './pages/InfintoTab';
 export {default as LoanTab} from './pages/LoanTab';

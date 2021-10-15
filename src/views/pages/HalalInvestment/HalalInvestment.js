@@ -59,7 +59,7 @@ componentDidMount() {
       const error = (data && data.message) || response.statusText;
       return Promise.reject(error);
   }
-  console.log(data)
+  // console.log(data)
   this.setState({investments: data, loading:false})
   })
   .catch(error => {
@@ -121,7 +121,7 @@ this.setState({open_news:false})
 handleSubmit(event) {
   event.preventDefault();
   const { data } = this.state;
-  console.log(data)
+  // console.log(data)
     if ( data.halai_investment && data.news) {
       this.props.adminAddHalalNews(data);
     }

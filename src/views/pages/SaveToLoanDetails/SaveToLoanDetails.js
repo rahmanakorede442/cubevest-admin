@@ -111,7 +111,7 @@ handleChange(event) {
                 [name]: value
             }
         });
-    console.log(data)
+    // console.log(data)
 }
 
 handleSubmit(event) {

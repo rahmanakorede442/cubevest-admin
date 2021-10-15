@@ -105,7 +105,7 @@ const handleOpen = (id) => {
         const error = (data && data.message) || response.statusText;
         return Promise.reject(error);
     }
-    console.log(data)
+    // console.log(data)
     setDetails(data[0])
     setIsLoading(false)
     setName(data[0].halai_investment && data[1].news)
@@ -140,7 +140,7 @@ swal({
 const handleSubmitEdit = (event) => {
   event.preventDefault();
   if (details.halai_investment, details.news) {
-    console.log(details)
+    // console.log(details)
     props.adminUpdateHalalNews(details);
     }
 }

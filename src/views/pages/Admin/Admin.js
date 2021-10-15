@@ -106,7 +106,7 @@ handleClose= () =>{
 handleSubmit(event) {
   event.preventDefault();
   const { data } = this.state;
-  console.log(data);
+  // console.log(data);
     if ( data.name && data.email && data.password) {
       this.props.addAdmin(data);
     }
@@ -117,7 +117,7 @@ render(){
   const {users, loading, data, datat, handleClose, handleOpen, search, open, investments} = this.state
     return (
       <div style={{padding: theme.spacing(3)}}>
-          <div style={{height: '42px',alignItems: 'center',marginTop: theme.spacing(1)}}>
+        <div style={{height: '42px',alignItems: 'center', display:'flex', marginTop: theme.spacing(1)}}>
           <SearchInput
             value={search}
             onChange={this.searchChange}
@@ -125,109 +125,109 @@ render(){
             placeholder="Search user"
           />
          
-       <div style={{float:'right'}}>
-      {/* Modal */}
-      <Dialog
-        open={open}
-        // TransitionComponent={Transition}
-        fullWidth={true}
-        maxWidth = {'xs'}
-        keepMounted
-        // value=""
-        onClose={this.handleClose}
-        aria-labelledby="alert-dialog-slide-title"
-        aria-describedby="alert-dialog-slide-description"
-      >
-        <DialogTitle bold id="alert-dialog-slide-title">Add Admin</DialogTitle>  
-        <Divider />     
-        <DialogContent>
-          {/* <DialogContentText id="alert-dialog-slide-description" > */}
-            <form noValidate autoComplete="off" onSubmit={this.handleSubmit}>
-              <CardContent className="content">
-                <Grid >
-                  <Grid>
-                    <TextField
-                    fullWidth
-                    label="Admin Name"
-                    placeholder="Admin Name"
-                    margin="dense"
-                    name="name"
-                    onChange={this.handleChange}
-                    required
-                    value={data.name}
-                    variant="outlined"
-                    />
-                  </Grid> 
-                  <Grid>
-                    <TextField
-                    fullWidth
-                    label="Email"
-                    placeholder="Email"
-                    margin="dense"
-                    name="email"
-                    onChange={this.handleChange}
-                    required
-                    value={data.email}
-                    variant="outlined"
-                  />
-                </Grid> 
-                <Grid>
-                  <TextField
-                    fullWidth
-                    label="Password"
-                    placeholder="Password"
-                    margin="dense"
-                    type="password"
-                    name="password"
-                    onChange={this.handleChange}
-                    required
-                    value={data.password}
-                    variant="outlined"
-                  />
-              </Grid>                    
-            </Grid>
-          </CardContent>
-          <Divider /> 
-          <DialogActions>
-            <Grid item md={10} xs={10}>
-              {savings &&<CircularProgress />}
+          <div style={{float:'right'}}>
+            <div className="row">
+              <span className="spacer" />
               <Button
-                type="submit"
-                variant="contained"
                 color="primary"
-                style={{marginLeft:8}}
+                variant="contained"
+                onClick={()=>this.handleOpen()}
               >
-                Submit
+                Add Admin
               </Button>
-            </Grid> 
-            <Button onClick={this.handleClose} 
-              variant="contained"
-              style={{color:'white', marginRight:8, backgroundColor:'red'}}
-            >
-              Cancel
-            </Button>
-          </DialogActions>
-        </form>
-        </DialogContent>
-      </Dialog>
-      {/* Modal */}
-      <div className="row">
-        <span className="spacer" />
-        {/* <Button className="exportButton">Export</Button> */}
-        <Button
-          color="primary"
-          variant="contained"
-          onClick={()=>this.handleOpen()}
-        >
-          Add Admin
-        </Button>
-      </div>
-       </div>
+            </div>
+          </div>          
+        </div>
+      
        
-       </div>
         <div style={{marginTop: theme.spacing(2)}}>
           <UsersTable users={users} loading={loading}/>
         </div>
+          {/* Modal */}
+          <Dialog
+            open={open}
+            // TransitionComponent={Transition}
+            fullWidth={true}
+            maxWidth = {'xs'}
+            keepMounted
+            // value=""
+            onClose={this.handleClose}
+            aria-labelledby="alert-dialog-slide-title"
+            aria-describedby="alert-dialog-slide-description"
+          >
+            <DialogTitle bold id="alert-dialog-slide-title">Add Admin</DialogTitle>  
+            <Divider />     
+            <DialogContent>
+              {/* <DialogContentText id="alert-dialog-slide-description" > */}
+                <form noValidate autoComplete="off" onSubmit={this.handleSubmit}>
+                  <CardContent className="content">
+                    <Grid >
+                      <Grid>
+                        <TextField
+                        fullWidth
+                        label="Admin Name"
+                        placeholder="Admin Name"
+                        margin="dense"
+                        name="name"
+                        onChange={this.handleChange}
+                        required
+                        value={data.name}
+                        variant="outlined"
+                        />
+                      </Grid> 
+                      <Grid>
+                        <TextField
+                        fullWidth
+                        label="Email"
+                        placeholder="Email"
+                        margin="dense"
+                        name="email"
+                        onChange={this.handleChange}
+                        required
+                        value={data.email}
+                        variant="outlined"
+                      />
+                    </Grid> 
+                    <Grid>
+                      <TextField
+                        fullWidth
+                        label="Password"
+                        placeholder="Password"
+                        margin="dense"
+                        type="password"
+                        name="password"
+                        onChange={this.handleChange}
+                        required
+                        value={data.password}
+                        variant="outlined"
+                      />
+                  </Grid>                    
+                </Grid>
+              </CardContent>
+              <Divider /> 
+              <DialogActions>
+                <Grid item md={10} xs={10}>
+                  {savings &&<CircularProgress />}
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    style={{marginLeft:8}}
+                  >
+                    Submit
+                  </Button>
+                </Grid> 
+                <Button onClick={this.handleClose} 
+                  variant="contained"
+                  style={{color:'white', marginRight:8, backgroundColor:'red'}}
+                >
+                  Cancel
+                </Button>
+              </DialogActions>
+            </form>
+            </DialogContent>
+          </Dialog>
+          {/* Modal */}
       </div>
     );
   };

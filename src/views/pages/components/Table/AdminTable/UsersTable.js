@@ -159,7 +159,7 @@ const UsersTable = props => {
     if (!response.ok) {
         const error = (data && data.message) || response.statusText;
         return Promise.reject(error);
-    }    console.log(data)
+    }   
     setDetails(data)
     setName(data)
     setIsLoading(false) 
@@ -201,7 +201,7 @@ const handleEnable = (id, status) => {
 const handleSubmitEdit = (event) => {
   event.preventDefault();
   if (details.name && details.email) {
-    console.log(details)
+    // console.log(details)
     props.updateAdmin(details);
     }
 }

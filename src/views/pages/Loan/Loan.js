@@ -110,7 +110,7 @@ handleOpen= () =>{
 handleSubmit(event) {
 event.preventDefault();
 const { data } = this.state;
-  console.log(data);
+  // console.log(data);
   if ( data.commission && data.package_name) {
     this.props.addTargetCommission(data);
   }

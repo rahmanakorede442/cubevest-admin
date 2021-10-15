@@ -157,7 +157,7 @@ const [details, setDetails] = useState([]);
 
 const handleOpen = (id) => {
   setIsLoading(true)
-  console.log(id)
+  // console.log(id)
   setOpen(true);
   let user = JSON.parse(localStorage.getItem('admin'));
   const requestOptions = {
@@ -171,7 +171,7 @@ const handleOpen = (id) => {
       const error = (data && data.message) || response.statusText;
       return Promise.reject(error);
   }
-  console.log(data)
+  // console.log(data)
   if(data.success == false){
     setDetails([])
   }else{

@@ -549,7 +549,7 @@ function resetpassword(user) {
 }
 
 function recoverPassword(user) {
-  console.log(getConfig("resetPass"))
+  // console.log(getConfig("resetPass"))
   const requestOptions = {
     method: "POST",
     headers: {...authHeader, "Content-Type": "application/json" },

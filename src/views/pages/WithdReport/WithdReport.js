@@ -8,12 +8,13 @@ import { getConfig} from '../../../redux/config/config'
 import { authHeader} from '../../../redux/logic';
 import { SearchInput } from 'components';
 
-import { UsersToolbar, UsersTable } from '../components/Report';
+import { UsersToolbar, UsersWithdTable } from '../components/Report';
 import { Typography, Grid, MenuItem, Select, TextField, Button } from '@material-ui/core';
 import ExportCSV from 'helpers/export';
+import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator';
 
 
-class Report extends Component {
+class WithdReport extends Component {
   constructor(props){
     super(props)
     this.state ={
@@ -21,8 +22,6 @@ class Report extends Component {
         from_date : "",
         to_date:"",
         search_term:"",
-        package:"",
-        deposit_type:""
       },
       users: [],
       all: [],
@@ -42,7 +41,7 @@ class Report extends Component {
         headers: { ...authHeader(), 'Content-Type': 'application/json' },
         body: JSON.stringify(this.state.data),
     };
-    fetch(getConfig('depisitReport'), requestOptions)
+    fetch(getConfig('withdrawalReport'), requestOptions)
     .then(async response => {
 		const data = await response.json();
 		if (!response.ok) {
@@ -90,13 +89,66 @@ handleSubmit(event) {
 render(){
   const {theme} = this.props
   const {users, loading, data, open} = this.state
-  const filename = `Deposited Report-${new Date().getTime()}`
+  const filename = `Approved Withdrawal-${new Date().getTime()}`
     return (
       <div style={{padding: theme.spacing(1)}}>
-        <UsersToolbar data={data} handleSubmit={this.handleSubmit} handleChange={this.handleChange} url="depisitReport" fileName={filename} />
-
+        <div>
+          <ValidatorForm onSubmit={this.handleSubmit}>
+            <Grid container spacing={1} >
+              <Grid item lg={4} md={4} sm={4} xs={6}>
+                <TextValidator
+                  fullWidth
+                  margin="normal"
+                  helperText="From Date"
+                  name="from_date"
+                  onChange={this.handleChange}
+                  value={data.from_date}
+                  type="date"
+                  variant="outlined"
+                  validators={[
+                      "required"
+                    ]}
+                />
+              </Grid>
+              <Grid item lg={4} md={4} sm={4} xs={6}>
+                <TextValidator
+                  fullWidth
+                  margin="normal"
+                  helperText="To Date"
+                  name="to_date"
+                  onChange={this.handleChange}
+                  value={data.to_date}
+                  type="date"
+                  variant="outlined"
+                  validators={[
+                      "required"
+                    ]}
+                />
+              </Grid>
+              <Grid item lg={4} md={4} sm={4} xs={6}>
+                <TextValidator
+                  fullWidth
+                  margin="normal"
+                  label="Enter User Name"
+                  name="search_term"
+                  onChange={this.handleChange}
+                  value={data.search_term}
+                  variant="outlined"
+                  validators={[
+                      "required"
+                    ]}
+                />
+              </Grid>
+            </Grid>
+          </ValidatorForm>
+            <Grid container direction="row" justify="space-between" alignItems="center">
+              <Button variant="contained" onClick={this.handleSubmit} color="secondary">Search</Button>
+              <ExportCSV url="withdrawalReport" fileName={filename} data={data} />
+            </Grid>
+        </div>
+         
         <div style={{marginTop: theme.spacing(2)}}>
-          <UsersTable users={users} loading={loading} />
+          <UsersWithdTable users={users} loading={loading} />
         </div>
       </div>
     );
@@ -114,5 +166,5 @@ const actionCreators = {
 };
 
 export default withStyles({}, { withTheme: true })(
-  withRouter(connect(mapState,  actionCreators)(Report))
+  withRouter(connect(mapState,  actionCreators)(WithdReport))
 );

@@ -107,7 +107,7 @@ handleChange(event, id) {
   let newArray = [...data]
   if(name === "products"){
     const d = all.find((dat, index)=> dat.name === value)
-    console.log(d)
+    // console.log(d)
     newArray[elementsIndex] = {...newArray[elementsIndex], product_name:d.name, product_type: d.product_type, product_id: d.id }
   }else{
     newArray[elementsIndex] = {...newArray[elementsIndex], [name]: value}
@@ -118,7 +118,7 @@ handleChange(event, id) {
 handleSubmit(event) {
   event.preventDefault();
   const {data} = this.state
-  console.log(data)
+  // console.log(data)
   if( data.length > 0){
     this.props.multipleTransaction({data})
   }else{

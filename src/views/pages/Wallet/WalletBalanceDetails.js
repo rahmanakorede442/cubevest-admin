@@ -44,7 +44,7 @@ class WalletBalanceDetails extends Component {
         const error = (data && data.message) || response.statusText;
         return Promise.reject(error);
     }
-    console.log(data.data)
+    // console.log(data.data)
     this.setState({data: data.data, all:data.data, loading:false });
 })
 .catch(error => {

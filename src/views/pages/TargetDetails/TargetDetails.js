@@ -15,7 +15,7 @@ class TargetDetails extends Component {
     super(props)
     const id = this.props.match.params.id;
     const user_id = this.props.match.params.user_id;
-    console.log(this.props.match.params)
+    // console.log(this.props.match.params)
     this.state ={
       data:{
         id:id,
@@ -114,7 +114,7 @@ handleChange(event) {
                 [name]: value
             }
         });
-    console.log(data)
+    // console.log(data)
 }
 
 handleSubmit(event) {

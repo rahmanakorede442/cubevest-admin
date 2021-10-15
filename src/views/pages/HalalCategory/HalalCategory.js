@@ -106,7 +106,7 @@ handleOpen= () =>{
 handleSubmit(event) {
   event.preventDefault();
   const { data } = this.state;
-    console.log(data);
+    // console.log(data);
     if ( data.category_name) {
       this.props.adminAddHalalCategory(data);
     }

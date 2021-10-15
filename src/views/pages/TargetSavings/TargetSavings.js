@@ -9,6 +9,7 @@ import { getConfig} from '../../../redux/config/config'
 import { authHeader } from '../../../redux/logic';
 import { SearchInput } from 'components';
 import { UsersToolbar, UsersTable } from '../components/Savings';
+import ExportCSV from 'helpers/export';
 
 
 class TargetSavings extends Component {
@@ -127,15 +128,21 @@ render(){
   const {users, loading, search, all, data} = this.state
     return (
       <div >
-        <Grid container spacing={4} justify="center" >
-          <Grid item lg={12} md={12} sm={12} xs={12}>
+        <Grid container spacing={4} justifyContent="space-between">
+          <Grid item lg={11} md={11} sm={12} xs={12}>
             <SearchInput
-              style={{width:"30%"}}
+              // style={{width:"30%"}}
               label="search"
               name="search_term"
               margin="dense"
               value={data.search_term}
-              onChange={this.handleChange} />
+              onChange={this.handleChange}/>
+          </Grid>
+          <Grid item lg={1} md={1} sm={12} xs={12}>
+            <div style={{height: '42px', display: 'flex'}}>
+              <ExportCSV url="exportTransactions" data={data} />
+            </div>
+          {/* <ExportCSV url="exportTransactions" fileName={filename} data={data} /> */}
           </Grid>
         </Grid>
         <div style={{marginTop: theme.spacing(2)}}>

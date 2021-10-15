@@ -141,7 +141,7 @@ const WithdrawalTable = (props) => {
 
   const handleOpen = (id) => {
     let elementsIndex = data.find(element => element.id == id )
-    console.log(elementsIndex)
+    // console.log(elementsIndex)
     setDetails(elementsIndex)
     setOpen(true);
   };

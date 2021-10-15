@@ -163,7 +163,7 @@ const handleOpen = (id) => {
       const error = (data && data.message) || response.statusText;
       return Promise.reject(error);
   }
-  console.log(data)
+  // console.log(data)
   setDetails(data)
   setIsLoading(false)
   setName(data[1].package_name && data[2].commission)
@@ -198,7 +198,7 @@ swal({
 const handleSubmitEdit = (event) => {
   event.preventDefault();
   if (details.package_name && details.commission) { 
-    console.log(details)   
+    // console.log(details)   
     // props.modifyTargetCommission(details);
    }
 }

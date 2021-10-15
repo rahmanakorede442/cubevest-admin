@@ -161,22 +161,24 @@ render(){
   
     return (
       <div style={{padding: theme.spacing(3)}}>
-        <Grid container spacing={4} >
-          <Grid item lg={8} md={8} sm={12} xs={12}>
+        <Grid container spacing={1} >
+          <Grid item lg={6} md={6} sm={12} xs={12}>
               <UsersToolbar handleSubmit={this.handleSubmit} handleChange={this.handleChange}/>
           </Grid>
-          <Grid item lg={4} md={4} sm={12} xs={12}>
-            <div style={{height: '42px', display: 'flex'}}>
+          <Grid item lg={5} md={5} sm={12} xs={12}>
+            <div style={{height: '42px'}}>
               <SearchInput
-                style={{width:"50%", marginRight: theme.spacing(1)}}
+                style={{ marginRight: theme.spacing(1)}}
                 select
                 label="search"
                 name="search_term"
                 margin="dense"
                 value={data.search_term}
                 onChange={this.handleChange}/>
-              <ExportCSV url="exportTransactions" fileName={filename} data={data} />
             </div>
+          </Grid>
+          <Grid item lg={1} md={1} sm={12} xs={12}>
+            <ExportCSV url="exportTransactions" fileName={filename} data={data} />
           </Grid>
           <Grid item lg={3} md={3} sm={6} xs={6}>
             <TextField
