@@ -56,43 +56,41 @@ const UsersToolbar = props => {
         <form autoComplete="off" noValidate  
           onSubmit={handleSubmit} >
           <Grid container>
-            <Grid item lg={1} md={1} sm={1} xs={2}>
-                <Typography className={classes.formLabel}>From :</Typography>          
-            </Grid>
-            <Grid item lg={4} md={4} sm={4} xs={10}>
-                <TextField
-                    id="outlined-margin-dense"
-                    defaultValue="Default Value"
-                    name='from_date'
-                    onChange={handleChange}
-                    margin="dense"
-                    type="date"
-                    variant="outlined"
-                />
-            </Grid>
-            <Grid item lg={1} md={1} sm={1} xs={2}> 
-              <Typography className={classes.formLabe}>To :</Typography>        
-            </Grid>          
-            <Grid item lg={4} md={4} sm={4} xs={10}> 
-                <TextField
-                    id="outlined-margin-dense"
-                    defaultValue="Default Value"
-                    onChange={handleChange}
-                    name='to_date'
-                    margin="dense"
-                    type="date"
-                    variant="outlined"
-                />          
+            <Grid item lg={5} md={5} sm={5} xs={12}>
+              <TextField
+                id="outlined-margin-dense"
+                defaultValue="Default Value"
+                fullWidth
+                helperText="From"
+                name='from_date'
+                onChange={handleChange}
+                margin="dense"
+                type="date"
+                variant="outlined"
+              />
+            </Grid>        
+            <Grid item lg={5} md={5} sm={5} xs={12}> 
+              <TextField
+                id="outlined-margin-dense"
+                defaultValue="Default Value"
+                fullWidth
+                helperText="To"
+                onChange={handleChange}
+                name='to_date'
+                margin="dense"
+                type="date"
+                variant="outlined"
+              />          
             </Grid>
             <Grid item lg={2} md={2} sm={2} xs={2}>
-                <Button
-                  color="primary"
-                  className={classes.textField}
-                  variant="contained"
-                  type="submit"
-                >
-                  Search
-                </Button>
+              <Button
+                color="primary"
+                className={classes.textField}
+                variant="contained"
+                type="submit"
+              >
+                Search
+              </Button>
             </Grid>  
           </Grid>
       </form>

@@ -6,6 +6,7 @@ import { authHeader } from 'redux/logic';
 import { getConfig } from 'redux/config/config';
 import { adminActions } from 'redux/action';
 import WithdrawalTable from './components/WithdrawalTable';
+import ExportCSV from 'helpers/export';
 
 
 class PendingWithdrawal extends Component{
@@ -132,8 +133,10 @@ fetch_page = (index)=>{
 render(){
   let {theme} = this.props
   const {loading, users, data, all} = this.state
+  const filename = `Pending Withdrawal-${new Date().getTime()}`
   return (
     <div>
+      <ExportCSV url="exportPendinWithdraw" fileName={filename} />
       <div style={{marginTop: theme.spacing(3)}}>
         <WithdrawalTable table={'pending'} pagination={all} fetch_page={this.fetch_page} fetch_next_page={this.fetch_next_page} fetch_prev_page={this.fetch_prev_page} data={data} total={users.total} handleChange={this.handleChange} loading={loading} />
       </div>

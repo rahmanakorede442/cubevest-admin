@@ -10,6 +10,7 @@ import { Grid, MenuItem, TextField} from '@material-ui/core';
 import LogTable from './LogTable';
 import { UsersToolbar } from '../components/TranscationTable';
 import { SearchInput } from 'components';
+import ExportCSV from 'helpers/export';
 
 
 class ActivityLog extends Component {
@@ -137,14 +138,14 @@ handleSubmit(event) {
 render(){
   const {theme} = this.props
   const {users, loading, all, data} = this.state
-  
+  const filename = `ActivityLog-${new Date().getTime()}`
     return (
-      <div style={{padding: theme.spacing(3)}}>
-        <Grid container spacing={4} >
-          <Grid item lg={8} md={8} sm={12} xs={12}>
+      <div style={{padding: theme.spacing(1)}}>
+        <Grid container spacing={1} >
+          <Grid item lg={6} md={6} sm={12} xs={12}>
             <UsersToolbar handleSubmit={this.handleSubmit} handleChange={this.handleChange}/>
           </Grid>
-		  <Grid item lg={4} md={4} sm={12} xs={12}>
+		  <Grid item lg={5} md={5} sm={12} xs={12}>
             <SearchInput
               style={{width:"100%"}}
               select
@@ -154,6 +155,10 @@ render(){
               value={data.search_term}
               onChange={this.handleChange}/>
           </Grid>
+			<Grid item lg={1} md={1} sm={12} xs={12}>
+			  <ExportCSV url="exportActivityLog" data={data} fileName={filename} />
+			</Grid>
+
           <Grid item lg={12} md={12} sm={12} xs={12}>
             <LogTable users={users} pagination={all} fetch_page={this.fetch_page} fetch_next_page={this.fetch_next_page} fetch_prev_page={this.fetch_prev_page} loading={loading}/>
           </Grid>

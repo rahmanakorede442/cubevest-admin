@@ -141,7 +141,6 @@ const WithdrawalTable = (props) => {
 
   const handleOpen = (id) => {
     let elementsIndex = data.find(element => element.id == id )
-    // console.log(elementsIndex)
     setDetails(elementsIndex)
     setOpen(true);
   };
@@ -168,18 +167,19 @@ const WithdrawalTable = (props) => {
                       onChange={handleSelectAll}
                     />
                   </TableCell>}
-                  <TableCell>ID</TableCell>
+                  {/* <TableCell>ID</TableCell> */}
                   <TableCell>User Name</TableCell>
                   <TableCell>Amount</TableCell>
+                  {table === "approved" ?
+                    <TableCell>Transfer Date</TableCell>:
+                    <TableCell>Account Number</TableCell>
+                  }
                   <TableCell>Account Name</TableCell>
                   {table === "pending" ?
                     <TableCell>Bank Name</TableCell>:
                     <TableCell>Approved By</TableCell>
                     }
                   <TableCell>Requested Date</TableCell>
-                  {table === "approved" &&
-                    <TableCell>Transfer Date</TableCell>
-                  }
                   <TableCell>Action</TableCell>
                 </TableRow>
               </TableHead>
@@ -197,18 +197,19 @@ const WithdrawalTable = (props) => {
                         value="true"
                       />
                     </TableCell>}
-                    <TableCell>{i+1}</TableCell>
+                    {/* <TableCell>{i+1}</TableCell> */}
                     <TableCell>{user.last_name + " " + user.first_name}</TableCell>
                     <TableCell>{user.amount == 0 || user.amount == null ? 0 : numberFormat(user.amount)}</TableCell> 
+                    {table === "approved" ?
+                      <TableCell>{user.transfered_date}</TableCell>:
+                      <TableCell>{user.account_no}</TableCell>
+                    }
                     <TableCell>{user.account_name}</TableCell>
                     {table === "pending" ?
                       <TableCell>{user.bank_name}</TableCell>:
                       <TableCell>{user.approved_by}</TableCell>
                     }
                     <TableCell>{user.request_date}</TableCell>
-                    {table === "approved" &&
-                      <TableCell>{user.transfered_date}</TableCell>
-                    }
                     <TableCell>
                         <Button size="small" variant="contained" color="primary"
                         onClick={ ()=>handleOpen(user.id)}>

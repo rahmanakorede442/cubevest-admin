@@ -127,7 +127,8 @@ fetch_page = (index)=>{
 render(){
   const {theme} = this.props
   const {users, loading, all, data} = this.state
-  
+  const filename = `RegularSavings-${new Date().getTime()}`
+
     return (
       <div >
         <Grid container spacing={4} justifyContent="space-between">
@@ -142,7 +143,7 @@ render(){
           </Grid>
           <Grid item lg={1} md={1} sm={12} xs={12}>
             <div style={{height: '42px', display: 'flex'}}>
-              <ExportCSV url="exportTransactions" data={data} />
+              <ExportCSV url="exportRegular" data={data} fileName={filename} />
             </div>
           {/* <ExportCSV url="exportTransactions" fileName={filename} data={data} /> */}
           </Grid>

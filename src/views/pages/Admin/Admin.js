@@ -17,6 +17,7 @@ import { Grid, Card, Button, Typography, TextField,
   CardContent, DialogTitle, DialogContent,
    DialogActions, Divider, Dialog, MenuItem, CardActions, CircularProgress } from '@material-ui/core';
 import {Link } from "react-router-dom";
+import ExportCSV from 'helpers/export';
 
 
 class Admin extends Component {
@@ -115,7 +116,8 @@ handleSubmit(event) {
 render(){
   const {theme, savings} = this.props
   const {users, loading, data, datat, handleClose, handleOpen, search, open, investments} = this.state
-    return (
+  const filename = `Admin-${new Date().getTime()}`
+  return (
       <div style={{padding: theme.spacing(3)}}>
         <div style={{height: '42px',alignItems: 'center', display:'flex', marginTop: theme.spacing(1)}}>
           <SearchInput
@@ -124,20 +126,18 @@ render(){
             style={{marginRight: theme.spacing(1), width:300, float:'left'}}
             placeholder="Search user"
           />
-         
-          <div style={{float:'right'}}>
-            <div className="row">
-              <span className="spacer" />
-              <Button
-                color="primary"
-                variant="contained"
-                onClick={()=>this.handleOpen()}
-              >
-                Add Admin
-              </Button>
-            </div>
-          </div>          
         </div>
+        <Grid style={{marginTop: theme.spacing(2),}} container direction="row" justify="space-between" alignItems="center">
+          <Button
+            color="primary"
+            variant="contained"
+            onClick={()=>this.handleOpen()}
+          >
+            Add Admin
+          </Button>   
+
+          <ExportCSV url='exportAdmin' fileName={filename} />
+        </Grid>
       
        
         <div style={{marginTop: theme.spacing(2)}}>

@@ -12,6 +12,7 @@ import {
   Grid, MenuItem, TextField,
 } from '@material-ui/core';
 import { SearchInput } from "components";
+import ExportCSV from "helpers/export";
 
 
 const useStyles = makeStyles(theme => ({
@@ -138,7 +139,8 @@ fetch(all.path+"?page="+index, requestOptions).then(async (response) =>{
 render(){
   const {theme} = this.props
   const {search, data, users, loading, all} = this.state
-    return (
+  const filename = `wallet-${new Date().getTime()}`
+  return (
       <div style={{padding: theme.spacing(4)}}>
       <Grid container spacing={4} >
         <Grid item md={4} xs={4} >
@@ -159,6 +161,11 @@ render(){
               onChange={this.handleChange}
               style={{marginRight: theme.spacing(1), width:'100%', float:'left'}}
               type="date"/>      
+          </div>
+        </Grid>
+        <Grid item md={4} xs={4} style={{float:'right'}}>
+          <div style={{alignItems: 'center',marginTop: theme.spacing(1)}}>
+            <ExportCSV url="exportWallet" data={data} fileName={filename} />      
           </div>
         </Grid>
 

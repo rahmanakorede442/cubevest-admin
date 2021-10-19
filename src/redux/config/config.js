@@ -1,8 +1,8 @@
 
 import { history } from '../logic';
 const serverVars = {
-  // baseUrl:"http://142.93.152.229/test/api/",
-  baseUrl: "https://api.cubevest.com/api/",
+  baseUrl:"http://142.93.152.229/test/api/",
+  // baseUrl: "https://api.cubevest.com/api/",
   validateLogin:"admin/validate_login",
   adminlogin:"admin/login",
   adminsignup: "admin/signup",
@@ -109,7 +109,15 @@ const serverVars = {
   exportwithdrawal:"admin/withdrawal_report",
 
   // export api's
-  exportUser:"admin/fetchAllUsers",
+  exportRegular:"admin/show_regular_savings_export",
+  exportTarget:"admin/show_target_savings_export",
+  exportSaveToLoan:"admin/show_save_to_loan_export",
+  exportInfinito:"admin/show_infinito_savings_export",
+  exportPendinWithdraw:"admin/show_withdrawal_export",
+  exportWallet:"admin/show_wallet_history_export",
+  exportActivityLog:"admin/show_activity_log_export",
+  exportAdmin:"admin/show_admin_export",
+  exportUser:"admin/show_users_export",
   exportTransactions:"admin/fetchAllTransaction"
 };
 
@@ -350,6 +358,23 @@ export function getConfig(apiName) {
       return serverVars.baseUrl + serverVars.exportwithdrawal + user.token;
     case "exportTransactions":
       return serverVars.baseUrl + serverVars.exportTransactions
+    case "exportRegular":
+      return serverVars.baseUrl + serverVars.exportRegular
+    case "exportTarget":
+      return serverVars.baseUrl + serverVars.exportTarget
+    case "exportSaveToLoan":
+      return serverVars.baseUrl + serverVars.exportSaveToLoan
+    case "exportInfinito":
+      return serverVars.baseUrl + serverVars.exportInfinito
+    case "exportPendinWithdraw":
+      return serverVars.baseUrl + serverVars.exportPendinWithdraw
+    case "exportWallet":
+      return serverVars.baseUrl + serverVars.exportWallet
+      
+    case "exportActivityLog":
+      return serverVars.baseUrl + serverVars.exportActivityLog
+    case "exportAdmin":
+      return serverVars.baseUrl + serverVars.exportAdmin
     default:
       return null;
   }

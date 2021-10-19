@@ -180,7 +180,7 @@ render(){
           <Grid item lg={1} md={1} sm={12} xs={12}>
             <ExportCSV url="exportTransactions" fileName={filename} data={data} />
           </Grid>
-          <Grid item lg={3} md={3} sm={6} xs={6}>
+          <Grid item lg={3} md={3} sm={6} xs={12}>
             <TextField
               label="Search by Account Type"
               fullWidth
@@ -206,6 +206,9 @@ render(){
               </MenuItem>
               </TextField>
             </Grid>
+            
+            {/* <UsersToolbar handleSubmit={this.handleSubmit} handleChange={this.handleChange}/> */}
+
           <Grid item lg={12} md={12} sm={12} xs={12}>
             <TransactionTable users={users} pagination={all} fetch_page={this.fetch_page} fetch_next_page={this.fetch_next_page} fetch_prev_page={this.fetch_prev_page} loading={loading}/>
           </Grid>

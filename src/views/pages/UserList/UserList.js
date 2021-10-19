@@ -130,7 +130,7 @@ render(){
             style={{marginRight: theme.spacing(1)}}
             placeholder="Search user"
           />
-          <ExportCSV url="exportUser" fileName={filename} />
+          <ExportCSV url="exportUser" data={search} fileName={filename} />
         </div>
         <div style={{marginTop: theme.spacing(2)}}>
           <UsersTable users={users} pagination={all} fetch_page={this.fetch_page} fetch_next_page={this.fetch_next_page} fetch_prev_page={this.fetch_prev_page} loading={loading} />
