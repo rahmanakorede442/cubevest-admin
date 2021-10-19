@@ -93,7 +93,7 @@ render(){
   const filename = `Deposited Report-${new Date().getTime()}`
   return (
       <div style={{padding: theme.spacing(1)}}>
-        <UsersToolbar data={data} handleSubmit={this.handleSubmit} handleChange={this.handleChange} />
+        <UsersToolbar url='depisitReport' data={data} fileName={filename} name='deport' handleSubmit={this.handleSubmit} handleChange={this.handleChange} />
         {/* <ExportCSV url='depisitReport' data={data} fileName={filename}  name='deport' /> */}
 
         <div style={{marginTop: theme.spacing(2)}}>

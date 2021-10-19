@@ -30,7 +30,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const UsersToolbar = props => {
-  const { data, url, fileName, name, handleSubmit, handleChange, className, ...rest } = props;
+  const { data, url, fileName, handleSubmit, handleChange, className, ...rest } = props;
 
   const classes = useStyles();
 
@@ -38,7 +38,7 @@ const UsersToolbar = props => {
     <div>
       <ValidatorForm onSubmit={handleSubmit}>
         <Grid container spacing={1} >
-          <Grid item lg={2} md={2} sm={4} xs={6}>
+          <Grid item lg={3} md={3} sm={4} xs={6}>
             <TextValidator
               fullWidth
               margin="normal"
@@ -48,12 +48,9 @@ const UsersToolbar = props => {
               value={data.from_date}
               type="date"
               variant="outlined"
-              validators={[
-                  "required"
-                ]}
             />
           </Grid>
-          <Grid item lg={2} md={2} sm={4} xs={6}>
+          <Grid item lg={3} md={3} sm={4} xs={6}>
             <TextValidator
               fullWidth
               margin="normal"
@@ -63,22 +60,16 @@ const UsersToolbar = props => {
               value={data.to_date}
               type="date"
               variant="outlined"
-              validators={[
-                  "required"
-                ]}
             />
           </Grid>
           <Grid item lg={3} md={3} sm={4} xs={6}>
             <TextValidator
               label="Select Package"
               fullWidth
-              name="package"
+              name="account_type"
               margin="normal"
               variant="outlined"
-              value={data.package}
-              validators={[
-                  "required"
-                ]}
+              value={data.account_type}
               onChange={handleChange}
               select>
                 <MenuItem>Select Package</MenuItem>
@@ -90,24 +81,6 @@ const UsersToolbar = props => {
           </Grid>
           <Grid item lg={3} md={3} sm={4} xs={6}>
             <TextValidator
-              label="Search Type"
-              fullWidth
-              name="deposit_type"
-              margin="normal"
-              variant="outlined"
-              value={data.deposit_type}
-              validators={[
-                  "required"
-                ]}
-              onChange={handleChange}
-              select>
-                <MenuItem>Select Type</MenuItem>
-                <MenuItem value="credit">Credit</MenuItem>
-                <MenuItem value="debit">Debit</MenuItem>
-            </TextValidator>
-          </Grid>
-          <Grid item lg={2} md={2} sm={4} xs={6}>
-            <TextValidator
               fullWidth
               margin="normal"
               helperText="Enter Customer/Eamil"
@@ -116,16 +89,13 @@ const UsersToolbar = props => {
               onChange={handleChange}
               value={data.search_term}
               variant="outlined"
-              validators={[
-                  "required"
-                ]}
             />
           </Grid>
         </Grid>
       </ValidatorForm>
         <Grid container direction="row" justify="space-between" alignItems="center">
           <Button variant="contained" onClick={handleSubmit} color="secondary">Search</Button>
-          <ExportCSV url={url} data={data} fileName={fileName}  name={name} />
+          <ExportCSV url={url} data={data} fileName={fileName} />
         </Grid>
     </div>
   );

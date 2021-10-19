@@ -15,6 +15,9 @@ class UserList extends Component{
   constructor(props){
     super(props)
     this.state={
+        data:{
+          search_term:"",
+        },
         users: [],
         loading:true,
         all: [],
@@ -22,6 +25,7 @@ class UserList extends Component{
         open:false
     }
     this.fetchUsers = this.fetchUsers.bind(this);
+    this.handleChange = this.handleChange.bind(this);
     this.searchChange = this.searchChange.bind(this);
     this.fetch_next_page = this.fetch_next_page.bind(this);
     this.fetch_page = this.fetch_page.bind(this);
@@ -34,10 +38,11 @@ componentDidMount(){
 }
 
 fetchUsers = () =>{
+    const {data} = this.state
     const requestOptions = {
         method: 'POST',
         headers: { ...authHeader(), 'Content-Type': 'application/json' },
-        body:JSON.stringify({search_term:this.state.search})
+        body:JSON.stringify(data)
     };
   fetch(getConfig('getAllUsers'), requestOptions)
     .then(async response => {
@@ -64,6 +69,13 @@ searchChange(event) {
     this.setState({ search:value, loading:true},()=>{
     this.fetchUsers()
   });
+}
+handleChange(event) {
+  const { name, value } = event.target;
+  const { data } = this.state;
+    this.setState({ data: { ...data, search_term: value }, loading:true},()=>{
+      this.fetchUsers()
+    });
 }
 
 fetch_next_page = ()=>{
@@ -119,18 +131,25 @@ fetch_page = (index)=>{
 
 render(){
   let {theme} = this.props
-  const {users, loading, search, open, all} = this.state
+  const {users, loading, data, search, open, all} = this.state
   const filename = `user-${new Date().getTime()}`
   return (
       <div style={{padding: theme.spacing(3)}}>
         <div style={{height: '42px',display: 'flex', justifyContent:"space-between", alignItems: 'center',marginTop: theme.spacing(1)}}>
-          <SearchInput
+          {/* <SearchInput
             value={search}
             onChange={this.searchChange}
             style={{marginRight: theme.spacing(1)}}
             placeholder="Search user"
-          />
-          <ExportCSV url="exportUser" data={search} fileName={filename} />
+          /> */}
+          <SearchInput
+              // style={{width:"30%"}}
+              label="search"
+              name="search_term"
+              margin="dense"
+              value={data.search_term}
+              onChange={this.handleChange}/>
+          <ExportCSV url="exportUser" data={data} fileName={filename} />
         </div>
         <div style={{marginTop: theme.spacing(2)}}>
           <UsersTable users={users} pagination={all} fetch_page={this.fetch_page} fetch_next_page={this.fetch_next_page} fetch_prev_page={this.fetch_prev_page} loading={loading} />
